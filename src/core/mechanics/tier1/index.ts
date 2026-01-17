@@ -38,11 +38,7 @@ export type {
 } from './resolve';
 
 // Engagement (Zone of Control)
-export {
-  createEngagementProcessor,
-  AOO_HIT_CHANCE,
-  AOO_DAMAGE_MULTIPLIER,
-} from './engagement';
+export { createEngagementProcessor, AOO_HIT_CHANCE, AOO_DAMAGE_MULTIPLIER } from './engagement';
 export type {
   EngagementProcessor,
   EngagementStatus,

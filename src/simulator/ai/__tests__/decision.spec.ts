@@ -176,9 +176,21 @@ describe('Target Selection', () => {
   describe('selectLowestArmorUnit', () => {
     it('should select unit with lowest effective armor', () => {
       const units = [
-        createTestUnit({ instanceId: 'unit_a', stats: { ...createTestUnit().stats, armor: 10 }, armorShred: 0 }),
-        createTestUnit({ instanceId: 'unit_b', stats: { ...createTestUnit().stats, armor: 5 }, armorShred: 0 }),
-        createTestUnit({ instanceId: 'unit_c', stats: { ...createTestUnit().stats, armor: 15 }, armorShred: 10 }),
+        createTestUnit({
+          instanceId: 'unit_a',
+          stats: { ...createTestUnit().stats, armor: 10 },
+          armorShred: 0,
+        }),
+        createTestUnit({
+          instanceId: 'unit_b',
+          stats: { ...createTestUnit().stats, armor: 5 },
+          armorShred: 0,
+        }),
+        createTestUnit({
+          instanceId: 'unit_c',
+          stats: { ...createTestUnit().stats, armor: 15 },
+          armorShred: 10,
+        }),
       ];
 
       const result = selectLowestArmorUnit(units);
@@ -187,8 +199,16 @@ describe('Target Selection', () => {
 
     it('should consider armor shred in calculation', () => {
       const units = [
-        createTestUnit({ instanceId: 'unit_a', stats: { ...createTestUnit().stats, armor: 10 }, armorShred: 8 }), // effective 2
-        createTestUnit({ instanceId: 'unit_b', stats: { ...createTestUnit().stats, armor: 5 }, armorShred: 0 }), // effective 5
+        createTestUnit({
+          instanceId: 'unit_a',
+          stats: { ...createTestUnit().stats, armor: 10 },
+          armorShred: 8,
+        }), // effective 2
+        createTestUnit({
+          instanceId: 'unit_b',
+          stats: { ...createTestUnit().stats, armor: 5 },
+          armorShred: 0,
+        }), // effective 5
       ];
 
       const result = selectLowestArmorUnit(units);
@@ -213,7 +233,8 @@ describe('Movement Calculation', () => {
       const result = calculateMoveTowardTarget(actor, target);
 
       // Should move 2 cells total (speed limit)
-      const totalMove = Math.abs(result.x - actor.position.x) + Math.abs(result.y - actor.position.y);
+      const totalMove =
+        Math.abs(result.x - actor.position.x) + Math.abs(result.y - actor.position.y);
       expect(totalMove).toBeLessThanOrEqual(2);
     });
 

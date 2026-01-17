@@ -2,16 +2,16 @@ import { MigrationInterface, QueryRunner, Table, TableIndex, TableForeignKey } f
 
 /**
  * Migration: Create run_deck table for tracking units in a roguelike run.
- * 
+ *
  * Stores individual unit cards in a player's run deck with tier and position tracking.
  * References the runs table with cascade delete.
- * 
+ *
  * @migration 1704067201000
  */
 export class CreateRunDeckTable1704067201000 implements MigrationInterface {
   /**
    * Run migration up - creates the run_deck table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async up(queryRunner: QueryRunner): Promise<void> {
@@ -97,7 +97,7 @@ export class CreateRunDeckTable1704067201000 implements MigrationInterface {
 
   /**
    * Run migration down - drops the run_deck table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async down(queryRunner: QueryRunner): Promise<void> {

@@ -197,11 +197,7 @@ export interface RiposteProcessor {
    * @param arc - Attack arc relative to defender's facing
    * @returns True if defender can riposte
    */
-  canRiposte(
-    defender: BattleUnit & UnitWithRiposte,
-    attacker: BattleUnit,
-    arc: AttackArc,
-  ): boolean;
+  canRiposte(defender: BattleUnit & UnitWithRiposte, attacker: BattleUnit, arc: AttackArc): boolean;
 
   /**
    * Calculates riposte chance based on Initiative comparison.

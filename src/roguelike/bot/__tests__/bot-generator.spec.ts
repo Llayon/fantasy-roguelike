@@ -102,7 +102,7 @@ describe('BotTeamGenerator', () => {
             difficulty: 5,
             stage: 3,
             seed: 10000 + i * 1000,
-          })
+          }),
         );
       }
 

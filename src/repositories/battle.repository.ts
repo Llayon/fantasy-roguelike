@@ -1,7 +1,7 @@
 /**
  * Battle repository for database access.
  * Provides query methods for battle persistence and retrieval.
- * 
+ *
  * @fileoverview Repository pattern implementation for Battle entity
  * with methods for CRUD operations and battle-specific queries.
  */
@@ -13,7 +13,7 @@ import { Battle, BattleResult } from '../entities/battle.entity';
 /**
  * Battle repository for database operations.
  * Extends TypeORM Repository with custom query methods.
- * 
+ *
  * @example
  * const battles = await battleRepository.findBattlesByRun(runId);
  */
@@ -23,7 +23,7 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Constructor for dependency injection.
-   * 
+   *
    * @param dataSource - TypeORM DataSource for database connection
    */
   constructor(dataSource: DataSource) {
@@ -32,10 +32,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find all battles for a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Array of battles in the run
-   * 
+   *
    * @example
    * const battles = await battleRepository.findBattlesByRun(runId);
    * // Returns: [{ id: 'battle_1', result: 'win', ... }]
@@ -53,10 +53,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find a battle by ID with all relationships.
-   * 
+   *
    * @param battleId - Battle UUID
    * @returns Battle entity with run and snapshot, or null if not found
-   * 
+   *
    * @example
    * const battle = await battleRepository.findBattleWithRelations(battleId);
    */
@@ -73,12 +73,12 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find battles for a run with pagination.
-   * 
+   *
    * @param runId - Run UUID
    * @param skip - Number of records to skip
    * @param take - Number of records to return
    * @returns Array of battles and total count
-   * 
+   *
    * @example
    * const { battles, total } = await battleRepository.findBattlesByRunPaginated(
    *   runId,
@@ -89,7 +89,7 @@ export class BattleRepository extends Repository<Battle> {
   async findBattlesByRunPaginated(
     runId: string,
     skip: number,
-    take: number
+    take: number,
   ): Promise<{ battles: Battle[]; total: number }> {
     this.logger.debug(`Finding paginated battles for run: ${runId}`, {
       runId,
@@ -111,10 +111,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find won battles for a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Array of won battles
-   * 
+   *
    * @example
    * const wonBattles = await battleRepository.findWonBattles(runId);
    */
@@ -134,10 +134,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find lost battles for a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Array of lost battles
-   * 
+   *
    * @example
    * const lostBattles = await battleRepository.findLostBattles(runId);
    */
@@ -157,10 +157,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find pending battles (not yet simulated).
-   * 
+   *
    * @param runId - Run UUID
    * @returns Array of pending battles
-   * 
+   *
    * @example
    * const pending = await battleRepository.findPendingBattles(runId);
    */
@@ -178,10 +178,10 @@ export class BattleRepository extends Repository<Battle> {
   /**
    * Find battles against a specific snapshot.
    * Used to track how many times a snapshot has been used as opponent.
-   * 
+   *
    * @param snapshotId - Snapshot UUID
    * @returns Array of battles using this snapshot
-   * 
+   *
    * @example
    * const battles = await battleRepository.findBattlesBySnapshot(snapshotId);
    */
@@ -200,10 +200,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find player battles (against snapshots) for a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Array of player battles
-   * 
+   *
    * @example
    * const playerBattles = await battleRepository.findPlayerBattles(runId);
    */
@@ -223,10 +223,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find bot battles (against generated teams) for a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Array of bot battles
-   * 
+   *
    * @example
    * const botBattles = await battleRepository.findBotBattles(runId);
    */
@@ -247,10 +247,10 @@ export class BattleRepository extends Repository<Battle> {
   /**
    * Get battle statistics for a run.
    * Calculates win rate, average event count, etc.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Battle statistics object
-   * 
+   *
    * @example
    * const stats = await battleRepository.getBattleStats(runId);
    * // Returns: { totalBattles: 5, wins: 3, losses: 2, winRate: 60 }
@@ -272,15 +272,11 @@ export class BattleRepository extends Repository<Battle> {
     const totalBattles = battles.length;
     const wins = battles.filter((b) => b.result === BattleResult.WIN).length;
     const losses = battles.filter((b) => b.result === BattleResult.LOSS).length;
-    const pending = battles.filter(
-      (b) => b.result === BattleResult.PENDING
-    ).length;
+    const pending = battles.filter((b) => b.result === BattleResult.PENDING).length;
     const winRate = totalBattles > 0 ? Math.round((wins / totalBattles) * 100) : 0;
     const avgEventCount =
       totalBattles > 0
-        ? Math.round(
-            battles.reduce((sum, b) => sum + b.getEventCount(), 0) / totalBattles
-          )
+        ? Math.round(battles.reduce((sum, b) => sum + b.getEventCount(), 0) / totalBattles)
         : 0;
 
     return {
@@ -295,10 +291,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Find the last battle in a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Last battle or null if no battles exist
-   * 
+   *
    * @example
    * const lastBattle = await battleRepository.findLastBattle(runId);
    */
@@ -315,10 +311,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Create and save a new battle.
-   * 
+   *
    * @param battle - Battle entity to save
    * @returns Saved battle with ID
-   * 
+   *
    * @example
    * const newBattle = await battleRepository.createBattle(battle);
    */
@@ -333,10 +329,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Update an existing battle.
-   * 
+   *
    * @param battle - Battle entity with updated values
    * @returns Updated battle
-   * 
+   *
    * @example
    * battle.result = BattleResult.WIN;
    * const updated = await battleRepository.updateBattle(battle);
@@ -349,10 +345,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Delete a battle.
-   * 
+   *
    * @param battleId - Battle UUID
    * @returns True if deletion was successful
-   * 
+   *
    * @example
    * const deleted = await battleRepository.deleteBattle(battleId);
    */
@@ -365,10 +361,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Count battles for a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Number of battles in the run
-   * 
+   *
    * @example
    * const count = await battleRepository.countBattles(runId);
    */
@@ -380,10 +376,10 @@ export class BattleRepository extends Repository<Battle> {
 
   /**
    * Count won battles for a run.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Number of won battles
-   * 
+   *
    * @example
    * const wins = await battleRepository.countWins(runId);
    */

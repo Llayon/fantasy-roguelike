@@ -102,9 +102,7 @@ export class UpgradeController {
     },
   })
   @ApiResponse({ status: 404, description: 'Run not found' })
-  getAvailableUpgrades(
-    @Param('runId') runId: string,
-  ): GetAvailableUpgradesResponse {
+  getAvailableUpgrades(@Param('runId') runId: string): GetAvailableUpgradesResponse {
     this.logger.debug('Getting available upgrades', { runId });
 
     return this.upgradeService.getAvailableUpgrades(runId);
@@ -138,7 +136,7 @@ export class UpgradeController {
   @ApiOperation({
     summary: 'Upgrade a unit',
     description:
-      'Increases the unit\'s tier by 1 and deducts the upgrade cost from the run\'s budget. ' +
+      "Increases the unit's tier by 1 and deducts the upgrade cost from the run's budget. " +
       'Unit must be in the deck and not at max tier (T3). ' +
       'Run must have sufficient budget (5 gold for T1->T2, 10 gold for T2->T3).',
   })

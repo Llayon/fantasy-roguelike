@@ -302,7 +302,11 @@ describe('handleRoutingCheck', () => {
   });
 
   it('does not rally when resolve is below threshold', () => {
-    const unit = createTestUnit({ resolve: RALLY_THRESHOLD - 1, isRouting: true, faction: 'human' });
+    const unit = createTestUnit({
+      resolve: RALLY_THRESHOLD - 1,
+      isRouting: true,
+      faction: 'human',
+    });
     const state = createTestState([unit]);
 
     const result = handleRoutingCheck(state, unit.instanceId, eventContext);

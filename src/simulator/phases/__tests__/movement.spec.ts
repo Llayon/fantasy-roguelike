@@ -247,9 +247,7 @@ describe('checkHardIntercept', () => {
     ];
 
     const result = checkHardIntercept(state, cavalry, path, eventContext);
-    const updatedCavalry = result.state.units.find(
-      (u) => u.instanceId === cavalry.instanceId,
-    );
+    const updatedCavalry = result.state.units.find((u) => u.instanceId === cavalry.instanceId);
 
     const expectedDamage = Math.floor(20 * SPEAR_WALL_COUNTER_MULTIPLIER);
     expect(updatedCavalry?.currentHp).toBe(100 - expectedDamage);
@@ -277,14 +275,11 @@ describe('checkHardIntercept', () => {
     ];
 
     const result = checkHardIntercept(state, cavalry, path, eventContext);
-    const updatedCavalry = result.state.units.find(
-      (u) => u.instanceId === cavalry.instanceId,
-    );
+    const updatedCavalry = result.state.units.find((u) => u.instanceId === cavalry.instanceId);
 
     expect(updatedCavalry?.momentum).toBe(0);
   });
 });
-
 
 // =============================================================================
 // SOFT INTERCEPT TESTS
@@ -380,9 +375,7 @@ describe('updateEngagementStatus', () => {
     const state = createTestState([unit, enemy]);
 
     const result = updateEngagementStatus(state, unit.instanceId, eventContext);
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
 
     expect(updatedUnit?.engaged).toBe(true);
     expect(updatedUnit?.engagedBy).toContain(enemy.instanceId);
@@ -402,9 +395,7 @@ describe('updateEngagementStatus', () => {
     const state = createTestState([unit, enemy]);
 
     const result = updateEngagementStatus(state, unit.instanceId, eventContext);
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
 
     expect(updatedUnit?.engaged).toBe(false);
     expect(updatedUnit?.engagedBy).toHaveLength(0);
@@ -445,9 +436,7 @@ describe('updateEngagementStatus', () => {
     const state = createTestState([unit, enemy]);
 
     const result = updateEngagementStatus(state, unit.instanceId, eventContext);
-    const updatedEnemy = result.state.units.find(
-      (u) => u.instanceId === enemy.instanceId,
-    );
+    const updatedEnemy = result.state.units.find((u) => u.instanceId === enemy.instanceId);
 
     expect(updatedEnemy?.engaged).toBe(true);
     expect(updatedEnemy?.engagedBy).toContain(unit.instanceId);
@@ -472,9 +461,7 @@ describe('updateEngagementStatus', () => {
     const state = createTestState([unit, enemy1, enemy2]);
 
     const result = updateEngagementStatus(state, unit.instanceId, eventContext);
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
 
     expect(updatedUnit?.engaged).toBe(true);
     expect(updatedUnit?.engagedBy).toHaveLength(2);
@@ -513,9 +500,7 @@ describe('calculateChargeMomentum', () => {
       path,
       eventContext,
     );
-    const updatedCavalry = result.state.units.find(
-      (u) => u.instanceId === cavalry.instanceId,
-    );
+    const updatedCavalry = result.state.units.find((u) => u.instanceId === cavalry.instanceId);
 
     // New formula: momentum = distance * 0.2 = 3 * 0.2 = 0.6
     expect(updatedCavalry?.momentum).toBeCloseTo(0.6);
@@ -549,9 +534,7 @@ describe('calculateChargeMomentum', () => {
       path,
       eventContext,
     );
-    const updatedCavalry = result.state.units.find(
-      (u) => u.instanceId === cavalry.instanceId,
-    );
+    const updatedCavalry = result.state.units.find((u) => u.instanceId === cavalry.instanceId);
 
     expect(updatedCavalry?.momentum).toBe(MAX_MOMENTUM);
   });
@@ -690,9 +673,7 @@ describe('handleMovement', () => {
     const targetPosition = { x: 3, y: 3 };
 
     const result = handleMovement(state, unit.instanceId, targetPosition);
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
 
     expect(updatedUnit?.position.x).toBe(3);
     expect(updatedUnit?.position.y).toBe(3);
@@ -747,9 +728,7 @@ describe('handleMovement', () => {
     const targetPosition = { x: 3, y: 9 }; // Far away
 
     const result = handleMovement(state, unit.instanceId, targetPosition);
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
 
     // Should only move 2 cells (speed limit)
     expect(updatedUnit?.position.y).toBeLessThanOrEqual(3);
@@ -782,4 +761,3 @@ describe('handleMovement', () => {
     expect(state.units[0].position).toEqual(originalPosition);
   });
 });
-

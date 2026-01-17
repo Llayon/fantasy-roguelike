@@ -15,12 +15,7 @@ import { createFacingRotatedEvent } from '../../../types/events';
 import type { FacingDirection } from '../../../types/battle-unit';
 import type { Position } from '../../../types/grid.types';
 import { findUnit, updateUnit } from '../../../utils/state-helpers';
-import type {
-  AttackArc,
-  FacingProcessor,
-  FacingContext,
-  FacingResult,
-} from './facing.types';
+import type { AttackArc, FacingProcessor, FacingContext, FacingResult } from './facing.types';
 
 // =============================================================================
 // CONSTANTS

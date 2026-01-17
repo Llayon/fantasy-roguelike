@@ -1,8 +1,8 @@
 /**
  * Core Progression Types
- * 
+ *
  * Base types for deck, hand, draft, upgrade, economy, run, and snapshot systems.
- * 
+ *
  * @module roguelike/types
  */
 
@@ -17,13 +17,13 @@
 export interface BaseCard {
   /** Unique identifier */
   id: string;
-  
+
   /** Display name */
   name: string;
-  
+
   /** Base cost (for economy) */
   baseCost: number;
-  
+
   /** Current tier (for upgrades), starts at 1 */
   tier: number;
 }

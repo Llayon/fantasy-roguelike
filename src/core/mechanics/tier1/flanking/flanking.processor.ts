@@ -22,10 +22,7 @@ import type {
   FlankingProcessorOptions,
   FlankingResult,
 } from './flanking.types';
-import {
-  FLANKING_DAMAGE_MODIFIERS,
-  DEFAULT_FLANKING_RESOLVE_DAMAGE,
-} from './flanking.types';
+import { FLANKING_DAMAGE_MODIFIERS, DEFAULT_FLANKING_RESOLVE_DAMAGE } from './flanking.types';
 
 /**
  * Creates a flanking processor instance.
@@ -50,9 +47,7 @@ import {
  * // Check if riposte is disabled
  * const noRiposte = processor.disablesRiposte('flank'); // true
  */
-export function createFlankingProcessor(
-  options?: FlankingProcessorOptions,
-): FlankingProcessor {
+export function createFlankingProcessor(options?: FlankingProcessorOptions): FlankingProcessor {
   // Merge custom modifiers with defaults
   const damageModifiers: Record<AttackArc, number> = {
     ...FLANKING_DAMAGE_MODIFIERS,

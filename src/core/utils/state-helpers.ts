@@ -31,7 +31,6 @@
 import { BattleState } from '../types/battle-state';
 import { BattleUnit } from '../types/battle-unit';
 
-
 // =============================================================================
 // FIND UNIT
 // =============================================================================
@@ -49,10 +48,7 @@ import { BattleUnit } from '../types/battle-unit';
  *   console.log(`Found ${unit.name} with ${unit.currentHp} HP`);
  * }
  */
-export function findUnit(
-  state: BattleState,
-  instanceId: string,
-): BattleUnit | undefined {
+export function findUnit(state: BattleState, instanceId: string): BattleUnit | undefined {
   return state.units.find((u) => u.instanceId === instanceId);
 }
 
@@ -73,10 +69,7 @@ export function findUnit(
  *   console.error('Unit not found:', error.message);
  * }
  */
-export function findUnitOrThrow(
-  state: BattleState,
-  instanceId: string,
-): BattleUnit {
+export function findUnitOrThrow(state: BattleState, instanceId: string): BattleUnit {
   const unit = findUnit(state, instanceId);
   if (!unit) {
     throw new Error(`Unit not found: ${instanceId}`);
@@ -165,7 +158,6 @@ export function updateUnit(
   };
 }
 
-
 // =============================================================================
 // BATCH UPDATE UNITS
 // =============================================================================
@@ -207,10 +199,7 @@ export interface BatchUnitUpdate {
  *   { instanceId: 'enemy_archer_0', updates: { currentHp: 0, alive: false } },
  * ]);
  */
-export function updateUnits(
-  state: BattleState,
-  updates: BatchUnitUpdate[],
-): BattleState {
+export function updateUnits(state: BattleState, updates: BatchUnitUpdate[]): BattleState {
   // Return original state if no updates
   if (updates.length === 0) {
     return state;
@@ -240,7 +229,6 @@ export function updateUnits(
     units: newUnits,
   };
 }
-
 
 // =============================================================================
 // ADDITIONAL HELPERS
@@ -293,10 +281,7 @@ export function updateOccupiedPositions(state: BattleState): BattleState {
  * });
  * newState = removeFromTurnQueue(newState, 'enemy_rogue_0');
  */
-export function removeFromTurnQueue(
-  state: BattleState,
-  instanceId: string,
-): BattleState {
+export function removeFromTurnQueue(state: BattleState, instanceId: string): BattleState {
   const queueIndex = state.turnQueue.indexOf(instanceId);
 
   // Unit not in queue, return unchanged
@@ -353,10 +338,7 @@ export function getAliveUnits(state: BattleState): readonly BattleUnit[] {
  * const playerUnits = getTeamUnits(state, 'player');
  * const enemyUnits = getTeamUnits(state, 'enemy');
  */
-export function getTeamUnits(
-  state: BattleState,
-  team: 'player' | 'enemy',
-): readonly BattleUnit[] {
+export function getTeamUnits(state: BattleState, team: 'player' | 'enemy'): readonly BattleUnit[] {
   return state.units.filter((u) => u.alive && u.team === team);
 }
 
@@ -373,11 +355,7 @@ export function getTeamUnits(
  *   // Safe to move unit here
  * }
  */
-export function isPositionOccupied(
-  state: BattleState,
-  x: number,
-  y: number,
-): boolean {
+export function isPositionOccupied(state: BattleState, x: number, y: number): boolean {
   return state.occupiedPositions.has(`${x},${y}`);
 }
 
@@ -400,7 +378,5 @@ export function getUnitAtPositionFromState(
   x: number,
   y: number,
 ): BattleUnit | undefined {
-  return state.units.find(
-    (u) => u.alive && u.position.x === x && u.position.y === y,
-  );
+  return state.units.find((u) => u.alive && u.position.x === x && u.position.y === y);
 }

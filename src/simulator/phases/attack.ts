@@ -43,10 +43,7 @@ import {
   updateOccupiedPositions,
   getTeamUnits,
 } from '../../core/utils/state-helpers';
-import {
-  calculatePhysicalDamage,
-  applyDamage,
-} from '../../core/battle/damage';
+import { calculatePhysicalDamage, applyDamage } from '../../core/battle/damage';
 import { SeededRandom } from '../../core/utils/random';
 import {
   createFacingProcessor,
@@ -72,14 +69,13 @@ import {
 // =============================================================================
 
 /** Base riposte chance (30%) */
-const BASE_RIPOSTE_CHANCE = 0.30;
+const BASE_RIPOSTE_CHANCE = 0.3;
 
 /** Maximum riposte chance (60%) */
-const MAX_RIPOSTE_CHANCE = 0.60;
+const MAX_RIPOSTE_CHANCE = 0.6;
 
 /** Initiative bonus per point difference (2% per point) */
 const INITIATIVE_RIPOSTE_BONUS = 0.02;
-
 
 // =============================================================================
 // MAIN PHASE HANDLER
@@ -148,13 +144,14 @@ export function handleAttack(
   // ==========================================================================
   // Check if ranged unit has ammo before proceeding with attack
   const ammoCheck = ammunitionProcessor.checkAmmo(attacker);
-  
+
   // If ranged unit is out of ammo, check if melee fallback is possible
   if (!ammoCheck.canAttack && ammoCheck.reason === 'no_ammo') {
     // Melee fallback: ranged unit out of ammo must be adjacent to attack
-    const distance = Math.abs(attacker.position.x - target.position.x) + 
-                     Math.abs(attacker.position.y - target.position.y);
-    
+    const distance =
+      Math.abs(attacker.position.x - target.position.x) +
+      Math.abs(attacker.position.y - target.position.y);
+
     if (distance > 1) {
       // Cannot attack - not adjacent and no ammo
       // Return without attacking (AI should have moved closer)
@@ -167,19 +164,20 @@ export function handleAttack(
   // STEP 0.5: Check Line of Sight for Ranged Attacks (Task 23.6)
   // ==========================================================================
   // Check if ranged attack has clear line of sight to target
-  const attackDistance = Math.abs(attacker.position.x - target.position.x) + 
-                         Math.abs(attacker.position.y - target.position.y);
-  
+  const attackDistance =
+    Math.abs(attacker.position.x - target.position.x) +
+    Math.abs(attacker.position.y - target.position.y);
+
   // Only check LoS for ranged attacks (distance > 1)
   if (attackDistance > 1) {
     const losCheck = losProcessor.checkLoS(attacker, target, currentState);
-    
+
     if (!losCheck.canAttack) {
       // LoS blocked - cannot attack
       // Return without attacking (AI should find different target or move)
       return { state: currentState, events };
     }
-    
+
     // Store LoS modifiers for later use in damage/dodge calculations
     // Note: accuracyModifier and coverDodgeBonus are applied in dodge roll
   }
@@ -205,11 +203,7 @@ export function handleAttack(
     return { state: currentState, events };
   }
 
-  const flankingResult = calculateFlankingArc(
-    updatedAttacker,
-    updatedTarget,
-    eventContext,
-  );
+  const flankingResult = calculateFlankingArc(updatedAttacker, updatedTarget, eventContext);
   events.push(...flankingResult.events);
 
   // ==========================================================================
@@ -228,12 +222,7 @@ export function handleAttack(
   // STEP 3.5: Check for Spear Wall Counter (Task 21.4)
   // ==========================================================================
   // If attacker has momentum and target has spear_wall, check for counter
-  const spearWallResult = checkSpearWallCounter(
-    currentState,
-    attackerId,
-    targetId,
-    eventContext,
-  );
+  const spearWallResult = checkSpearWallCounter(currentState, attackerId, targetId, eventContext);
   currentState = spearWallResult.state;
   events.push(...spearWallResult.events);
 
@@ -260,22 +249,12 @@ export function handleAttack(
   // ==========================================================================
   // STEP 5: Roll Dodge
   // ==========================================================================
-  const dodgeResult = handleDodgeRoll(
-    currentState,
-    attackerId,
-    targetId,
-    rng,
-    eventContext,
-  );
+  const dodgeResult = handleDodgeRoll(currentState, attackerId, targetId, rng, eventContext);
   events.push(...dodgeResult.events);
 
   if (dodgeResult.dodged) {
     // Attack missed - skip damage application but still consume ammo
-    const ammoResult = handleAmmoConsumption(
-      currentState,
-      attackerId,
-      eventContext,
-    );
+    const ammoResult = handleAmmoConsumption(currentState, attackerId, eventContext);
     currentState = ammoResult.state;
     events.push(...ammoResult.events);
     return { state: currentState, events };
@@ -315,17 +294,12 @@ export function handleAttack(
   // ==========================================================================
   // STEP 8: Consume Ammunition
   // ==========================================================================
-  const ammoResult = handleAmmoConsumption(
-    currentState,
-    attackerId,
-    eventContext,
-  );
+  const ammoResult = handleAmmoConsumption(currentState, attackerId, eventContext);
   currentState = ammoResult.state;
   events.push(...ammoResult.events);
 
   return { state: currentState, events };
 }
-
 
 // =============================================================================
 // FACING ROTATION
@@ -382,10 +356,7 @@ function handleFacingRotation(
  * @param to - Target position
  * @returns Cardinal direction (N, S, E, W)
  */
-export function calculateFacingDirection(
-  from: Position,
-  to: Position,
-): FacingDirection {
+export function calculateFacingDirection(from: Position, to: Position): FacingDirection {
   return facingProcessor.calculateFacingDirection(from, to);
 }
 
@@ -479,7 +450,6 @@ export function getFlankingModifier(arc: AttackArc): number {
   return flankingProcessor.getDamageModifier(arc);
 }
 
-
 // =============================================================================
 // RESOLVE DAMAGE FROM FLANKING
 // =============================================================================
@@ -509,7 +479,7 @@ function applyFlankingResolveDamage(
 
   // Get resolve damage from FlankingProcessor (returns 0 for front attacks)
   const resolveDamage = flankingProcessor.getResolveDamage(arc);
-  
+
   // No resolve damage for front attacks
   if (resolveDamage === 0) {
     return { state: currentState, events };
@@ -699,18 +669,13 @@ function calculateAttackDamage(
   // Emit charge impact event if there's momentum
   if (attacker.momentum > 0) {
     const bonusDamage = Math.floor(attacker.stats.atk * momentumBonus);
-    const chargeEvent = createChargeImpactEvent(
-      eventContext,
+    const chargeEvent = createChargeImpactEvent(eventContext, attackerId, targetId, {
       attackerId,
       targetId,
-      {
-        attackerId,
-        targetId,
-        momentum: attacker.momentum,
-        bonusDamage,
-        wasCountered: false,
-      },
-    );
+      momentum: attacker.momentum,
+      bonusDamage,
+      wasCountered: false,
+    });
     events.push(chargeEvent);
   }
 
@@ -791,7 +756,6 @@ function handleDodgeRoll(
   return { dodged, events };
 }
 
-
 // =============================================================================
 // APPLY DAMAGE
 // =============================================================================
@@ -868,13 +832,7 @@ function applyAttackDamage(
 
   // Handle death
   if (damageResult.killed) {
-    const deathResult = handleUnitDeath(
-      currentState,
-      targetId,
-      attackerId,
-      'damage',
-      eventContext,
-    );
+    const deathResult = handleUnitDeath(currentState, targetId, attackerId, 'damage', eventContext);
     currentState = deathResult.state;
     events.push(...deathResult.events);
   }
@@ -923,11 +881,7 @@ function handleUnitDeath(
   currentState = updateOccupiedPositions(currentState);
 
   // Apply resolve damage to nearby allies
-  const resolveResult = applyAllyDeathResolveDamage(
-    currentState,
-    deadUnit,
-    eventContext,
-  );
+  const resolveResult = applyAllyDeathResolveDamage(currentState, deadUnit, eventContext);
   currentState = resolveResult.state;
   events.push(...resolveResult.events);
 
@@ -978,17 +932,13 @@ function applyAllyDeathResolveDamage(
       });
 
       // Emit resolve changed event
-      const resolveEvent = createResolveChangedEvent(
-        eventContext,
-        ally.instanceId,
-        {
-          unitId: ally.instanceId,
-          delta: -resolveDamage,
-          newValue: newResolve,
-          maxValue: ally.maxResolve,
-          source: 'ally_death',
-        },
-      );
+      const resolveEvent = createResolveChangedEvent(eventContext, ally.instanceId, {
+        unitId: ally.instanceId,
+        delta: -resolveDamage,
+        newValue: newResolve,
+        maxValue: ally.maxResolve,
+        source: 'ally_death',
+      });
       events.push(resolveEvent);
     }
   }
@@ -1002,7 +952,6 @@ function applyAllyDeathResolveDamage(
 function manhattanDistance(pos1: Position, pos2: Position): number {
   return Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y);
 }
-
 
 // =============================================================================
 // RIPOSTE
@@ -1080,19 +1029,14 @@ function handleRiposte(
 
   // Step 4: Emit riposte_triggered event
   // (Task 19.5: Emit riposte_triggered events)
-  const riposteEvent = createRiposteTriggeredEvent(
-    eventContext,
+  const riposteEvent = createRiposteTriggeredEvent(eventContext, defenderId, attackerId, {
     defenderId,
     attackerId,
-    {
-      defenderId,
-      attackerId,
-      damage: riposteDamage,
-      chance: Math.floor(riposteChance * 100),
-      roll: Math.floor(roll * 100),
-      chargesRemaining: updatedDefender?.riposteCharges ?? 0,
-    },
-  );
+    damage: riposteDamage,
+    chance: Math.floor(riposteChance * 100),
+    roll: Math.floor(roll * 100),
+    chargesRemaining: updatedDefender?.riposteCharges ?? 0,
+  });
   events.push(riposteEvent);
 
   // Emit damage event for riposte
@@ -1157,10 +1101,7 @@ export function canRiposte(
  * @param attacker - Attacking unit
  * @returns Riposte chance (0-1)
  */
-export function calculateRiposteChance(
-  defender: BattleUnit,
-  attacker: BattleUnit,
-): number {
+export function calculateRiposteChance(defender: BattleUnit, attacker: BattleUnit): number {
   // Delegate to RiposteProcessor for consistent riposte chance calculation
   return riposteProcessor.getRiposteChance(defender, attacker);
 }
@@ -1174,15 +1115,11 @@ export function calculateRiposteChance(
  * @param _attacker - Attacking unit (receiving riposte) - unused but kept for API consistency
  * @returns Riposte damage amount
  */
-function calculateRiposteDamage(
-  defender: BattleUnit,
-  _attacker: BattleUnit,
-): number {
+function calculateRiposteDamage(defender: BattleUnit, _attacker: BattleUnit): number {
   // Riposte deals 50% of defender's ATK (from RIPOSTE_DAMAGE_MULTIPLIER)
   const defenderAtk = defender.stats?.atk ?? 0;
   return Math.floor(defenderAtk * RIPOSTE_DAMAGE_MULTIPLIER);
 }
-
 
 // =============================================================================
 // AMMUNITION CONSUMPTION
@@ -1296,4 +1233,3 @@ export {
   DEFAULT_FLANKING_RESOLVE_DAMAGE,
   RIPOSTE_DAMAGE_MULTIPLIER,
 } from '../../core/mechanics';
-

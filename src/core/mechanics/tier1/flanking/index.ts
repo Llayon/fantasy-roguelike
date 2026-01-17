@@ -14,7 +14,4 @@ export type {
   FlankingProcessorOptions,
   AttackArc,
 } from './flanking.types';
-export {
-  FLANKING_DAMAGE_MODIFIERS,
-  DEFAULT_FLANKING_RESOLVE_DAMAGE,
-} from './flanking.types';
+export { FLANKING_DAMAGE_MODIFIERS, DEFAULT_FLANKING_RESOLVE_DAMAGE } from './flanking.types';

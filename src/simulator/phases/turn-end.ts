@@ -38,7 +38,10 @@ import {
   UnitWithArmorShred,
   DEFAULT_DECAY_PER_TURN,
 } from '../../core/mechanics/tier4/armor-shred';
-import { DEFAULT_CONTAGION_CONFIG, DEFAULT_SHRED_CONFIG } from '../../core/mechanics/config/defaults';
+import {
+  DEFAULT_CONTAGION_CONFIG,
+  DEFAULT_SHRED_CONFIG,
+} from '../../core/mechanics/config/defaults';
 
 // =============================================================================
 // CONSTANTS
@@ -85,11 +88,7 @@ type ContagionEffect = 'fire' | 'poison' | 'fear' | 'curse' | 'frost' | 'plague'
  *   rng
  * );
  */
-export function handleTurnEnd(
-  state: BattleState,
-  unitId: string,
-  rng: SeededRandom,
-): PhaseResult {
+export function handleTurnEnd(state: BattleState, unitId: string, rng: SeededRandom): PhaseResult {
   const events: BattleEvent[] = [];
   let currentState = state;
 
@@ -108,12 +107,7 @@ export function handleTurnEnd(
   // ==========================================================================
   // STEP 1: Spread Contagion Effects
   // ==========================================================================
-  const contagionResult = handleContagionSpread(
-    currentState,
-    unitId,
-    rng,
-    eventContext,
-  );
+  const contagionResult = handleContagionSpread(currentState, unitId, rng, eventContext);
   currentState = contagionResult.state;
   events.push(...contagionResult.events);
 
@@ -133,7 +127,6 @@ export function handleTurnEnd(
 
   return { state: currentState, events };
 }
-
 
 // =============================================================================
 // CONTAGION SPREAD
@@ -261,17 +254,12 @@ function getSpreadableEffects(unit: BattleUnit): StatusEffect[] {
  * @param unit - Unit to find adjacent allies for
  * @returns Array of adjacent alive allies
  */
-function getAdjacentAllies(
-  state: BattleState,
-  unit: BattleUnit,
-): readonly BattleUnit[] {
+function getAdjacentAllies(state: BattleState, unit: BattleUnit): readonly BattleUnit[] {
   const allies = getTeamUnits(state, unit.team).filter(
     (ally) => ally.instanceId !== unit.instanceId && ally.alive,
   );
 
-  return allies.filter((ally) =>
-    isOrthogonallyAdjacent(unit.position, ally.position),
-  );
+  return allies.filter((ally) => isOrthogonallyAdjacent(unit.position, ally.position));
 }
 
 /**
@@ -299,13 +287,9 @@ function isOrthogonallyAdjacent(
  * @param targetInPhalanx - Whether target is in phalanx formation
  * @returns Spread chance (0-1)
  */
-function getSpreadChance(
-  effectType: ContagionEffect,
-  targetInPhalanx: boolean,
-): number {
+function getSpreadChance(effectType: ContagionEffect, targetInPhalanx: boolean): number {
   return contagionProcessor.getSpreadChance(effectType as ContagionEffectType, targetInPhalanx);
 }
-
 
 // =============================================================================
 // ARMOR SHRED DECAY
@@ -366,7 +350,6 @@ function handleArmorShredDecay(
 
   return { state: decayResult.state, events };
 }
-
 
 // =============================================================================
 // COOLDOWN TICKS

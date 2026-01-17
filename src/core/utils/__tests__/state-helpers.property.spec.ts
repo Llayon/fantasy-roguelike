@@ -30,12 +30,7 @@ import { Position } from '../../types/grid.types';
 /**
  * Arbitrary generator for valid facing directions.
  */
-const arbitraryFacingDirection: fc.Arbitrary<FacingDirection> = fc.constantFrom(
-  'N',
-  'S',
-  'E',
-  'W',
-);
+const arbitraryFacingDirection: fc.Arbitrary<FacingDirection> = fc.constantFrom('N', 'S', 'E', 'W');
 
 /**
  * Arbitrary generator for valid positions on the grid.
@@ -49,18 +44,12 @@ const arbitraryPosition: fc.Arbitrary<Position> = fc.record({
 /**
  * Arbitrary generator for team type.
  */
-const arbitraryTeamType: fc.Arbitrary<TeamType> = fc.constantFrom(
-  'player',
-  'enemy',
-);
+const arbitraryTeamType: fc.Arbitrary<TeamType> = fc.constantFrom('player', 'enemy');
 
 /**
  * Arbitrary generator for unit faction.
  */
-const arbitraryFaction: fc.Arbitrary<UnitFaction> = fc.constantFrom(
-  'human',
-  'undead',
-);
+const arbitraryFaction: fc.Arbitrary<UnitFaction> = fc.constantFrom('human', 'undead');
 
 /**
  * Arbitrary generator for valid BattleUnit.
@@ -79,14 +68,7 @@ const arbitraryBattleUnit: fc.Arbitrary<BattleUnit> = fc
     initiative: fc.integer({ min: 1, max: 30 }),
     dodge: fc.integer({ min: 0, max: 50 }),
     range: fc.integer({ min: 1, max: 5 }),
-    role: fc.constantFrom(
-      'tank',
-      'melee_dps',
-      'ranged_dps',
-      'mage',
-      'support',
-      'control',
-    ),
+    role: fc.constantFrom('tank', 'melee_dps', 'ranged_dps', 'mage', 'support', 'control'),
     cost: fc.integer({ min: 3, max: 8 }),
     abilities: fc.array(fc.string({ minLength: 1, maxLength: 20 }), {
       minLength: 0,
@@ -191,56 +173,58 @@ const arbitraryBattleState: fc.Arbitrary<BattleState> = fc
     }
 
     // Build turn queue from alive units
-    const turnQueue = uniqueUnits
-      .filter((u) => u.alive)
-      .map((u) => u.instanceId);
+    const turnQueue = uniqueUnits.filter((u) => u.alive).map((u) => u.instanceId);
 
-    return fc.record({
-      battleId: fc.uuid(),
-      round: fc.integer({ min: 1, max: 100 }),
-      turn: fc.integer({ min: 1, max: 20 }),
-      seed: fc.integer(),
-      currentTurnIndex: fc.integer({ min: 0, max: Math.max(0, turnQueue.length - 1) }),
-    }).map((base) => {
-      const state: BattleState = {
-        battleId: base.battleId,
-        units: uniqueUnits,
-        round: base.round,
-        turn: base.turn,
-        currentPhase: 'turn_start',
-        events: [],
-        occupiedPositions,
-        seed: base.seed,
-        turnQueue,
-        currentTurnIndex: turnQueue.length > 0 ? base.currentTurnIndex : 0,
-      };
-      return state;
-    });
+    return fc
+      .record({
+        battleId: fc.uuid(),
+        round: fc.integer({ min: 1, max: 100 }),
+        turn: fc.integer({ min: 1, max: 20 }),
+        seed: fc.integer(),
+        currentTurnIndex: fc.integer({ min: 0, max: Math.max(0, turnQueue.length - 1) }),
+      })
+      .map((base) => {
+        const state: BattleState = {
+          battleId: base.battleId,
+          units: uniqueUnits,
+          round: base.round,
+          turn: base.turn,
+          currentPhase: 'turn_start',
+          events: [],
+          occupiedPositions,
+          seed: base.seed,
+          turnQueue,
+          currentTurnIndex: turnQueue.length > 0 ? base.currentTurnIndex : 0,
+        };
+        return state;
+      });
   });
 
 /**
  * Arbitrary generator for unit updates.
  */
-const arbitraryUnitUpdate: fc.Arbitrary<UnitUpdate> = fc.record({
-  currentHp: fc.option(fc.integer({ min: 0, max: 200 }), { nil: undefined }),
-  alive: fc.option(fc.boolean(), { nil: undefined }),
-  facing: fc.option(arbitraryFacingDirection, { nil: undefined }),
-  resolve: fc.option(fc.integer({ min: 0, max: 100 }), { nil: undefined }),
-  armorShred: fc.option(fc.integer({ min: 0, max: 30 }), { nil: undefined }),
-  momentum: fc.option(fc.integer({ min: 0, max: 5 }), { nil: undefined }),
-  position: fc.option(arbitraryPosition, { nil: undefined }),
-}).map((update) => {
-  // Filter out undefined values
-  const filtered: UnitUpdate = {};
-  if (update.currentHp !== undefined) filtered.currentHp = update.currentHp;
-  if (update.alive !== undefined) filtered.alive = update.alive;
-  if (update.facing !== undefined) filtered.facing = update.facing;
-  if (update.resolve !== undefined) filtered.resolve = update.resolve;
-  if (update.armorShred !== undefined) filtered.armorShred = update.armorShred;
-  if (update.momentum !== undefined) filtered.momentum = update.momentum;
-  if (update.position !== undefined) filtered.position = update.position;
-  return filtered;
-});
+const arbitraryUnitUpdate: fc.Arbitrary<UnitUpdate> = fc
+  .record({
+    currentHp: fc.option(fc.integer({ min: 0, max: 200 }), { nil: undefined }),
+    alive: fc.option(fc.boolean(), { nil: undefined }),
+    facing: fc.option(arbitraryFacingDirection, { nil: undefined }),
+    resolve: fc.option(fc.integer({ min: 0, max: 100 }), { nil: undefined }),
+    armorShred: fc.option(fc.integer({ min: 0, max: 30 }), { nil: undefined }),
+    momentum: fc.option(fc.integer({ min: 0, max: 5 }), { nil: undefined }),
+    position: fc.option(arbitraryPosition, { nil: undefined }),
+  })
+  .map((update) => {
+    // Filter out undefined values
+    const filtered: UnitUpdate = {};
+    if (update.currentHp !== undefined) filtered.currentHp = update.currentHp;
+    if (update.alive !== undefined) filtered.alive = update.alive;
+    if (update.facing !== undefined) filtered.facing = update.facing;
+    if (update.resolve !== undefined) filtered.resolve = update.resolve;
+    if (update.armorShred !== undefined) filtered.armorShred = update.armorShred;
+    if (update.momentum !== undefined) filtered.momentum = update.momentum;
+    if (update.position !== undefined) filtered.position = update.position;
+    return filtered;
+  });
 
 // =============================================================================
 // HELPER FUNCTIONS
@@ -535,9 +519,7 @@ describe('State Helpers Property-Based Tests', () => {
             });
 
             // Find updated unit in new state
-            const updatedUnit = newState.units.find(
-              (u) => u.instanceId === targetUnit.instanceId,
-            );
+            const updatedUnit = newState.units.find((u) => u.instanceId === targetUnit.instanceId);
 
             // Property 7: Original unchanged, new state has update
             const originalUnchanged = targetUnit.currentHp === originalHp;

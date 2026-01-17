@@ -25,9 +25,7 @@ import { SeededRandom } from '../../core/utils/random';
 /**
  * Create a minimal test unit.
  */
-function createTestUnit(
-  overrides: Partial<BattleUnit> = {},
-): BattleUnit {
+function createTestUnit(overrides: Partial<BattleUnit> = {}): BattleUnit {
   return {
     id: 'test_unit',
     instanceId: 'player_test_0',
@@ -71,9 +69,7 @@ function createTestUnit(
 /**
  * Create a minimal test battle state.
  */
-function createTestState(
-  units: BattleUnit[] = [],
-): BattleState {
+function createTestState(units: BattleUnit[] = []): BattleState {
   const occupiedPositions = new Set<string>();
   for (const unit of units) {
     if (unit.alive) {
@@ -176,9 +172,7 @@ describe('handleTurnStart', () => {
 
     const result = handleTurnStart(state, unit.instanceId);
 
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
     expect(updatedUnit?.riposteCharges).toBe(1);
   });
 
@@ -188,9 +182,7 @@ describe('handleTurnStart', () => {
 
     const result = handleTurnStart(state, unit.instanceId);
 
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
     expect(updatedUnit?.resolve).toBe(55); // +5 regen
   });
 
@@ -200,9 +192,7 @@ describe('handleTurnStart', () => {
 
     const result = handleTurnStart(state, unit.instanceId);
 
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
     expect(updatedUnit?.resolve).toBe(100);
   });
 
@@ -216,9 +206,7 @@ describe('handleTurnStart', () => {
 
     const result = handleTurnStart(state, unit.instanceId);
 
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
     // After +5 regen, resolve = 0, should start routing
     expect(updatedUnit?.resolve).toBe(0);
     expect(updatedUnit?.isRouting).toBe(true);
@@ -233,9 +221,7 @@ describe('handleTurnStart', () => {
 
     const result = handleTurnStart(state, unit.instanceId);
 
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
     // Routing units don't regenerate, but if resolve >= 25, they should rally
     expect(updatedUnit?.resolve).toBe(25);
     expect(updatedUnit?.isRouting).toBe(false);
@@ -249,9 +235,7 @@ describe('handleTurnEnd', () => {
 
     const result = handleTurnEnd(state, unit.instanceId);
 
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
     expect(updatedUnit?.armorShred).toBe(3); // -2 decay
   });
 
@@ -261,9 +245,7 @@ describe('handleTurnEnd', () => {
 
     const result = handleTurnEnd(state, unit.instanceId);
 
-    const updatedUnit = result.state.units.find(
-      (u) => u.instanceId === unit.instanceId,
-    );
+    const updatedUnit = result.state.units.find((u) => u.instanceId === unit.instanceId);
     expect(updatedUnit?.armorShred).toBe(0);
   });
 });
@@ -334,7 +316,10 @@ describe('calculateFacing', () => {
 describe('calculateDamage', () => {
   it('calculates basic damage correctly', () => {
     const attacker = createTestUnit({ stats: { ...createTestUnit().stats, atk: 20, atkCount: 1 } });
-    const target = createTestUnit({ stats: { ...createTestUnit().stats, armor: 5 }, armorShred: 0 });
+    const target = createTestUnit({
+      stats: { ...createTestUnit().stats, armor: 5 },
+      armorShred: 0,
+    });
 
     const damage = calculateDamage(attacker, target);
 
@@ -343,7 +328,10 @@ describe('calculateDamage', () => {
 
   it('applies armor shred', () => {
     const attacker = createTestUnit({ stats: { ...createTestUnit().stats, atk: 20, atkCount: 1 } });
-    const target = createTestUnit({ stats: { ...createTestUnit().stats, armor: 10 }, armorShred: 5 });
+    const target = createTestUnit({
+      stats: { ...createTestUnit().stats, armor: 10 },
+      armorShred: 5,
+    });
 
     const damage = calculateDamage(attacker, target);
 
@@ -352,7 +340,10 @@ describe('calculateDamage', () => {
 
   it('multiplies by attack count', () => {
     const attacker = createTestUnit({ stats: { ...createTestUnit().stats, atk: 10, atkCount: 3 } });
-    const target = createTestUnit({ stats: { ...createTestUnit().stats, armor: 2 }, armorShred: 0 });
+    const target = createTestUnit({
+      stats: { ...createTestUnit().stats, armor: 2 },
+      armorShred: 0,
+    });
 
     const damage = calculateDamage(attacker, target);
 
@@ -361,7 +352,10 @@ describe('calculateDamage', () => {
 
   it('returns minimum 1 damage', () => {
     const attacker = createTestUnit({ stats: { ...createTestUnit().stats, atk: 5, atkCount: 1 } });
-    const target = createTestUnit({ stats: { ...createTestUnit().stats, armor: 100 }, armorShred: 0 });
+    const target = createTestUnit({
+      stats: { ...createTestUnit().stats, armor: 100 },
+      armorShred: 0,
+    });
 
     const damage = calculateDamage(attacker, target);
 

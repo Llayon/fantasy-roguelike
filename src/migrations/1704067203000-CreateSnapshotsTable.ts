@@ -2,16 +2,16 @@ import { MigrationInterface, QueryRunner, Table, TableIndex, TableForeignKey } f
 
 /**
  * Migration: Create snapshots table for async PvP matchmaking.
- * 
+ *
  * Stores player team snapshots for use as opponents in future battles.
  * References the runs table with cascade delete.
- * 
+ *
  * @migration 1704067203000
  */
 export class CreateSnapshotsTable1704067203000 implements MigrationInterface {
   /**
    * Run migration up - creates the snapshots table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async up(queryRunner: QueryRunner): Promise<void> {
@@ -109,7 +109,7 @@ export class CreateSnapshotsTable1704067203000 implements MigrationInterface {
 
   /**
    * Run migration down - drops the snapshots table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async down(queryRunner: QueryRunner): Promise<void> {

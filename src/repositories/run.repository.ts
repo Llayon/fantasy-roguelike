@@ -1,7 +1,7 @@
 /**
  * Run repository for database access.
  * Provides query methods for run persistence and retrieval.
- * 
+ *
  * @fileoverview Repository pattern implementation for Run entity
  * with methods for CRUD operations and run-specific queries.
  */
@@ -13,7 +13,7 @@ import { Run, RunStatus } from '../entities/run.entity';
 /**
  * Run repository for database operations.
  * Extends TypeORM Repository with custom query methods.
- * 
+ *
  * @example
  * const activeRuns = await runRepository.findActiveRunsByPlayer(playerId);
  */
@@ -23,7 +23,7 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Constructor for dependency injection.
-   * 
+   *
    * @param dataSource - TypeORM DataSource for database connection
    */
   constructor(dataSource: DataSource) {
@@ -32,10 +32,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Find all active runs for a player.
-   * 
+   *
    * @param playerId - Player UUID
    * @returns Array of active runs
-   * 
+   *
    * @example
    * const activeRuns = await runRepository.findActiveRunsByPlayer(playerId);
    * // Returns: [{ id: 'run_1', stage: 3, wins: 2, ... }]
@@ -56,10 +56,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Find a run by ID with all relationships.
-   * 
+   *
    * @param runId - Run UUID
    * @returns Run entity with battles and deck, or null if not found
-   * 
+   *
    * @example
    * const run = await runRepository.findRunWithRelations(runId);
    * // Returns: { id: 'run_1', battles: [...], deck: [...], ... }
@@ -75,12 +75,12 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Find all runs for a player with pagination.
-   * 
+   *
    * @param playerId - Player UUID
    * @param skip - Number of records to skip
    * @param take - Number of records to return
    * @returns Array of runs and total count
-   * 
+   *
    * @example
    * const { runs, total } = await runRepository.findRunsByPlayerPaginated(
    *   playerId,
@@ -91,7 +91,7 @@ export class RunRepository extends Repository<Run> {
   async findRunsByPlayerPaginated(
     playerId: string,
     skip: number,
-    take: number
+    take: number,
   ): Promise<{ runs: Run[]; total: number }> {
     this.logger.debug(`Finding paginated runs for player: ${playerId}`, {
       playerId,
@@ -113,10 +113,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Find completed runs (won or lost) for a player.
-   * 
+   *
    * @param playerId - Player UUID
    * @returns Array of completed runs
-   * 
+   *
    * @example
    * const completedRuns = await runRepository.findCompletedRunsByPlayer(playerId);
    */
@@ -138,11 +138,11 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Find runs by status for a player.
-   * 
+   *
    * @param playerId - Player UUID
    * @param status - Run status to filter by
    * @returns Array of runs with specified status
-   * 
+   *
    * @example
    * const wonRuns = await runRepository.findRunsByStatus(playerId, RunStatus.WON);
    */
@@ -163,11 +163,11 @@ export class RunRepository extends Repository<Run> {
   /**
    * Find runs at a specific stage for a player.
    * Used for matchmaking to find opponents at similar progression.
-   * 
+   *
    * @param playerId - Player UUID
    * @param stage - Stage number (1-9)
    * @returns Array of runs at specified stage
-   * 
+   *
    * @example
    * const stageRuns = await runRepository.findRunsByStage(playerId, 5);
    */
@@ -188,10 +188,10 @@ export class RunRepository extends Repository<Run> {
   /**
    * Get run statistics for a player.
    * Calculates total wins, losses, and completion rate.
-   * 
+   *
    * @param playerId - Player UUID
    * @returns Run statistics object
-   * 
+   *
    * @example
    * const stats = await runRepository.getRunStats(playerId);
    * // Returns: { totalRuns: 10, totalWins: 3, totalLosses: 7, winRate: 30 }
@@ -214,9 +214,7 @@ export class RunRepository extends Repository<Run> {
     const totalLosses = runs.filter((r) => r.status === RunStatus.LOST).length;
     const winRate = totalRuns > 0 ? Math.round((totalWins / totalRuns) * 100) : 0;
     const averageStage =
-      totalRuns > 0
-        ? Math.round(runs.reduce((sum, r) => sum + r.stage, 0) / totalRuns)
-        : 0;
+      totalRuns > 0 ? Math.round(runs.reduce((sum, r) => sum + r.stage, 0) / totalRuns) : 0;
 
     return {
       totalRuns,
@@ -229,10 +227,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Find the best run for a player (highest stage reached).
-   * 
+   *
    * @param playerId - Player UUID
    * @returns Best run or null if no runs exist
-   * 
+   *
    * @example
    * const bestRun = await runRepository.findBestRun(playerId);
    */
@@ -250,10 +248,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Create and save a new run.
-   * 
+   *
    * @param run - Run entity to save
    * @returns Saved run with ID
-   * 
+   *
    * @example
    * const newRun = await runRepository.createRun(run);
    */
@@ -268,10 +266,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Update an existing run.
-   * 
+   *
    * @param run - Run entity with updated values
    * @returns Updated run
-   * 
+   *
    * @example
    * run.wins += 1;
    * const updated = await runRepository.updateRun(run);
@@ -284,10 +282,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Delete a run and all associated data.
-   * 
+   *
    * @param runId - Run UUID
    * @returns True if deletion was successful
-   * 
+   *
    * @example
    * const deleted = await runRepository.deleteRun(runId);
    */
@@ -300,10 +298,10 @@ export class RunRepository extends Repository<Run> {
 
   /**
    * Count active runs for a player.
-   * 
+   *
    * @param playerId - Player UUID
    * @returns Number of active runs
-   * 
+   *
    * @example
    * const count = await runRepository.countActiveRuns(playerId);
    */

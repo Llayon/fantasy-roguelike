@@ -185,7 +185,7 @@ function isWalkableForPathfinding<T extends GridUnit>(
   grid: Grid,
   units: T[],
   excludeUnit: T | undefined,
-  config: GridConfig
+  config: GridConfig,
 ): boolean {
   // Check grid bounds
   if (!isValidPosition(pos, config)) {
@@ -227,7 +227,7 @@ function createPathNode(
   position: Position,
   gCost: number,
   hCost: number,
-  parent: PathNode | null = null
+  parent: PathNode | null = null,
 ): PathNode {
   return {
     position,
@@ -255,7 +255,6 @@ function reconstructPath(goalNode: PathNode): Position[] {
 
   return path;
 }
-
 
 // =============================================================================
 // A* PATHFINDING ALGORITHM
@@ -292,7 +291,7 @@ export function findPath<T extends GridUnit>(
   units: T[],
   movingUnit?: T,
   gridConfig: GridConfig = DEFAULT_GRID_CONFIG,
-  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG
+  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG,
 ): Position[] {
   // Validate inputs
   if (!isValidPosition(start, gridConfig) || !isValidPosition(goal, gridConfig)) {
@@ -413,7 +412,7 @@ export function findPathWithMaxLength<T extends GridUnit>(
   units: T[],
   movingUnit?: T,
   gridConfig: GridConfig = DEFAULT_GRID_CONFIG,
-  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG
+  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG,
 ): Position[] {
   const fullPath = findPath(start, goal, grid, units, movingUnit, gridConfig, pathConfig);
 
@@ -455,7 +454,7 @@ export function findClosestReachablePosition<T extends GridUnit>(
   units: T[],
   movingUnit?: T,
   gridConfig: GridConfig = DEFAULT_GRID_CONFIG,
-  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG
+  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG,
 ): Position {
   let closestPosition = start;
   let closestDistance = manhattanDistance(start, target);
@@ -530,7 +529,7 @@ export function hasPath<T extends GridUnit>(
   units: T[],
   movingUnit?: T,
   gridConfig: GridConfig = DEFAULT_GRID_CONFIG,
-  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG
+  pathConfig: PathfindingConfig = DEFAULT_PATHFINDING_CONFIG,
 ): boolean {
   const path = findPath(start, goal, grid, units, movingUnit, gridConfig, pathConfig);
   return path.length > 0;

@@ -1,7 +1,7 @@
 /**
  * Repository exports.
  * Central export point for all repository classes.
- * 
+ *
  * @fileoverview Barrel export for repository pattern implementations
  */
 

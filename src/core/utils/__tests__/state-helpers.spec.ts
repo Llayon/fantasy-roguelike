@@ -119,7 +119,6 @@ function createTestState(overrides: Partial<BattleState> = {}): BattleState {
   };
 }
 
-
 // =============================================================================
 // FIND UNIT TESTS
 // =============================================================================
@@ -239,7 +238,6 @@ describe('updateUnit', () => {
     expect(rogue?.currentHp).toBe(100);
   });
 });
-
 
 // =============================================================================
 // UPDATE UNITS (BATCH) TESTS
@@ -383,7 +381,6 @@ describe('removeFromTurnQueue', () => {
     expect(newState).toBe(state);
   });
 });
-
 
 // =============================================================================
 // ALIVE UNITS TESTS

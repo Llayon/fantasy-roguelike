@@ -35,22 +35,12 @@ export type DamageType = 'physical' | 'magical' | 'true';
 /**
  * Stats that can be modified by buffs/debuffs.
  */
-export type ModifiableStat =
-  | 'attack'
-  | 'armor'
-  | 'speed'
-  | 'initiative'
-  | 'dodge';
+export type ModifiableStat = 'attack' | 'armor' | 'speed' | 'initiative' | 'dodge';
 
 /**
  * Passive ability trigger conditions.
  */
-export type PassiveTrigger =
-  | 'on_attack'
-  | 'on_hit'
-  | 'on_low_hp'
-  | 'on_ally_death'
-  | 'on_kill';
+export type PassiveTrigger = 'on_attack' | 'on_hit' | 'on_low_hp' | 'on_ally_death' | 'on_kill';
 
 // =============================================================================
 // ABILITY EFFECTS

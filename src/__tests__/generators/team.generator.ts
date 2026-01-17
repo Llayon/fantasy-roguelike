@@ -253,8 +253,7 @@ export function arbitraryTeamSetup(): fc.Arbitrary<TeamSetup> {
       }
 
       // Generate positions
-      const positionGenerator =
-        side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
+      const positionGenerator = side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
 
       return fc
         .array(positionGenerator, {
@@ -283,35 +282,33 @@ export function arbitraryTeamSetup(): fc.Arbitrary<TeamSetup> {
  * );
  */
 export function arbitraryPlayerTeamSetup(): fc.Arbitrary<TeamSetup> {
-  return fc
-    .array(arbitraryTeamSetupUnit(), { minLength: 1, maxLength: 6 })
-    .chain((units) => {
-      // Filter to budget
-      let totalCost = 0;
-      const validUnits: TeamSetupUnit[] = [];
+  return fc.array(arbitraryTeamSetupUnit(), { minLength: 1, maxLength: 6 }).chain((units) => {
+    // Filter to budget
+    let totalCost = 0;
+    const validUnits: TeamSetupUnit[] = [];
 
-      for (const unit of units) {
-        const cost = getUnitCost(unit.unitId);
-        if (totalCost + cost <= 30) {
-          validUnits.push(unit);
-          totalCost += cost;
-        }
+    for (const unit of units) {
+      const cost = getUnitCost(unit.unitId);
+      if (totalCost + cost <= 30) {
+        validUnits.push(unit);
+        totalCost += cost;
       }
+    }
 
-      if (validUnits.length === 0) {
-        validUnits.push(units[0]);
-      }
+    if (validUnits.length === 0) {
+      validUnits.push(units[0]);
+    }
 
-      return fc
-        .array(arbitraryPlayerPosition(), {
-          minLength: validUnits.length,
-          maxLength: validUnits.length,
-        })
-        .map((positions) => ({
-          units: validUnits,
-          positions,
-        }));
-    });
+    return fc
+      .array(arbitraryPlayerPosition(), {
+        minLength: validUnits.length,
+        maxLength: validUnits.length,
+      })
+      .map((positions) => ({
+        units: validUnits,
+        positions,
+      }));
+  });
 }
 
 /**
@@ -329,35 +326,33 @@ export function arbitraryPlayerTeamSetup(): fc.Arbitrary<TeamSetup> {
  * );
  */
 export function arbitraryEnemyTeamSetup(): fc.Arbitrary<TeamSetup> {
-  return fc
-    .array(arbitraryTeamSetupUnit(), { minLength: 1, maxLength: 6 })
-    .chain((units) => {
-      // Filter to budget
-      let totalCost = 0;
-      const validUnits: TeamSetupUnit[] = [];
+  return fc.array(arbitraryTeamSetupUnit(), { minLength: 1, maxLength: 6 }).chain((units) => {
+    // Filter to budget
+    let totalCost = 0;
+    const validUnits: TeamSetupUnit[] = [];
 
-      for (const unit of units) {
-        const cost = getUnitCost(unit.unitId);
-        if (totalCost + cost <= 30) {
-          validUnits.push(unit);
-          totalCost += cost;
-        }
+    for (const unit of units) {
+      const cost = getUnitCost(unit.unitId);
+      if (totalCost + cost <= 30) {
+        validUnits.push(unit);
+        totalCost += cost;
       }
+    }
 
-      if (validUnits.length === 0) {
-        validUnits.push(units[0]);
-      }
+    if (validUnits.length === 0) {
+      validUnits.push(units[0]);
+    }
 
-      return fc
-        .array(arbitraryEnemyPosition(), {
-          minLength: validUnits.length,
-          maxLength: validUnits.length,
-        })
-        .map((positions) => ({
-          units: validUnits,
-          positions,
-        }));
-    });
+    return fc
+      .array(arbitraryEnemyPosition(), {
+        minLength: validUnits.length,
+        maxLength: validUnits.length,
+      })
+      .map((positions) => ({
+        units: validUnits,
+        positions,
+      }));
+  });
 }
 
 /**
@@ -407,8 +402,7 @@ export function arbitrarySingleUnitTeam(): fc.Arbitrary<TeamSetup> {
   return fc
     .tuple(arbitraryTeamSetupUnit(), fc.integer({ min: 0, max: 1 }))
     .chain(([unit, side]) => {
-      const positionGenerator =
-        side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
+      const positionGenerator = side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
 
       return positionGenerator.map((position) => ({
         units: [unit],
@@ -431,47 +425,45 @@ export function arbitrarySingleUnitTeam(): fc.Arbitrary<TeamSetup> {
  * );
  */
 export function arbitraryFullBudgetTeam(): fc.Arbitrary<TeamSetup> {
-  return fc
-    .array(arbitraryTeamSetupUnit(), { minLength: 1, maxLength: 6 })
-    .chain((units) => {
-      // Find combination that totals exactly 30
-      let totalCost = 0;
-      const validUnits: TeamSetupUnit[] = [];
+  return fc.array(arbitraryTeamSetupUnit(), { minLength: 1, maxLength: 6 }).chain((units) => {
+    // Find combination that totals exactly 30
+    let totalCost = 0;
+    const validUnits: TeamSetupUnit[] = [];
 
-      for (const unit of units) {
-        const cost = getUnitCost(unit.unitId);
-        if (totalCost + cost <= 30) {
-          validUnits.push(unit);
-          totalCost += cost;
-        }
+    for (const unit of units) {
+      const cost = getUnitCost(unit.unitId);
+      if (totalCost + cost <= 30) {
+        validUnits.push(unit);
+        totalCost += cost;
       }
+    }
 
-      // Pad with cheap units to reach 30 if needed
-      while (totalCost < 30) {
-        const cheapUnit: TeamSetupUnit = { unitId: 'rogue', tier: 1 };
-        const cost = getUnitCost(cheapUnit.unitId);
-        if (totalCost + cost <= 30) {
-          validUnits.push(cheapUnit);
-          totalCost += cost;
-        } else {
-          break;
-        }
+    // Pad with cheap units to reach 30 if needed
+    while (totalCost < 30) {
+      const cheapUnit: TeamSetupUnit = { unitId: 'rogue', tier: 1 };
+      const cost = getUnitCost(cheapUnit.unitId);
+      if (totalCost + cost <= 30) {
+        validUnits.push(cheapUnit);
+        totalCost += cost;
+      } else {
+        break;
       }
+    }
 
-      if (validUnits.length === 0) {
-        validUnits.push({ unitId: 'knight', tier: 1 });
-      }
+    if (validUnits.length === 0) {
+      validUnits.push({ unitId: 'knight', tier: 1 });
+    }
 
-      return fc
-        .array(arbitraryPosition(), {
-          minLength: validUnits.length,
-          maxLength: validUnits.length,
-        })
-        .map((positions) => ({
-          units: validUnits,
-          positions,
-        }));
-    });
+    return fc
+      .array(arbitraryPosition(), {
+        minLength: validUnits.length,
+        maxLength: validUnits.length,
+      })
+      .map((positions) => ({
+        units: validUnits,
+        positions,
+      }));
+  });
 }
 
 /**
@@ -500,8 +492,7 @@ export function arbitraryTankTeam(): fc.Arbitrary<TeamSetup> {
       fc.integer({ min: 0, max: 1 }),
     )
     .chain(([units, side]) => {
-      const positionGenerator =
-        side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
+      const positionGenerator = side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
 
       return fc
         .array(positionGenerator, {
@@ -544,8 +535,7 @@ export function arbitraryRangedTeam(): fc.Arbitrary<TeamSetup> {
       fc.integer({ min: 0, max: 1 }),
     )
     .chain(([units, side]) => {
-      const positionGenerator =
-        side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
+      const positionGenerator = side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
 
       return fc
         .array(positionGenerator, {
@@ -587,8 +577,7 @@ export function arbitraryBalancedTeam(): fc.Arbitrary<TeamSetup> {
       fc.integer({ min: 0, max: 1 }),
     )
     .chain(([units, side]) => {
-      const positionGenerator =
-        side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
+      const positionGenerator = side === 0 ? arbitraryPlayerPosition() : arbitraryEnemyPosition();
 
       return fc
         .array(positionGenerator, {

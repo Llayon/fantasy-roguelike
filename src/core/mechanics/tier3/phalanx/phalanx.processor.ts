@@ -139,10 +139,10 @@ function withPhalanxProps(
  * Updates units in state immutably.
  */
 function updateUnits(state: BattleState, updatedUnits: BattleUnit[]): BattleState {
-  const unitMap = new Map(updatedUnits.map(u => [getUnitId(u), u]));
+  const unitMap = new Map(updatedUnits.map((u) => [getUnitId(u), u]));
   return {
     ...state,
-    units: state.units.map(u => unitMap.get(getUnitId(u)) ?? u),
+    units: state.units.map((u) => unitMap.get(getUnitId(u)) ?? u),
   };
 }
 
@@ -263,10 +263,7 @@ export function createPhalanxProcessor(config: PhalanxConfig): PhalanxProcessor 
         };
 
         const neighbor = state.units.find(
-          (u) =>
-            u.position &&
-            u.position.x === neighborPos.x &&
-            u.position.y === neighborPos.y,
+          (u) => u.position && u.position.x === neighborPos.x && u.position.y === neighborPos.y,
         );
 
         if (
@@ -309,10 +306,7 @@ export function createPhalanxProcessor(config: PhalanxConfig): PhalanxProcessor 
      * - armorBonus = min(maxArmorBonus, adjacentCount * armorPerAlly)
      * - resolveBonus = min(maxResolveBonus, adjacentCount * resolvePerAlly)
      */
-    calculateBonuses(
-      adjacentCount: number,
-      phalanxConfig: PhalanxConfig,
-    ): PhalanxBonusResult {
+    calculateBonuses(adjacentCount: number, phalanxConfig: PhalanxConfig): PhalanxBonusResult {
       const cfgMaxArmor = phalanxConfig.maxArmorBonus ?? maxArmorBonus;
       const cfgMaxResolve = phalanxConfig.maxResolveBonus ?? maxResolveBonus;
       const cfgArmorPerAlly = phalanxConfig.armorPerAlly ?? armorPerAlly;
@@ -402,10 +396,7 @@ export function createPhalanxProcessor(config: PhalanxConfig): PhalanxProcessor 
     /**
      * Recalculates phalanx bonuses for all units.
      */
-    recalculate(
-      state: BattleState,
-      _trigger: RecalculationTrigger,
-    ): PhalanxRecalculationResult {
+    recalculate(state: BattleState, _trigger: RecalculationTrigger): PhalanxRecalculationResult {
       const unitsUpdated: string[] = [];
       let formationsChanged = 0;
       let totalArmorBonusChange = 0;
@@ -430,10 +421,7 @@ export function createPhalanxProcessor(config: PhalanxConfig): PhalanxProcessor 
         const newResolveBonus = updatedPhalanxProps.phalanxResolveBonus ?? 0;
         const isInPhalanx = updatedPhalanxProps.inPhalanx ?? false;
 
-        if (
-          previousArmorBonus !== newArmorBonus ||
-          previousResolveBonus !== newResolveBonus
-        ) {
+        if (previousArmorBonus !== newArmorBonus || previousResolveBonus !== newResolveBonus) {
           unitsUpdated.push(getUnitId(updatedUnit));
           totalArmorBonusChange += newArmorBonus - previousArmorBonus;
           totalResolveBonusChange += newResolveBonus - previousResolveBonus;
@@ -460,9 +448,7 @@ export function createPhalanxProcessor(config: PhalanxConfig): PhalanxProcessor 
     /**
      * Clears phalanx state for a unit.
      */
-    clearPhalanx(
-      unit: BattleUnit & UnitWithPhalanx,
-    ): BattleUnit & UnitWithPhalanx {
+    clearPhalanx(unit: BattleUnit & UnitWithPhalanx): BattleUnit & UnitWithPhalanx {
       const baseUnit = unit as BattleUnit;
       const phalanxProps = getPhalanxProps(baseUnit);
 

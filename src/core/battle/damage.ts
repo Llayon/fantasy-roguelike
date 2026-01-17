@@ -107,7 +107,7 @@ export interface PhysicalDamageOptions {
 /**
  * Calculate physical damage dealt by attacker to target.
  * Physical damage is reduced by target's effective armor but has a minimum of 1.
- * 
+ *
  * Formula: max(minDamage, floor((ATK * flankingModifier * (1 + momentumBonus) - effectiveArmor) * atkCount))
  *
  * @param attacker - The unit dealing damage
@@ -125,7 +125,7 @@ export function calculatePhysicalDamage(
   attacker: DamageUnit,
   target: DamageUnit,
   config: BattleConfig = DEFAULT_BATTLE_CONFIG,
-  options?: PhysicalDamageOptions
+  options?: PhysicalDamageOptions,
 ): number {
   const effectiveArmor = getEffectiveArmor(target);
   let effectiveAtk = attacker.stats.atk;
@@ -181,7 +181,7 @@ export function rollDodge(target: DamageUnit, seed: number): boolean {
  */
 export function applyDamage(
   target: DamageUnit,
-  damage: number
+  damage: number,
 ): { newHp: number; killed: boolean; overkill: number } {
   const newHp = Math.max(0, target.currentHp - damage);
   const killed = newHp === 0;
@@ -201,7 +201,7 @@ export function applyDamage(
  */
 export function applyHealing(
   target: DamageUnit,
-  healAmount: number
+  healAmount: number,
 ): { newHp: number; overheal: number } {
   const potentialHp = target.currentHp + healAmount;
   const newHp = Math.min(target.maxHp, potentialHp);
@@ -209,7 +209,6 @@ export function applyHealing(
 
   return { newHp, overheal };
 }
-
 
 // =============================================================================
 // COMBAT RESOLUTION FUNCTIONS
@@ -241,7 +240,7 @@ export function resolvePhysicalAttack(
   target: DamageUnit,
   seed: number,
   config: BattleConfig = DEFAULT_BATTLE_CONFIG,
-  options?: ResolvePhysicalAttackOptions
+  options?: ResolvePhysicalAttackOptions,
 ): {
   damage: number;
   dodged: boolean;
@@ -293,7 +292,7 @@ export function resolvePhysicalAttack(
  */
 export function resolveMagicAttack(
   attacker: DamageUnit,
-  target: DamageUnit
+  target: DamageUnit,
 ): {
   damage: number;
   killed: boolean;
@@ -325,7 +324,7 @@ export function calculateArmorReduction(
   armor: number,
   incomingDamage: number,
   config: BattleConfig = DEFAULT_BATTLE_CONFIG,
-  armorShred: number = 0
+  armorShred: number = 0,
 ): { reducedDamage: number; damageBlocked: number } {
   const effectiveArmor = Math.max(0, armor - armorShred);
   const damageBlocked = Math.min(effectiveArmor, incomingDamage - config.minDamage);

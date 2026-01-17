@@ -189,7 +189,7 @@ export function hasActiveUnits<T extends TurnOrderUnit>(queue: T[]): boolean {
  */
 export function getLivingUnitsByTeam<T extends TurnOrderUnit>(
   queue: T[],
-  team: 'player' | 'bot'
+  team: 'player' | 'bot',
 ): T[] {
   return queue.filter((unit) => unit.alive && unit.team === team);
 }
@@ -200,7 +200,9 @@ export function getLivingUnitsByTeam<T extends TurnOrderUnit>(
  * @param queue - Turn queue to analyze
  * @returns Object with player and bot unit counts
  */
-export function countLivingUnitsByTeam<T extends TurnOrderUnit>(queue: T[]): {
+export function countLivingUnitsByTeam<T extends TurnOrderUnit>(
+  queue: T[],
+): {
   player: number;
   bot: number;
 } {
@@ -240,7 +242,7 @@ export function findUnitById<T extends TurnOrderUnit>(queue: T[], instanceId: st
  */
 export function getTurnOrderPreview<T extends TurnOrderUnit>(
   queue: T[],
-  maxTurns: number = 5
+  maxTurns: number = 5,
 ): string[] {
   const activeUnits = removeInactiveUnits(queue);
   const preview: string[] = [];
@@ -256,7 +258,6 @@ export function getTurnOrderPreview<T extends TurnOrderUnit>(
   return preview;
 }
 
-
 // =============================================================================
 // TURN QUEUE VALIDATION
 // =============================================================================
@@ -267,7 +268,9 @@ export function getTurnOrderPreview<T extends TurnOrderUnit>(
  * @param queue - Turn queue to validate
  * @returns Validation result with success status and any errors
  */
-export function validateTurnQueue<T extends TurnOrderUnit>(queue: T[]): {
+export function validateTurnQueue<T extends TurnOrderUnit>(
+  queue: T[],
+): {
   valid: boolean;
   errors: string[];
   warnings: string[];

@@ -107,14 +107,7 @@ export const FACTIONS: Record<FactionId, Faction> = {
     name: 'Легион Нежити',
     description: 'Агрессивная фракция, юниты рассыпаются при потере морали',
     behavior: 'crumble',
-    unitPool: [
-      'berserker',
-      'assassin',
-      'rogue',
-      'warlock',
-      'elementalist',
-      'enchanter',
-    ],
+    unitPool: ['berserker', 'assassin', 'rogue', 'warlock', 'elementalist', 'enchanter'],
     bonuses: [
       {
         type: 'stat',
@@ -139,16 +132,7 @@ export const FACTIONS: Record<FactionId, Faction> = {
     name: 'Эльфийский Двор',
     description: 'Быстрая фракция с высокой инициативой и уклонением',
     behavior: 'retreat',
-    unitPool: [
-      'archer',
-      'hunter',
-      'rogue',
-      'duelist',
-      'mage',
-      'elementalist',
-      'priest',
-      'bard',
-    ],
+    unitPool: ['archer', 'hunter', 'rogue', 'duelist', 'mage', 'elementalist', 'priest', 'bard'],
     bonuses: [
       {
         type: 'stat',
@@ -174,14 +158,7 @@ export const FACTIONS: Record<FactionId, Faction> = {
     name: 'Орочья Орда',
     description: 'Агрессивная фракция, впадает в ярость при низкой морали',
     behavior: 'berserk',
-    unitPool: [
-      'berserker',
-      'knight',
-      'guardian',
-      'rogue',
-      'assassin',
-      'hunter',
-    ],
+    unitPool: ['berserker', 'knight', 'guardian', 'rogue', 'assassin', 'hunter'],
     bonuses: [
       {
         type: 'stat',
@@ -206,14 +183,7 @@ export const FACTIONS: Record<FactionId, Faction> = {
     name: 'Гномья Твердыня',
     description: 'Защитная фракция с высокой броней и стойкостью',
     behavior: 'rally',
-    unitPool: [
-      'knight',
-      'guardian',
-      'crossbowman',
-      'priest',
-      'enchanter',
-      'warlock',
-    ],
+    unitPool: ['knight', 'guardian', 'crossbowman', 'priest', 'enchanter', 'warlock'],
     bonuses: [
       {
         type: 'stat',
@@ -238,14 +208,7 @@ export const FACTIONS: Record<FactionId, Faction> = {
     name: 'Демоническое Воинство',
     description: 'Магическая фракция с мощными AoE способностями',
     behavior: 'crumble',
-    unitPool: [
-      'mage',
-      'warlock',
-      'elementalist',
-      'enchanter',
-      'assassin',
-      'berserker',
-    ],
+    unitPool: ['mage', 'warlock', 'elementalist', 'enchanter', 'assassin', 'berserker'],
     bonuses: [
       {
         type: 'stat',
@@ -305,9 +268,7 @@ export function getAllFactionIds(): FactionId[] {
  * console.log(retreatFactions.length); // 2
  */
 export function getFactionsByBehavior(behavior: FactionBehavior): Faction[] {
-  return Object.values(FACTIONS).filter(
-    (faction) => faction.behavior === behavior,
-  );
+  return Object.values(FACTIONS).filter((faction) => faction.behavior === behavior);
 }
 
 /**

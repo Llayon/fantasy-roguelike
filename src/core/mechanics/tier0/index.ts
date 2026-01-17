@@ -8,10 +8,7 @@
  * @module core/mechanics/tier0
  */
 
-export {
-  createFacingProcessor,
-  default as FacingProcessor,
-} from './facing';
+export { createFacingProcessor, default as FacingProcessor } from './facing';
 
 export type {
   FacingProcessor as FacingProcessorType,

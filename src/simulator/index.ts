@@ -11,12 +11,7 @@
  */
 
 // Main simulator exports
-export {
-  simulateBattle,
-  initializeBattle,
-  checkBattleEnd,
-  createBattleUnit,
-} from './simulator';
+export { simulateBattle, initializeBattle, checkBattleEnd, createBattleUnit } from './simulator';
 
 // Turn execution exports
 export {

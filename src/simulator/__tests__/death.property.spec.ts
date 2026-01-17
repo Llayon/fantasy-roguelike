@@ -35,13 +35,7 @@ const ENEMY_ROWS = [8, 9];
  * Event types that represent unit actions.
  * These are events where a unit is actively doing something.
  */
-const ACTION_EVENT_TYPES = [
-  'attack',
-  'move',
-  'ability_used',
-  'turn_start',
-  'turn_end',
-] as const;
+const ACTION_EVENT_TYPES = ['attack', 'move', 'ability_used', 'turn_start', 'turn_end'] as const;
 
 // =============================================================================
 // ARBITRARIES (GENERATORS)
@@ -78,10 +72,7 @@ const arbitraryTeamSetupUnit: fc.Arbitrary<TeamSetupUnit> = fc.record({
  * @param rows - Valid rows for this team
  * @returns Arbitrary that generates unique positions
  */
-function arbitraryUniquePositions(
-  count: number,
-  rows: number[],
-): fc.Arbitrary<Position[]> {
+function arbitraryUniquePositions(count: number, rows: number[]): fc.Arbitrary<Position[]> {
   return fc
     .array(
       fc.record({
@@ -196,7 +187,7 @@ function getEventActorId(event: BattleEvent): string | undefined {
  * @returns True if event is an action event
  */
 function isActionEvent(event: BattleEvent): boolean {
-  return ACTION_EVENT_TYPES.includes(event.type as typeof ACTION_EVENT_TYPES[number]);
+  return ACTION_EVENT_TYPES.includes(event.type as (typeof ACTION_EVENT_TYPES)[number]);
 }
 
 /**
@@ -294,7 +285,7 @@ describe('Death Handling Property-Based Tests', () => {
               const firstViolation = violations[0];
               console.error(
                 `Dead unit acted: Unit '${firstViolation.unitId}' died at timestamp ${firstViolation.deathTimestamp} ` +
-                `but performed action '${firstViolation.event.type}' at timestamp ${firstViolation.event.timestamp}`,
+                  `but performed action '${firstViolation.event.type}' at timestamp ${firstViolation.event.timestamp}`,
               );
               expect(violations.length).toBe(0);
               return false;
@@ -321,16 +312,12 @@ describe('Death Handling Property-Based Tests', () => {
             const finalState = result.finalState;
 
             // Find all dead units in final state
-            const deadUnitIds = finalState.units
-              .filter((u) => !u.alive)
-              .map((u) => u.instanceId);
+            const deadUnitIds = finalState.units.filter((u) => !u.alive).map((u) => u.instanceId);
 
             // Check that no dead unit is in the turn queue
             for (const deadId of deadUnitIds) {
               if (finalState.turnQueue.includes(deadId)) {
-                console.error(
-                  `Dead unit '${deadId}' found in turn queue at end of battle`,
-                );
+                console.error(`Dead unit '${deadId}' found in turn queue at end of battle`);
                 expect(finalState.turnQueue).not.toContain(deadId);
                 return false;
               }
@@ -369,7 +356,7 @@ describe('Death Handling Property-Based Tests', () => {
               if (deathTimestamp !== undefined && event.timestamp > deathTimestamp) {
                 console.error(
                   `Dead unit '${actorId}' had turn_start at timestamp ${event.timestamp} ` +
-                  `but died at timestamp ${deathTimestamp}`,
+                    `but died at timestamp ${deathTimestamp}`,
                 );
                 expect(event.timestamp).toBeLessThanOrEqual(deathTimestamp);
                 return false;
@@ -409,7 +396,7 @@ describe('Death Handling Property-Based Tests', () => {
               if (deathTimestamp !== undefined && event.timestamp > deathTimestamp) {
                 console.error(
                   `Dead unit '${attackerId}' attacked at timestamp ${event.timestamp} ` +
-                  `but died at timestamp ${deathTimestamp}`,
+                    `but died at timestamp ${deathTimestamp}`,
                 );
                 expect(event.timestamp).toBeLessThanOrEqual(deathTimestamp);
                 return false;
@@ -441,7 +428,7 @@ describe('Death Handling Property-Based Tests', () => {
               if (unit.alive !== shouldBeAlive) {
                 console.error(
                   `Unit '${unit.instanceId}' has inconsistent state: ` +
-                  `alive=${unit.alive} but currentHp=${unit.currentHp}`,
+                    `alive=${unit.alive} but currentHp=${unit.currentHp}`,
                 );
                 expect(unit.alive).toBe(shouldBeAlive);
                 return false;
@@ -476,9 +463,7 @@ describe('Death Handling Property-Based Tests', () => {
               if ('targetId' in event) {
                 const targetId = event.targetId as string;
                 if (!allUnitIds.has(targetId)) {
-                  console.error(
-                    `unit_died event has invalid targetId: '${targetId}'`,
-                  );
+                  console.error(`unit_died event has invalid targetId: '${targetId}'`);
                   expect(allUnitIds.has(targetId)).toBe(true);
                   return false;
                 }
@@ -516,9 +501,7 @@ describe('Death Handling Property-Based Tests', () => {
             // Check no unit died more than once
             for (const [unitId, count] of deathCounts) {
               if (count > 1) {
-                console.error(
-                  `Unit '${unitId}' died ${count} times (should be at most 1)`,
-                );
+                console.error(`Unit '${unitId}' died ${count} times (should be at most 1)`);
                 expect(count).toBeLessThanOrEqual(1);
                 return false;
               }
@@ -552,9 +535,7 @@ describe('Death Handling Property-Based Tests', () => {
 
             // Death sequences should be identical
             if (deaths1.length !== deaths2.length) {
-              console.error(
-                `Different death counts: ${deaths1.length} vs ${deaths2.length}`,
-              );
+              console.error(`Different death counts: ${deaths1.length} vs ${deaths2.length}`);
               expect(deaths1.length).toBe(deaths2.length);
               return false;
             }

@@ -1,7 +1,7 @@
 /**
  * Battle entity for tracking roguelike battles.
  * Represents a single battle in a player's run with results and events.
- * 
+ *
  * @fileoverview Battle entity with result tracking, event logging,
  * and snapshot references for async PvP.
  */
@@ -130,7 +130,7 @@ export class Battle {
 
   /**
    * Checks if the battle is still pending (not yet simulated).
-   * 
+   *
    * @returns True if result is PENDING
    * @example
    * if (battle.isPending()) {
@@ -143,7 +143,7 @@ export class Battle {
 
   /**
    * Checks if the battle was won.
-   * 
+   *
    * @returns True if result is WIN
    * @example
    * if (battle.isWon()) {
@@ -156,7 +156,7 @@ export class Battle {
 
   /**
    * Checks if the battle was lost.
-   * 
+   *
    * @returns True if result is LOSS
    * @example
    * if (battle.isLost()) {
@@ -169,7 +169,7 @@ export class Battle {
 
   /**
    * Checks if this battle was against a player snapshot.
-   * 
+   *
    * @returns True if enemySnapshotId is not null
    * @example
    * if (battle.isPlayerBattle()) {
@@ -182,7 +182,7 @@ export class Battle {
 
   /**
    * Checks if this battle was against a bot team.
-   * 
+   *
    * @returns True if enemySnapshotId is null
    * @example
    * if (battle.isBotBattle()) {
@@ -195,7 +195,7 @@ export class Battle {
 
   /**
    * Gets the number of events that occurred in this battle.
-   * 
+   *
    * @returns Number of events, or 0 if events is null
    * @example
    * const eventCount = battle.getEventCount();
@@ -207,7 +207,7 @@ export class Battle {
 
   /**
    * Gets events of a specific type from this battle.
-   * 
+   *
    * @param eventType - Type of events to filter for
    * @returns Array of events matching the type
    * @example
@@ -220,7 +220,7 @@ export class Battle {
 
   /**
    * Gets a summary of this battle.
-   * 
+   *
    * @returns Battle summary object
    * @example
    * const summary = battle.getSummary();

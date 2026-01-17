@@ -29,10 +29,7 @@ import {
 } from '../../core/types';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { findUnit, updateUnit, getTeamUnits } from '../../core/utils/state-helpers';
-import {
-  createResolveProcessor,
-  DEFAULT_RESOLVE_CONFIG,
-} from '../../core/mechanics';
+import { createResolveProcessor, DEFAULT_RESOLVE_CONFIG } from '../../core/mechanics';
 import type { ResolveConfig } from '../../core/mechanics';
 import type { UnitWithResolve } from '../../core/mechanics/tier1/resolve';
 
@@ -85,10 +82,7 @@ const resolveProcessor = createResolveProcessor(DEFAULT_RESOLVE_CONFIG);
  *   'player_knight_0'
  * );
  */
-export function handleTurnStart(
-  state: BattleState,
-  unitId: string,
-): PhaseResult {
+export function handleTurnStart(state: BattleState, unitId: string): PhaseResult {
   const events: BattleEvent[] = [];
   let currentState = state;
 
@@ -471,10 +465,7 @@ function isOrthogonallyAdjacent(
  * @param pos2 - Second position
  * @returns Manhattan distance
  */
-function manhattanDistance(
-  pos1: { x: number; y: number },
-  pos2: { x: number; y: number },
-): number {
+function manhattanDistance(pos1: { x: number; y: number }, pos2: { x: number; y: number }): number {
   return Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y);
 }
 

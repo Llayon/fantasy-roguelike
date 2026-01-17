@@ -80,13 +80,8 @@ function isRangedUnit(unit: BattleUnit & UnitWithEngagement): boolean {
  * @param state - Current battle state
  * @returns Array of enemy units
  */
-function getEnemyUnits(
-  unit: BattleUnit,
-  state: BattleState,
-): BattleUnit[] {
-  return state.units.filter(
-    (u) => u.alive && u.team !== unit.team,
-  );
+function getEnemyUnits(unit: BattleUnit, state: BattleState): BattleUnit[] {
+  return state.units.filter((u) => u.alive && u.team !== unit.team);
 }
 
 /**
@@ -139,9 +134,7 @@ function areAdjacent(a: Position, b: Position): boolean {
  * // Get archer penalty
  * const penalty = processor.getArcherPenalty(archer, state, config);
  */
-export function createEngagementProcessor(
-  config: EngagementConfig,
-): EngagementProcessor {
+export function createEngagementProcessor(config: EngagementConfig): EngagementProcessor {
   return {
     /**
      * Gets the engagement status of a unit.
@@ -287,11 +280,7 @@ export function createEngagementProcessor(
      * @param seed - Random seed for deterministic hit calculation
      * @returns AoO result with hit status, damage, and updated state
      */
-    executeAttackOfOpportunity(
-      trigger: AoOTrigger,
-      state: BattleState,
-      seed: number,
-    ): AoOResult {
+    executeAttackOfOpportunity(trigger: AoOTrigger, state: BattleState, seed: number): AoOResult {
       const { attacker, target } = trigger;
       const random = new SeededRandom(seed);
 
@@ -320,7 +309,7 @@ export function createEngagementProcessor(
 
       // Apply damage to target
       const newHp = Math.max(0, target.currentHp - damage);
-      
+
       // Update both units
       const newState = updateUnits(state, [
         {
@@ -444,4 +433,3 @@ export function createEngagementProcessor(
  * Default export for convenience.
  */
 export default createEngagementProcessor;
-

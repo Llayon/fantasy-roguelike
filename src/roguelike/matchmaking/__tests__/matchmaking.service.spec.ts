@@ -32,9 +32,7 @@ describe('MatchmakingService', () => {
       const bot2 = service.findOpponent(1, 2, 12345) as BotOpponent;
 
       expect(bot1.team.units.length).toBe(bot2.team.units.length);
-      expect(bot1.team.units.map((u) => u.unitId)).toEqual(
-        bot2.team.units.map((u) => u.unitId)
-      );
+      expect(bot1.team.units.map((u) => u.unitId)).toEqual(bot2.team.units.map((u) => u.unitId));
       expect(bot1.difficulty).toBe(bot2.difficulty);
     });
 
@@ -45,9 +43,7 @@ describe('MatchmakingService', () => {
       // At least one property should differ
       const unitsDiffer =
         bot1.team.units.length !== bot2.team.units.length ||
-        bot1.team.units.some(
-          (u, i) => u.unitId !== bot2.team.units[i]?.unitId
-        );
+        bot1.team.units.some((u, i) => u.unitId !== bot2.team.units[i]?.unitId);
 
       expect(unitsDiffer || bot1.difficulty !== bot2.difficulty).toBe(true);
     });
@@ -102,7 +98,7 @@ describe('MatchmakingService', () => {
       const opponent = service.findOpponent(1, 0, 12345) as BotOpponent;
 
       // Calculate total cost
-      let totalCost = 0;
+      const totalCost = 0;
       for (const unit of opponent.team.units) {
         // Get unit template cost (all units have cost property)
         // For now, just verify units exist
@@ -118,9 +114,7 @@ describe('MatchmakingService', () => {
       const hardBot = service.findOpponent(1, 8, 12345) as BotOpponent;
 
       // Hard bot should have more units on average
-      expect(hardBot.team.units.length).toBeGreaterThanOrEqual(
-        easyBot.team.units.length
-      );
+      expect(hardBot.team.units.length).toBeGreaterThanOrEqual(easyBot.team.units.length);
     });
   });
 
@@ -241,9 +235,7 @@ describe('MatchmakingService', () => {
         let totalCost = 0;
         for (const unit of opponent.team.units) {
           // Get unit template
-          const unitTemplate = require('../../../game/units/unit.data').UNIT_TEMPLATES[
-            unit.unitId
-          ];
+          const unitTemplate = require('../../../game/units/unit.data').UNIT_TEMPLATES[unit.unitId];
           if (unitTemplate) {
             totalCost += unitTemplate.cost;
           }

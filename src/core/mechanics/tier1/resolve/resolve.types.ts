@@ -177,10 +177,7 @@ export interface ResolveProcessor {
    * @param damage - Amount of resolve damage
    * @returns New unit object with updated resolve
    */
-  applyDamage(
-    unit: BattleUnit & UnitWithResolve,
-    damage: number,
-  ): BattleUnit & UnitWithResolve;
+  applyDamage(unit: BattleUnit & UnitWithResolve, damage: number): BattleUnit & UnitWithResolve;
 
   /**
    * Checks if unit should rout/crumble based on resolve.
@@ -191,10 +188,7 @@ export interface ResolveProcessor {
    * @param config - Resolve configuration
    * @returns Current resolve state
    */
-  checkState(
-    unit: BattleUnit & UnitWithResolve,
-    config: ResolveConfig,
-  ): MechanicsResolveState;
+  checkState(unit: BattleUnit & UnitWithResolve, config: ResolveConfig): MechanicsResolveState;
 
   /**
    * Applies ally death resolve damage to nearby units.

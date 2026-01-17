@@ -158,11 +158,7 @@ export class BotTeamGenerator {
    *
    * @internal
    */
-  private selectUnits(
-    budget: number,
-    targetCount: number,
-    rng: SeededRandom
-  ): TeamSetupUnit[] {
+  private selectUnits(budget: number, targetCount: number, rng: SeededRandom): TeamSetupUnit[] {
     const units: TeamSetupUnit[] = [];
     let remainingBudget = budget;
 
@@ -217,9 +213,7 @@ export class BotTeamGenerator {
     if (!hasTank && allUnits.length > 0) {
       const tanks = allUnits.filter((u) => u.role === UNIT_ROLES.TANK);
       if (tanks.length > 0) {
-        const cheapestTank = tanks.reduce((prev, curr) =>
-          prev.cost < curr.cost ? prev : curr
-        );
+        const cheapestTank = tanks.reduce((prev, curr) => (prev.cost < curr.cost ? prev : curr));
         if (units.length > 0) {
           units[0] = {
             unitId: cheapestTank.id,
@@ -241,12 +235,9 @@ export class BotTeamGenerator {
    * @internal
    */
   private groupUnitsByRole(
-    units: typeof UNIT_TEMPLATES[keyof typeof UNIT_TEMPLATES][]
-  ): Record<UnitRole, typeof UNIT_TEMPLATES[keyof typeof UNIT_TEMPLATES][]> {
-    const grouped: Record<
-      UnitRole,
-      typeof UNIT_TEMPLATES[keyof typeof UNIT_TEMPLATES][]
-    > = {
+    units: (typeof UNIT_TEMPLATES)[keyof typeof UNIT_TEMPLATES][],
+  ): Record<UnitRole, (typeof UNIT_TEMPLATES)[keyof typeof UNIT_TEMPLATES][]> {
+    const grouped: Record<UnitRole, (typeof UNIT_TEMPLATES)[keyof typeof UNIT_TEMPLATES][]> = {
       [UNIT_ROLES.TANK]: [],
       [UNIT_ROLES.MELEE_DPS]: [],
       [UNIT_ROLES.RANGED_DPS]: [],
@@ -292,10 +283,7 @@ export class BotTeamGenerator {
           y: 8 + Math.floor(rng.next() * 2), // Rows 8-9
         };
         attempts++;
-      } while (
-        occupied.has(`${position.x},${position.y}`) &&
-        attempts < maxAttempts
-      );
+      } while (occupied.has(`${position.x},${position.y}`) && attempts < maxAttempts);
 
       positions.push(position);
       occupied.add(`${position.x},${position.y}`);
@@ -320,15 +308,11 @@ export class BotTeamGenerator {
    *
    * @internal
    */
-  private validateTeam(
-    units: TeamSetupUnit[],
-    positions: Position[],
-    budget: number
-  ): void {
+  private validateTeam(units: TeamSetupUnit[], positions: Position[], budget: number): void {
     // Check unit count matches position count
     if (units.length !== positions.length) {
       throw new Error(
-        `Unit count (${units.length}) does not match position count (${positions.length})`
+        `Unit count (${units.length}) does not match position count (${positions.length})`,
       );
     }
 
@@ -351,16 +335,14 @@ export class BotTeamGenerator {
     }, 0);
 
     if (totalCost > budget) {
-      throw new Error(
-        `Total cost (${totalCost}) exceeds budget (${budget})`
-      );
+      throw new Error(`Total cost (${totalCost}) exceeds budget (${budget})`);
     }
 
     // Check positions are valid
     for (const pos of positions) {
       if (pos.x < 0 || pos.x >= 8 || pos.y < 8 || pos.y >= 10) {
         throw new Error(
-          `Invalid position: (${pos.x}, ${pos.y}). Must be in enemy deployment zone (0-7, 8-9)`
+          `Invalid position: (${pos.x}, ${pos.y}). Must be in enemy deployment zone (0-7, 8-9)`,
         );
       }
     }

@@ -19,11 +19,7 @@ export {
   getEffectiveArmor,
 } from './damage';
 
-export type { 
-  DamageUnit, 
-  PhysicalDamageOptions, 
-  ResolvePhysicalAttackOptions 
-} from './damage';
+export type { DamageUnit, PhysicalDamageOptions, ResolvePhysicalAttackOptions } from './damage';
 
 // Turn order
 export {

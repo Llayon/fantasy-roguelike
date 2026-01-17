@@ -13,7 +13,12 @@
 import * as fc from 'fast-check';
 import { handleAttack, calculateFacingDirection } from '../attack';
 import { BattleState, Phase } from '../../../core/types';
-import { BattleUnit, FacingDirection, TeamType, UnitFaction } from '../../../core/types/battle-unit';
+import {
+  BattleUnit,
+  FacingDirection,
+  TeamType,
+  UnitFaction,
+} from '../../../core/types/battle-unit';
 import { Position } from '../../../core/types/grid.types';
 import { SeededRandom } from '../../../core/utils/random';
 
@@ -69,43 +74,51 @@ function createArbitraryBattleUnit(
   position: Position,
   instanceIdSuffix: string,
 ): fc.Arbitrary<BattleUnit> {
-  return fc.record({
-    id: fc.constantFrom('knight', 'archer', 'mage', 'rogue', 'priest'),
-    instanceId: fc.constant(`${team}_unit_${instanceIdSuffix}`),
-    name: fc.constantFrom('Knight', 'Archer', 'Mage', 'Rogue', 'Priest'),
-    team: fc.constant(team),
-    stats: fc.record({
-      hp: fc.integer({ min: 50, max: 200 }),
-      atk: fc.integer({ min: 5, max: 50 }),
-      atkCount: fc.integer({ min: 1, max: 3 }),
-      armor: fc.integer({ min: 0, max: 30 }),
-      speed: fc.integer({ min: 1, max: 5 }),
-      initiative: fc.integer({ min: 1, max: 20 }),
-      dodge: fc.integer({ min: 0, max: 50 }),
-    }),
-    range: fc.integer({ min: 1, max: 5 }),
-    role: fc.constantFrom('tank', 'melee_dps', 'ranged_dps', 'mage', 'support'),
-    cost: fc.integer({ min: 3, max: 8 }),
-    abilities: fc.array(fc.constantFrom('shield_wall', 'riposte', 'heal', 'fireball'), { minLength: 0, maxLength: 3 }),
-    position: fc.constant(position),
-    currentHp: fc.integer({ min: 1, max: 200 }),
-    maxHp: fc.integer({ min: 50, max: 200 }),
-    alive: fc.constant(true),
-    facing: arbitraryFacing,
-    resolve: fc.integer({ min: 1, max: 100 }),
-    maxResolve: fc.integer({ min: 50, max: 100 }),
-    isRouting: fc.constant(false),
-    engaged: fc.boolean(),
-    engagedBy: fc.constant([]),
-    riposteCharges: fc.integer({ min: 0, max: 3 }),
-    ammo: fc.oneof(fc.constant(null), fc.integer({ min: 1, max: 20 })),
-    maxAmmo: fc.oneof(fc.constant(null), fc.integer({ min: 5, max: 20 })),
-    momentum: fc.integer({ min: 0, max: 5 }),
-    armorShred: fc.integer({ min: 0, max: 20 }),
-    inPhalanx: fc.boolean(),
-    tags: fc.array(fc.constantFrom('infantry', 'cavalry', 'ranged', 'mage'), { minLength: 0, maxLength: 3 }),
-    faction: arbitraryFaction,
-  }).filter((unit) => unit.currentHp <= unit.maxHp && unit.resolve <= unit.maxResolve);
+  return fc
+    .record({
+      id: fc.constantFrom('knight', 'archer', 'mage', 'rogue', 'priest'),
+      instanceId: fc.constant(`${team}_unit_${instanceIdSuffix}`),
+      name: fc.constantFrom('Knight', 'Archer', 'Mage', 'Rogue', 'Priest'),
+      team: fc.constant(team),
+      stats: fc.record({
+        hp: fc.integer({ min: 50, max: 200 }),
+        atk: fc.integer({ min: 5, max: 50 }),
+        atkCount: fc.integer({ min: 1, max: 3 }),
+        armor: fc.integer({ min: 0, max: 30 }),
+        speed: fc.integer({ min: 1, max: 5 }),
+        initiative: fc.integer({ min: 1, max: 20 }),
+        dodge: fc.integer({ min: 0, max: 50 }),
+      }),
+      range: fc.integer({ min: 1, max: 5 }),
+      role: fc.constantFrom('tank', 'melee_dps', 'ranged_dps', 'mage', 'support'),
+      cost: fc.integer({ min: 3, max: 8 }),
+      abilities: fc.array(fc.constantFrom('shield_wall', 'riposte', 'heal', 'fireball'), {
+        minLength: 0,
+        maxLength: 3,
+      }),
+      position: fc.constant(position),
+      currentHp: fc.integer({ min: 1, max: 200 }),
+      maxHp: fc.integer({ min: 50, max: 200 }),
+      alive: fc.constant(true),
+      facing: arbitraryFacing,
+      resolve: fc.integer({ min: 1, max: 100 }),
+      maxResolve: fc.integer({ min: 50, max: 100 }),
+      isRouting: fc.constant(false),
+      engaged: fc.boolean(),
+      engagedBy: fc.constant([]),
+      riposteCharges: fc.integer({ min: 0, max: 3 }),
+      ammo: fc.oneof(fc.constant(null), fc.integer({ min: 1, max: 20 })),
+      maxAmmo: fc.oneof(fc.constant(null), fc.integer({ min: 5, max: 20 })),
+      momentum: fc.integer({ min: 0, max: 5 }),
+      armorShred: fc.integer({ min: 0, max: 20 }),
+      inPhalanx: fc.boolean(),
+      tags: fc.array(fc.constantFrom('infantry', 'cavalry', 'ranged', 'mage'), {
+        minLength: 0,
+        maxLength: 3,
+      }),
+      faction: arbitraryFaction,
+    })
+    .filter((unit) => unit.currentHp <= unit.maxHp && unit.resolve <= unit.maxResolve);
 }
 
 /**
@@ -289,7 +302,8 @@ describe('Attack Phase Property-Based Tests', () => {
             const expectedFacing = getExpectedFacing(attackerPos, targetPos);
 
             // Set initial facing to something different if possible
-            const differentFacing = VALID_FACINGS.find((f) => f !== expectedFacing) ?? expectedFacing;
+            const differentFacing =
+              VALID_FACINGS.find((f) => f !== expectedFacing) ?? expectedFacing;
             const attackerWithDifferentFacing = { ...attacker, facing: differentFacing };
 
             const state = createBattleState(attackerWithDifferentFacing, target);

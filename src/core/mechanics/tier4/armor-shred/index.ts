@@ -26,4 +26,3 @@ export {
   ARMORED_TAG,
   ARMORED_SHRED_CAP_PERCENT,
 } from './armor-shred.types';
-

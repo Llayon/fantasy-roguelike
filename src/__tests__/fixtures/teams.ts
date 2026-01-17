@@ -56,9 +56,7 @@ import {
  * const team = createPlayerTeam();
  * // Result: { units: [...], positions: [...] }
  */
-export function createPlayerTeam(
-  overrides: Partial<TeamSetup> = {},
-): TeamSetup {
+export function createPlayerTeam(overrides: Partial<TeamSetup> = {}): TeamSetup {
   return {
     units: [
       { unitId: 'knight', tier: 1 },
@@ -86,9 +84,7 @@ export function createPlayerTeam(
  * @example
  * const team = createEnemyTeam();
  */
-export function createEnemyTeam(
-  overrides: Partial<TeamSetup> = {},
-): TeamSetup {
+export function createEnemyTeam(overrides: Partial<TeamSetup> = {}): TeamSetup {
   return {
     units: [
       { unitId: 'knight', tier: 1 },

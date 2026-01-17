@@ -22,10 +22,7 @@ import { MVP_PRESET } from './presets/mvp';
 /**
  * Dependency graph for mechanics.
  */
-export const MECHANIC_DEPENDENCIES: Record<
-  keyof MechanicsConfig,
-  (keyof MechanicsConfig)[]
-> = {
+export const MECHANIC_DEPENDENCIES: Record<keyof MechanicsConfig, (keyof MechanicsConfig)[]> = {
   facing: [],
   armorShred: [],
   resolve: [],
@@ -45,9 +42,7 @@ export const MECHANIC_DEPENDENCIES: Record<
 /**
  * Returns default configuration for a mechanic.
  */
-export function getDefaultConfig(
-  mechanic: keyof MechanicsConfig,
-): boolean | object {
+export function getDefaultConfig(mechanic: keyof MechanicsConfig): boolean | object {
   const defaults: Record<keyof MechanicsConfig, boolean | object> = {
     facing: true,
     resolve: DEFAULT_RESOLVE_CONFIG,
@@ -71,9 +66,7 @@ export function getDefaultConfig(
 /**
  * Resolves mechanic dependencies recursively.
  */
-export function resolveDependencies(
-  config: Partial<MechanicsConfig>,
-): MechanicsConfig {
+export function resolveDependencies(config: Partial<MechanicsConfig>): MechanicsConfig {
   const resolved: MechanicsConfig = { ...MVP_PRESET, ...config };
 
   let changed = true;
@@ -86,8 +79,7 @@ export function resolveDependencies(
       if (resolved[key]) {
         for (const dep of deps) {
           if (!resolved[dep]) {
-            (resolved as Record<keyof MechanicsConfig, unknown>)[dep] =
-              getDefaultConfig(dep);
+            (resolved as Record<keyof MechanicsConfig, unknown>)[dep] = getDefaultConfig(dep);
             changed = true;
           }
         }

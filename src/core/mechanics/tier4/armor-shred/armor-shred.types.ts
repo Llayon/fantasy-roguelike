@@ -111,11 +111,7 @@ export interface ShredDecayResult {
 /**
  * Reasons why shred decay might be skipped.
  */
-export type ShredDecaySkipReason =
-  | 'undead'
-  | 'no_shred'
-  | 'unit_dead'
-  | 'decay_disabled';
+export type ShredDecaySkipReason = 'undead' | 'no_shred' | 'unit_dead' | 'decay_disabled';
 
 /**
  * Result of processing shred decay for a unit.
@@ -223,10 +219,7 @@ export interface ArmorShredProcessor {
    * @param unitId - Unit whose shred should decay
    * @returns Updated state and decay result
    */
-  processDecay(
-    state: BattleState,
-    unitId: string,
-  ): ArmorShredDecayResult;
+  processDecay(state: BattleState, unitId: string): ArmorShredDecayResult;
 
   /**
    * Checks if a unit is immune to armor shred.
@@ -256,4 +249,3 @@ export interface ArmorShredProcessor {
    */
   canDecay(unit: BattleUnit & UnitWithArmorShred): boolean;
 }
-

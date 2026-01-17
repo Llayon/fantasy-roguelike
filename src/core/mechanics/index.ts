@@ -89,11 +89,7 @@ export {
   FLANKING_DAMAGE_MODIFIERS,
   DEFAULT_FLANKING_RESOLVE_DAMAGE,
 } from './tier1/flanking';
-export type {
-  FlankingProcessor,
-  FlankingResult,
-  FlankingProcessorOptions,
-} from './tier1/flanking';
+export type { FlankingProcessor, FlankingResult, FlankingProcessorOptions } from './tier1/flanking';
 
 // Resolve
 export {

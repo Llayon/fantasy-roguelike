@@ -84,10 +84,7 @@ const arbitraryEnemyPosition: fc.Arbitrary<Position> = fc.record({
  * @param rows - Valid rows for this team
  * @returns Arbitrary that generates unique positions
  */
-function arbitraryUniquePositions(
-  count: number,
-  rows: number[],
-): fc.Arbitrary<Position[]> {
+function arbitraryUniquePositions(count: number, rows: number[]): fc.Arbitrary<Position[]> {
   return fc
     .array(
       fc.record({
@@ -191,7 +188,8 @@ describe('Battle Simulator Property-Based Tests', () => {
             const result = simulateBattle(playerTeam, enemyTeam, seed);
 
             // Property 6: Battle must terminate
-            const hasResult = result.result === 'win' || result.result === 'loss' || result.result === 'draw';
+            const hasResult =
+              result.result === 'win' || result.result === 'loss' || result.result === 'draw';
             const withinMaxRounds = result.rounds <= MAX_ROUNDS;
 
             expect(hasResult).toBe(true);
@@ -333,10 +331,8 @@ describe('Battle Simulator Property-Based Tests', () => {
             );
 
             // Survivor counts should match
-            const playerSurvivorsMatch =
-              alivePlayerUnits.length === result.playerSurvivors.length;
-            const enemySurvivorsMatch =
-              aliveEnemyUnits.length === result.enemySurvivors.length;
+            const playerSurvivorsMatch = alivePlayerUnits.length === result.playerSurvivors.length;
+            const enemySurvivorsMatch = aliveEnemyUnits.length === result.enemySurvivors.length;
 
             expect(playerSurvivorsMatch).toBe(true);
             expect(enemySurvivorsMatch).toBe(true);
@@ -392,9 +388,7 @@ describe('Battle Simulator Property-Based Tests', () => {
 
             // Property 6: Battle must terminate within MAX_ROUNDS
             const terminated =
-              result.result === 'win' ||
-              result.result === 'loss' ||
-              result.result === 'draw';
+              result.result === 'win' || result.result === 'loss' || result.result === 'draw';
             const withinLimit = result.rounds <= MAX_ROUNDS;
 
             expect(terminated).toBe(true);

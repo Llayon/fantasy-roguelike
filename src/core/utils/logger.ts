@@ -99,7 +99,6 @@ export const DEVELOPMENT_CONFIG: LoggerConfig = {
   jsonFormat: false,
 };
 
-
 /**
  * Battle Logger class for structured logging with battle context.
  *
@@ -145,10 +144,7 @@ export class BattleLogger {
    * turnLogger.debug('Processing turn'); // Includes battleId, round, turn
    */
   child(additionalContext: BattleContext): BattleLogger {
-    return new BattleLogger(
-      { ...this.baseContext, ...additionalContext },
-      this.config
-    );
+    return new BattleLogger({ ...this.baseContext, ...additionalContext }, this.config);
   }
 
   /**
@@ -211,11 +207,7 @@ export class BattleLogger {
    * logger.error('Failed to execute ability', { unitId: 'mage-1' }, new Error('Invalid target'));
    * logger.error('Battle state corrupted', { battleId: 'battle-123' });
    */
-  error(
-    message: string,
-    context?: BattleContext,
-    error?: Error | Record<string, unknown>
-  ): void {
+  error(message: string, context?: BattleContext, error?: Error | Record<string, unknown>): void {
     if (error instanceof Error) {
       this.log(LogLevel.ERROR, message, context, undefined, error);
     } else {
@@ -231,7 +223,7 @@ export class BattleLogger {
     message: string,
     context?: BattleContext,
     metadata?: Record<string, unknown>,
-    error?: Error
+    error?: Error,
   ): void {
     // Filter by log level
     if (level < this.config.minLevel) {
@@ -278,7 +270,7 @@ export class BattleLogger {
     const merged = { ...this.baseContext, ...additional };
     // Remove undefined values
     return Object.fromEntries(
-      Object.entries(merged).filter(([, v]) => v !== undefined)
+      Object.entries(merged).filter(([, v]) => v !== undefined),
     ) as BattleContext;
   }
 
@@ -302,9 +294,7 @@ export class BattleLogger {
    * Default output to console.
    */
   private defaultOutput(entry: LogEntry, level: LogLevel): void {
-    const output = this.config.jsonFormat
-      ? JSON.stringify(entry)
-      : this.formatHumanReadable(entry);
+    const output = this.config.jsonFormat ? JSON.stringify(entry) : this.formatHumanReadable(entry);
 
     switch (level) {
       case LogLevel.DEBUG:
@@ -413,9 +403,7 @@ export function createDevelopmentLogger(baseContext: BattleContext = {}): Battle
  */
 export function createLogger(baseContext: BattleContext = {}): BattleLogger {
   const isProduction = process.env.NODE_ENV === 'production';
-  return isProduction
-    ? createProductionLogger(baseContext)
-    : createDevelopmentLogger(baseContext);
+  return isProduction ? createProductionLogger(baseContext) : createDevelopmentLogger(baseContext);
 }
 
 /**

@@ -73,7 +73,6 @@ function createTestUnit(overrides: Partial<BattleUnit> = {}): BattleUnit {
   };
 }
 
-
 function createTestState(units: BattleUnit[]): BattleState {
   const occupiedPositions = new Set<string>();
   for (const unit of units) {
@@ -107,9 +106,9 @@ describe('Turn End Constants', () => {
 
   it('has correct contagion spread chances', () => {
     // These are now from the contagion processor defaults
-    expect(DEFAULT_FIRE_SPREAD).toBe(0.50);
-    expect(DEFAULT_POISON_SPREAD).toBe(0.30);
-    expect(DEFAULT_FEAR_SPREAD).toBe(0.40);
+    expect(DEFAULT_FIRE_SPREAD).toBe(0.5);
+    expect(DEFAULT_POISON_SPREAD).toBe(0.3);
+    expect(DEFAULT_FEAR_SPREAD).toBe(0.4);
     expect(DEFAULT_PHALANX_SPREAD_BONUS).toBe(0.15);
   });
 });
@@ -182,7 +181,6 @@ describe('handleArmorShredDecay', () => {
   });
 });
 
-
 // =============================================================================
 // CONTAGION SPREAD TESTS
 // =============================================================================
@@ -249,15 +247,11 @@ describe('getSpreadChance', () => {
   });
 
   it('adds phalanx bonus when target is in phalanx', () => {
-    expect(getSpreadChance('fire', true)).toBe(
-      DEFAULT_FIRE_SPREAD + DEFAULT_PHALANX_SPREAD_BONUS
-    );
+    expect(getSpreadChance('fire', true)).toBe(DEFAULT_FIRE_SPREAD + DEFAULT_PHALANX_SPREAD_BONUS);
     expect(getSpreadChance('poison', true)).toBe(
-      DEFAULT_POISON_SPREAD + DEFAULT_PHALANX_SPREAD_BONUS
+      DEFAULT_POISON_SPREAD + DEFAULT_PHALANX_SPREAD_BONUS,
     );
-    expect(getSpreadChance('fear', true)).toBe(
-      DEFAULT_FEAR_SPREAD + DEFAULT_PHALANX_SPREAD_BONUS
-    );
+    expect(getSpreadChance('fear', true)).toBe(DEFAULT_FEAR_SPREAD + DEFAULT_PHALANX_SPREAD_BONUS);
   });
 });
 
@@ -342,7 +336,6 @@ describe('getAdjacentAllies', () => {
     expect(result.length).toBe(0);
   });
 });
-
 
 // =============================================================================
 // COOLDOWN TICKS TESTS

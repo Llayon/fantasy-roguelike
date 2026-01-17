@@ -50,10 +50,7 @@ export const RESOLVE_DAMAGE_NEARBY_RANGE = 3;
  * @param config - Resolve configuration
  * @returns Current resolve value
  */
-function getEffectiveResolve(
-  unit: BattleUnit & UnitWithResolve,
-  config: ResolveConfig,
-): number {
+function getEffectiveResolve(unit: BattleUnit & UnitWithResolve, config: ResolveConfig): number {
   return unit.resolve ?? unit.maxResolve ?? config.maxResolve;
 }
 
@@ -65,10 +62,7 @@ function getEffectiveResolve(
  * @param config - Resolve configuration
  * @returns Maximum resolve value
  */
-function getMaxResolve(
-  unit: BattleUnit & UnitWithResolve,
-  config: ResolveConfig,
-): number {
+function getMaxResolve(unit: BattleUnit & UnitWithResolve, config: ResolveConfig): number {
   return unit.maxResolve ?? config.maxResolve;
 }
 
@@ -90,10 +84,7 @@ function getFaction(unit: BattleUnit & UnitWithResolve): ResolveFaction {
  * @param pos2 - Second position
  * @returns Manhattan distance
  */
-function manhattanDistance(
-  pos1: { x: number; y: number },
-  pos2: { x: number; y: number },
-): number {
+function manhattanDistance(pos1: { x: number; y: number }, pos2: { x: number; y: number }): number {
   return Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y);
 }
 
@@ -152,10 +143,7 @@ export function createResolveProcessor(config: ResolveConfig): ResolveProcessor 
       const maxResolve = getMaxResolve(unit, resolveConfig);
 
       // Formula: newResolve = min(maxResolve, currentResolve + baseRegeneration)
-      const newResolve = Math.min(
-        maxResolve,
-        currentResolve + resolveConfig.baseRegeneration,
-      );
+      const newResolve = Math.min(maxResolve, currentResolve + resolveConfig.baseRegeneration);
 
       return {
         ...unit,
@@ -168,10 +156,7 @@ export function createResolveProcessor(config: ResolveConfig): ResolveProcessor 
      * Applies resolve damage from combat.
      * Reduces resolve by the specified amount, minimum 0.
      */
-    applyDamage(
-      unit: BattleUnit & UnitWithResolve,
-      damage: number,
-    ): BattleUnit & UnitWithResolve {
+    applyDamage(unit: BattleUnit & UnitWithResolve, damage: number): BattleUnit & UnitWithResolve {
       const currentResolve = getEffectiveResolve(unit, config);
 
       // Formula: newResolve = max(0, currentResolve - damage)
@@ -226,10 +211,7 @@ export function createResolveProcessor(config: ResolveConfig): ResolveProcessor 
 
       // Get allies of the dead unit (same team, alive, not the dead unit)
       const allies = state.units.filter(
-        (u) =>
-          u.team === deadUnit.team &&
-          u.instanceId !== deadUnit.instanceId &&
-          u.alive,
+        (u) => u.team === deadUnit.team && u.instanceId !== deadUnit.instanceId && u.alive,
       );
 
       for (const ally of allies) {

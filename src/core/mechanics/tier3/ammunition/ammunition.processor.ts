@@ -95,11 +95,7 @@ function hasQuickCooldownTag(unit: BattleUnit & UnitWithAmmunition): boolean {
 /**
  * Calculates the ammo state based on current and max ammo.
  */
-function calculateAmmoState(
-  current: number,
-  max: number,
-  isReloading: boolean = false,
-): AmmoState {
+function calculateAmmoState(current: number, max: number, isReloading: boolean = false): AmmoState {
   if (isReloading) return 'reloading';
   if (current <= 0) return 'empty';
   if (current >= max) return 'full';
@@ -148,7 +144,8 @@ export function createAmmunitionProcessor(
   options: AmmunitionProcessorOptions = {},
 ): AmmunitionProcessor {
   const defaultAmmo = options.defaultAmmo ?? config.defaultAmmo ?? DEFAULT_AMMO_COUNT;
-  const defaultCooldown = options.defaultCooldown ?? config.defaultCooldown ?? DEFAULT_COOLDOWN_DURATION;
+  const defaultCooldown =
+    options.defaultCooldown ?? config.defaultCooldown ?? DEFAULT_COOLDOWN_DURATION;
   const rangedTags = options.rangedTags ?? [RANGED_TAG];
   const mageTags = options.mageTags ?? [MAGE_TAG];
   const unlimitedAmmoTags = options.unlimitedAmmoTags ?? [UNLIMITED_AMMO_TAG];
@@ -234,10 +231,7 @@ export function createAmmunitionProcessor(
       };
     },
 
-    checkCooldown(
-      unit: BattleUnit & UnitWithAmmunition,
-      abilityId: string,
-    ): CooldownCheckResult {
+    checkCooldown(unit: BattleUnit & UnitWithAmmunition, abilityId: string): CooldownCheckResult {
       const resourceType = this.getResourceType(unit);
 
       // Non-mage units don't use cooldowns
@@ -525,10 +519,7 @@ export function createAmmunitionProcessor(
       return calculateAmmoState(currentAmmo, maxAmmo, unit.isReloading);
     },
 
-    getCooldownState(
-      unit: BattleUnit & UnitWithAmmunition,
-      abilityId: string,
-    ): CooldownState {
+    getCooldownState(unit: BattleUnit & UnitWithAmmunition, abilityId: string): CooldownState {
       const resourceType = this.getResourceType(unit);
       if (resourceType !== 'cooldown') {
         return 'ready';
@@ -546,9 +537,8 @@ export function createAmmunitionProcessor(
       const resourceType = this.getResourceType(unit);
 
       if (resourceType === 'ammo') {
-        const maxAmmo = typeof unit.maxAmmo === 'number' 
-          ? unit.maxAmmo 
-          : ammoConfig.defaultAmmo ?? defaultAmmo;
+        const maxAmmo =
+          typeof unit.maxAmmo === 'number' ? unit.maxAmmo : (ammoConfig.defaultAmmo ?? defaultAmmo);
         return {
           ...unit,
           resourceType: 'ammo',

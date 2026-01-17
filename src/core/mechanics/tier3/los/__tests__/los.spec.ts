@@ -101,33 +101,49 @@ describe('LoSProcessor', () => {
 
   describe('getFireType', () => {
     it('should return direct for units without arc fire tags', () => {
-      const unit = createTestUnit('unit_1', { x: 0, y: 0 }, {
-        tags: ['ranged'],
-      });
+      const unit = createTestUnit(
+        'unit_1',
+        { x: 0, y: 0 },
+        {
+          tags: ['ranged'],
+        },
+      );
 
       expect(processor.getFireType(unit)).toBe('direct');
     });
 
     it('should return arc for units with arc_fire tag', () => {
-      const unit = createTestUnit('unit_1', { x: 0, y: 0 }, {
-        tags: ['arc_fire'],
-      });
+      const unit = createTestUnit(
+        'unit_1',
+        { x: 0, y: 0 },
+        {
+          tags: ['arc_fire'],
+        },
+      );
 
       expect(processor.getFireType(unit)).toBe('arc');
     });
 
     it('should return arc for units with siege tag', () => {
-      const unit = createTestUnit('unit_1', { x: 0, y: 0 }, {
-        tags: ['siege'],
-      });
+      const unit = createTestUnit(
+        'unit_1',
+        { x: 0, y: 0 },
+        {
+          tags: ['siege'],
+        },
+      );
 
       expect(processor.getFireType(unit)).toBe('arc');
     });
 
     it('should return arc when canArcFire is true', () => {
-      const unit = createTestUnit('unit_1', { x: 0, y: 0 }, {
-        canArcFire: true,
-      });
+      const unit = createTestUnit(
+        'unit_1',
+        { x: 0, y: 0 },
+        {
+          canArcFire: true,
+        },
+      );
 
       expect(processor.getFireType(unit)).toBe('arc');
     });
@@ -135,13 +151,21 @@ describe('LoSProcessor', () => {
 
   describe('checkLoS', () => {
     it('should return clear when no units block the path', () => {
-      const shooter = createTestUnit('shooter', { x: 0, y: 0 }, {
-        range: 5,
-        tags: ['ranged'],
-      });
-      const target = createTestUnit('target', { x: 3, y: 0 }, {
-        team: 'enemy',
-      });
+      const shooter = createTestUnit(
+        'shooter',
+        { x: 0, y: 0 },
+        {
+          range: 5,
+          tags: ['ranged'],
+        },
+      );
+      const target = createTestUnit(
+        'target',
+        { x: 3, y: 0 },
+        {
+          team: 'enemy',
+        },
+      );
 
       const state = createTestState([shooter, target]);
       const result = processor.checkLoS(shooter, target, state);
@@ -152,14 +176,22 @@ describe('LoSProcessor', () => {
     });
 
     it('should return blocked when a unit is in the path', () => {
-      const shooter = createTestUnit('shooter', { x: 0, y: 0 }, {
-        range: 5,
-        tags: ['ranged'],
-      });
+      const shooter = createTestUnit(
+        'shooter',
+        { x: 0, y: 0 },
+        {
+          range: 5,
+          tags: ['ranged'],
+        },
+      );
       const blocker = createTestUnit('blocker', { x: 1, y: 0 });
-      const target = createTestUnit('target', { x: 3, y: 0 }, {
-        team: 'enemy',
-      });
+      const target = createTestUnit(
+        'target',
+        { x: 3, y: 0 },
+        {
+          team: 'enemy',
+        },
+      );
 
       const state = createTestState([shooter, blocker, target]);
       const result = processor.checkLoS(shooter, target, state);
@@ -171,14 +203,22 @@ describe('LoSProcessor', () => {
     });
 
     it('should allow arc fire to ignore blocking units', () => {
-      const shooter = createTestUnit('shooter', { x: 0, y: 0 }, {
-        range: 5,
-        tags: ['siege'],
-      });
+      const shooter = createTestUnit(
+        'shooter',
+        { x: 0, y: 0 },
+        {
+          range: 5,
+          tags: ['siege'],
+        },
+      );
       const blocker = createTestUnit('blocker', { x: 1, y: 0 });
-      const target = createTestUnit('target', { x: 3, y: 0 }, {
-        team: 'enemy',
-      });
+      const target = createTestUnit(
+        'target',
+        { x: 3, y: 0 },
+        {
+          team: 'enemy',
+        },
+      );
 
       const state = createTestState([shooter, blocker, target]);
       const result = processor.checkLoS(shooter, target, state);
@@ -189,13 +229,21 @@ describe('LoSProcessor', () => {
     });
 
     it('should block arc fire when target is adjacent', () => {
-      const shooter = createTestUnit('shooter', { x: 0, y: 0 }, {
-        range: 5,
-        tags: ['siege'],
-      });
-      const target = createTestUnit('target', { x: 1, y: 0 }, {
-        team: 'enemy',
-      });
+      const shooter = createTestUnit(
+        'shooter',
+        { x: 0, y: 0 },
+        {
+          range: 5,
+          tags: ['siege'],
+        },
+      );
+      const target = createTestUnit(
+        'target',
+        { x: 1, y: 0 },
+        {
+          team: 'enemy',
+        },
+      );
 
       const state = createTestState([shooter, target]);
       const result = processor.checkLoS(shooter, target, state);
@@ -205,14 +253,22 @@ describe('LoSProcessor', () => {
     });
 
     it('should allow units with ignore_los tag to attack through blockers', () => {
-      const shooter = createTestUnit('shooter', { x: 0, y: 0 }, {
-        range: 5,
-        tags: ['ignore_los'],
-      });
+      const shooter = createTestUnit(
+        'shooter',
+        { x: 0, y: 0 },
+        {
+          range: 5,
+          tags: ['ignore_los'],
+        },
+      );
       const blocker = createTestUnit('blocker', { x: 1, y: 0 });
-      const target = createTestUnit('target', { x: 3, y: 0 }, {
-        team: 'enemy',
-      });
+      const target = createTestUnit(
+        'target',
+        { x: 3, y: 0 },
+        {
+          team: 'enemy',
+        },
+      );
 
       const state = createTestState([shooter, blocker, target]);
       const result = processor.checkLoS(shooter, target, state);
@@ -225,11 +281,7 @@ describe('LoSProcessor', () => {
   describe('calculatePath', () => {
     it('should return empty path for adjacent positions', () => {
       const state = createTestState([]);
-      const result = processor.calculatePath(
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-        state,
-      );
+      const result = processor.calculatePath({ x: 0, y: 0 }, { x: 1, y: 0 }, state);
 
       expect(result.cells.length).toBe(0);
       expect(result.isClear).toBe(true);
@@ -237,11 +289,7 @@ describe('LoSProcessor', () => {
 
     it('should return cells along the path', () => {
       const state = createTestState([]);
-      const result = processor.calculatePath(
-        { x: 0, y: 0 },
-        { x: 3, y: 0 },
-        state,
-      );
+      const result = processor.calculatePath({ x: 0, y: 0 }, { x: 3, y: 0 }, state);
 
       expect(result.cells.length).toBe(2);
       expect(result.cells[0].position).toEqual({ x: 1, y: 0 });
@@ -252,11 +300,7 @@ describe('LoSProcessor', () => {
     it('should detect blocking units in path', () => {
       const blocker = createTestUnit('blocker', { x: 2, y: 0 });
       const state = createTestState([blocker]);
-      const result = processor.calculatePath(
-        { x: 0, y: 0 },
-        { x: 4, y: 0 },
-        state,
-      );
+      const result = processor.calculatePath({ x: 0, y: 0 }, { x: 4, y: 0 }, state);
 
       expect(result.isClear).toBe(false);
       expect(result.blockingCell).toBeDefined();
@@ -266,12 +310,7 @@ describe('LoSProcessor', () => {
     it('should exclude specified unit IDs from blocking check', () => {
       const blocker = createTestUnit('blocker', { x: 2, y: 0 });
       const state = createTestState([blocker]);
-      const result = processor.calculatePath(
-        { x: 0, y: 0 },
-        { x: 4, y: 0 },
-        state,
-        ['blocker'],
-      );
+      const result = processor.calculatePath({ x: 0, y: 0 }, { x: 4, y: 0 }, state, ['blocker']);
 
       expect(result.isClear).toBe(true);
     });
@@ -343,9 +382,13 @@ describe('LoSProcessor', () => {
     });
 
     it('should return true for siege units', () => {
-      const unit = createTestUnit('unit_1', { x: 0, y: 0 }, {
-        tags: ['siege'],
-      });
+      const unit = createTestUnit(
+        'unit_1',
+        { x: 0, y: 0 },
+        {
+          tags: ['siege'],
+        },
+      );
       expect(processor.canUseArcFire(unit)).toBe(true);
     });
   });
@@ -357,9 +400,13 @@ describe('LoSProcessor', () => {
     });
 
     it('should return true for units with ignore_los tag', () => {
-      const unit = createTestUnit('unit_1', { x: 0, y: 0 }, {
-        tags: ['ignore_los'],
-      });
+      const unit = createTestUnit(
+        'unit_1',
+        { x: 0, y: 0 },
+        {
+          tags: ['ignore_los'],
+        },
+      );
       expect(processor.ignoresLoS(unit)).toBe(true);
     });
   });

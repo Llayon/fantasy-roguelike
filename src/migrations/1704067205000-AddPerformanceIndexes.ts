@@ -2,24 +2,24 @@ import { MigrationInterface, QueryRunner, TableIndex } from 'typeorm';
 
 /**
  * Migration: Add performance indexes to all tables.
- * 
+ *
  * Creates additional indexes for common query patterns:
  * - Runs: Query by player and status for active run lookup
  * - RunDeck: Query by run for deck retrieval
  * - Battles: Query by run and result for battle history
  * - Snapshots: Query by stage and wins for matchmaking
  * - BotTeams: Query by stage and difficulty for bot selection
- * 
+ *
  * These indexes are already created in the table creation migrations,
  * but this migration serves as documentation and can be used to add
  * additional composite indexes if needed.
- * 
+ *
  * @migration 1704067205000
  */
 export class AddPerformanceIndexes1704067205000 implements MigrationInterface {
   /**
    * Run migration up - adds additional performance indexes.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async up(queryRunner: QueryRunner): Promise<void> {
@@ -76,7 +76,7 @@ export class AddPerformanceIndexes1704067205000 implements MigrationInterface {
 
   /**
    * Run migration down - removes the performance indexes.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async down(queryRunner: QueryRunner): Promise<void> {

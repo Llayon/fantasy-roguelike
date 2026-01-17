@@ -97,7 +97,8 @@ export function findNearestEnemy<T extends TargetingUnit>(unit: T, enemies: T[])
 
     if (
       distance < shortestDistance ||
-      (distance === shortestDistance && (!nearestEnemy || enemy.id.localeCompare(nearestEnemy.id) < 0))
+      (distance === shortestDistance &&
+        (!nearestEnemy || enemy.id.localeCompare(nearestEnemy.id) < 0))
     ) {
       nearestEnemy = enemy;
       shortestDistance = distance;
@@ -127,7 +128,8 @@ export function findWeakestEnemy<T extends TargetingUnit>(enemies: T[]): T | nul
   for (const enemy of livingEnemies) {
     if (
       enemy.currentHp < lowestHp ||
-      (enemy.currentHp === lowestHp && (!weakestEnemy || enemy.id.localeCompare(weakestEnemy.id) < 0))
+      (enemy.currentHp === lowestHp &&
+        (!weakestEnemy || enemy.id.localeCompare(weakestEnemy.id) < 0))
     ) {
       weakestEnemy = enemy;
       lowestHp = enemy.currentHp;
@@ -148,7 +150,7 @@ export function findWeakestEnemy<T extends TargetingUnit>(enemies: T[]): T | nul
 export function findTauntTarget<T extends TargetingUnit>(
   _unit: T,
   enemies: T[],
-  tauntAbilityId: string = 'taunt'
+  tauntAbilityId: string = 'taunt',
 ): T | null {
   const livingEnemies = enemies.filter((enemy) => enemy.alive);
   const tauntingEnemies = livingEnemies.filter((enemy) => enemy.abilities.includes(tauntAbilityId));
@@ -158,7 +160,7 @@ export function findTauntTarget<T extends TargetingUnit>(
   }
 
   return tauntingEnemies.reduce((best, current) =>
-    current.id.localeCompare(best.id) < 0 ? current : best
+    current.id.localeCompare(best.id) < 0 ? current : best,
   );
 }
 
@@ -173,7 +175,7 @@ export function findTauntTarget<T extends TargetingUnit>(
 export function calculateThreatLevel<T extends TargetingUnit>(
   enemy: T,
   attacker: T,
-  roleModifiers?: Record<string, number>
+  roleModifiers?: Record<string, number>,
 ): number {
   if (!enemy.alive) {
     return 0;
@@ -209,7 +211,7 @@ export function calculateThreatLevel<T extends TargetingUnit>(
 export function findHighestThreatEnemy<T extends TargetingUnit>(
   unit: T,
   enemies: T[],
-  roleModifiers?: Record<string, number>
+  roleModifiers?: Record<string, number>,
 ): T | null {
   const livingEnemies = enemies.filter((enemy) => enemy.alive);
 
@@ -236,7 +238,6 @@ export function findHighestThreatEnemy<T extends TargetingUnit>(
   return highestThreatEnemy;
 }
 
-
 // =============================================================================
 // MAIN TARGET SELECTION FUNCTION
 // =============================================================================
@@ -255,7 +256,7 @@ export function selectTarget<T extends TargetingUnit>(
   unit: T,
   enemies: T[],
   strategy: TargetStrategy,
-  tauntAbilityId: string = 'taunt'
+  tauntAbilityId: string = 'taunt',
 ): T | null {
   const tauntTarget = findTauntTarget(unit, enemies, tauntAbilityId);
   if (tauntTarget) {
@@ -298,7 +299,7 @@ export function selectTargetWithDetails<T extends TargetingUnit>(
   unit: T,
   enemies: T[],
   strategy: TargetStrategy,
-  tauntAbilityId: string = 'taunt'
+  tauntAbilityId: string = 'taunt',
 ): TargetSelectionResult<T> {
   const livingEnemies = enemies.filter((enemy) => enemy.alive);
 
@@ -398,7 +399,7 @@ export function getEnemiesInRange<T extends TargetingUnit>(unit: T, enemies: T[]
 export function findAttackPositions<T extends TargetingUnit>(
   unit: T,
   target: T,
-  maxMovement: number
+  maxMovement: number,
 ): Position[] {
   const positions: Position[] = [];
 
@@ -434,7 +435,7 @@ export function findAttackPositions<T extends TargetingUnit>(
 export function recommendTargetingStrategy<T extends TargetingUnit>(
   unit: T,
   enemies: T[],
-  roleStrategies?: Record<string, TargetStrategy>
+  roleStrategies?: Record<string, TargetStrategy>,
 ): TargetStrategy {
   const livingEnemies = enemies.filter((enemy) => enemy.alive);
 

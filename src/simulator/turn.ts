@@ -62,11 +62,7 @@ import { handleTurnStart } from './phases/turn-start';
  *   rng
  * );
  */
-export function executeTurn(
-  state: BattleState,
-  unitId: string,
-  rng: SeededRandom,
-): PhaseResult {
+export function executeTurn(state: BattleState, unitId: string, rng: SeededRandom): PhaseResult {
   const allEvents: BattleEvent[] = [];
   let currentState = state;
 
@@ -85,11 +81,7 @@ export function executeTurn(
   };
 
   // Emit turn start event
-  const turnStartEvent = createTurnStartEvent(
-    eventContext,
-    unitId,
-    currentState.turn,
-  );
+  const turnStartEvent = createTurnStartEvent(eventContext, unitId, currentState.turn);
   allEvents.push(turnStartEvent);
 
   // ==========================================================================
@@ -119,12 +111,7 @@ export function executeTurn(
   // PHASE 3: MOVEMENT (if action is move or needs to move to target)
   // ==========================================================================
   if (decision.type === 'move' && decision.targetPosition) {
-    const moveResult = handleMovement(
-      currentState,
-      unitId,
-      decision.targetPosition,
-      rng,
-    );
+    const moveResult = handleMovement(currentState, unitId, decision.targetPosition, rng);
     currentState = moveResult.state;
     allEvents.push(...moveResult.events);
 
@@ -142,12 +129,7 @@ export function executeTurn(
     // Check if target is still alive
     const target = findUnit(currentState, decision.targetId);
     if (target && target.alive) {
-      const attackResult = handleAttackSequence(
-        currentState,
-        unitId,
-        decision.targetId,
-        rng,
-      );
+      const attackResult = handleAttackSequence(currentState, unitId, decision.targetId, rng);
       currentState = attackResult.state;
       allEvents.push(...attackResult.events);
     }
@@ -171,11 +153,7 @@ export function executeTurn(
  * @param events - Events collected during turn
  * @returns Final state and events
  */
-function finalizeTurn(
-  state: BattleState,
-  unitId: string,
-  events: BattleEvent[],
-): PhaseResult {
+function finalizeTurn(state: BattleState, unitId: string, events: BattleEvent[]): PhaseResult {
   const eventContext = {
     round: state.round,
     turn: state.turn,
@@ -211,11 +189,7 @@ function finalizeTurn(
  * @param _rng - Seeded random generator
  * @returns Action to perform
  */
-function makeAIDecision(
-  state: BattleState,
-  unitId: string,
-  _rng: SeededRandom,
-): BattleAction {
+function makeAIDecision(state: BattleState, unitId: string, _rng: SeededRandom): BattleAction {
   const unit = findUnit(state, unitId);
   if (!unit || !unit.alive) {
     return { type: 'skip', actorId: unitId };
@@ -227,9 +201,7 @@ function makeAIDecision(
   }
 
   // Find nearest enemy to attack
-  const enemies = state.units.filter(
-    (u) => u.alive && u.team !== unit.team,
-  );
+  const enemies = state.units.filter((u) => u.alive && u.team !== unit.team);
 
   if (enemies.length === 0) {
     return { type: 'skip', actorId: unitId };
@@ -241,8 +213,7 @@ function makeAIDecision(
 
   for (const enemy of enemies) {
     const distance =
-      Math.abs(enemy.position.x - unit.position.x) +
-      Math.abs(enemy.position.y - unit.position.y);
+      Math.abs(enemy.position.x - unit.position.x) + Math.abs(enemy.position.y - unit.position.y);
     if (distance < closestDistance) {
       closestDistance = distance;
       closestEnemy = enemy;
@@ -476,11 +447,7 @@ function calculateDamage(attacker: BattleUnit, target: BattleUnit): number {
  * @param killerId - Unit that killed them (optional)
  * @returns Updated state and events
  */
-function handleUnitDeath(
-  state: BattleState,
-  deadUnitId: string,
-  killerId?: string,
-): PhaseResult {
+function handleUnitDeath(state: BattleState, deadUnitId: string, killerId?: string): PhaseResult {
   const events: BattleEvent[] = [];
   let currentState = state;
 

@@ -79,7 +79,7 @@ export class BattleController {
   @ApiOperation({
     summary: 'Start a new battle',
     description:
-      'Creates a battle with the player\'s team and generates or finds an enemy team. ' +
+      "Creates a battle with the player's team and generates or finds an enemy team. " +
       'Enemy team is selected from player snapshots at the same stage, or a bot team is generated. ' +
       'Returns battle ID, enemy team setup, and random seed for deterministic simulation.',
   })
@@ -157,7 +157,11 @@ export class BattleController {
             },
           },
         },
-        seed: { type: 'number', description: 'Random seed for deterministic simulation', example: 12345 },
+        seed: {
+          type: 'number',
+          description: 'Random seed for deterministic simulation',
+          example: 12345,
+        },
       },
     },
   })

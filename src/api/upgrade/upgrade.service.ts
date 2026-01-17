@@ -155,9 +155,7 @@ export class UpgradeService {
 
     // Check if unit can be upgraded
     if (unit.tier >= MAX_TIER) {
-      throw new BadRequestException(
-        `Unit ${unitId} is already at max tier (${MAX_TIER})`
-      );
+      throw new BadRequestException(`Unit ${unitId} is already at max tier (${MAX_TIER})`);
     }
 
     // Get upgrade cost
@@ -168,9 +166,7 @@ export class UpgradeService {
 
     // Check budget
     if (run.budget < upgradeCost) {
-      throw new BadRequestException(
-        `Insufficient budget. Need ${upgradeCost}, have ${run.budget}`
-      );
+      throw new BadRequestException(`Insufficient budget. Need ${upgradeCost}, have ${run.budget}`);
     }
 
     // Perform upgrade via RunService

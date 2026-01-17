@@ -26,12 +26,12 @@ import type { ContagionConfig } from '../../config/mechanics.types';
 /**
  * Default fire spread chance (50%).
  */
-export const DEFAULT_FIRE_SPREAD = 0.50;
+export const DEFAULT_FIRE_SPREAD = 0.5;
 
 /**
  * Default poison spread chance (30%).
  */
-export const DEFAULT_POISON_SPREAD = 0.30;
+export const DEFAULT_POISON_SPREAD = 0.3;
 
 /**
  * Default curse spread chance (25%).
@@ -41,18 +41,18 @@ export const DEFAULT_CURSE_SPREAD = 0.25;
 /**
  * Default frost spread chance (20%).
  */
-export const DEFAULT_FROST_SPREAD = 0.20;
+export const DEFAULT_FROST_SPREAD = 0.2;
 
 /**
  * Default plague spread chance (60%).
  */
-export const DEFAULT_PLAGUE_SPREAD = 0.60;
+export const DEFAULT_PLAGUE_SPREAD = 0.6;
 
 /**
  * Default fear spread chance (40%).
  * Fear spreads faster as morale effects are contagious.
  */
-export const DEFAULT_FEAR_SPREAD = 0.40;
+export const DEFAULT_FEAR_SPREAD = 0.4;
 
 /**
  * Default phalanx spread bonus (15%).
@@ -82,13 +82,7 @@ export const NO_SPREAD_TAG = 'no_spread';
 /**
  * Status effects that can spread via contagion.
  */
-export type ContagionEffectType =
-  | 'fire'
-  | 'poison'
-  | 'curse'
-  | 'frost'
-  | 'plague'
-  | 'fear';
+export type ContagionEffectType = 'fire' | 'poison' | 'curse' | 'frost' | 'plague' | 'fear';
 
 /**
  * Status effect on a unit that can potentially spread.
@@ -237,10 +231,10 @@ export interface PositionOffset {
  * Only includes N/S/E/W directions (no diagonals).
  */
 export const ORTHOGONAL_OFFSETS: readonly PositionOffset[] = [
-  { dx: 0, dy: -1 },  // North
-  { dx: 0, dy: 1 },   // South
-  { dx: 1, dy: 0 },   // East
-  { dx: -1, dy: 0 },  // West
+  { dx: 0, dy: -1 }, // North
+  { dx: 0, dy: 1 }, // South
+  { dx: 1, dy: 0 }, // East
+  { dx: -1, dy: 0 }, // West
 ] as const;
 
 // ═══════════════════════════════════════════════════════════════
@@ -259,10 +253,7 @@ export interface ContagionProcessor {
    * @param targetInPhalanx - Whether target is in phalanx formation
    * @returns Spread chance (0-1)
    */
-  getSpreadChance(
-    effectType: ContagionEffectType,
-    targetInPhalanx: boolean,
-  ): number;
+  getSpreadChance(effectType: ContagionEffectType, targetInPhalanx: boolean): number;
 
   /**
    * Checks if an effect can spread from source to target.
@@ -285,19 +276,14 @@ export interface ContagionProcessor {
    * @param state - Current battle state
    * @returns Array of adjacent targets
    */
-  getAdjacentTargets(
-    unit: BattleUnit & UnitWithContagion,
-    state: BattleState,
-  ): AdjacentTarget[];
+  getAdjacentTargets(unit: BattleUnit & UnitWithContagion, state: BattleState): AdjacentTarget[];
 
   /**
    * Gets spreadable effects from a unit.
    * @param unit - Unit to check for effects
    * @returns Array of spreadable status effects
    */
-  getSpreadableEffects(
-    unit: BattleUnit & UnitWithContagion,
-  ): StatusEffect[];
+  getSpreadableEffects(unit: BattleUnit & UnitWithContagion): StatusEffect[];
 
   /**
    * Attempts to spread an effect to a target.
@@ -336,11 +322,7 @@ export interface ContagionProcessor {
    * @param rolls - Array of random rolls for each spread attempt
    * @returns Contagion spread result
    */
-  processSpread(
-    state: BattleState,
-    unitId: string,
-    rolls: number[],
-  ): ContagionSpreadResult;
+  processSpread(state: BattleState, unitId: string, rolls: number[]): ContagionSpreadResult;
 
   /**
    * Checks if a unit has immunity to contagion.

@@ -200,16 +200,13 @@ export function decideAction(input: AIDecisionInput): AIDecisionOutput {
  * @param state - Current battle state
  * @returns Decision context with computed values
  */
-function buildDecisionContext(
-  actor: BattleUnit,
-  state: BattleState,
-): DecisionContext {
+function buildDecisionContext(actor: BattleUnit, state: BattleState): DecisionContext {
   const allies = getTeamUnits(state, actor.team);
   const enemyTeam = actor.team === 'player' ? 'enemy' : 'player';
   const enemies = getTeamUnits(state, enemyTeam);
 
-  const enemiesInRange = enemies.filter((enemy) =>
-    manhattanDistance(actor.position, enemy.position) <= actor.range,
+  const enemiesInRange = enemies.filter(
+    (enemy) => manhattanDistance(actor.position, enemy.position) <= actor.range,
   );
 
   const woundedAllies = allies.filter(
@@ -233,10 +230,7 @@ function buildDecisionContext(
  * Decide action for Tank units (Knight, Guardian, Berserker).
  * Priority: taunt > attack lowest HP > move toward enemy
  */
-function decideTankAction(
-  context: DecisionContext,
-  _rng: SeededRandom,
-): AIDecisionOutput {
+function decideTankAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
   const { actor, enemies, enemiesInRange } = context;
 
   // Priority 1: Attack if enemies in range (target lowest HP)
@@ -261,10 +255,7 @@ function decideTankAction(
  * Decide action for Melee DPS units (Rogue, Duelist, Assassin).
  * Priority: execute low HP > attack highest value > move toward enemy
  */
-function decideMeleeDpsAction(
-  context: DecisionContext,
-  _rng: SeededRandom,
-): AIDecisionOutput {
+function decideMeleeDpsAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
   const { actor, enemies, enemiesInRange } = context;
 
   // Priority 1: Execute low HP targets
@@ -303,10 +294,7 @@ function decideMeleeDpsAction(
  * Decide action for Ranged DPS units (Archer, Crossbowman, Hunter).
  * Priority: melee fallback if no ammo > attack lowest armor > move to range
  */
-function decideRangedDpsAction(
-  context: DecisionContext,
-  _rng: SeededRandom,
-): AIDecisionOutput {
+function decideRangedDpsAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
   const { actor, enemies, enemiesInRange } = context;
 
   // Check ammo - if out, switch to melee behavior
@@ -317,7 +305,10 @@ function decideRangedDpsAction(
       const distance = manhattanDistance(actor.position, nearestEnemy.position);
       if (distance <= 1) {
         // Adjacent - attack with reduced damage (handled in attack phase)
-        return createAttackAction(nearestEnemy.instanceId, `Melee fallback attack on ${nearestEnemy.id}`);
+        return createAttackAction(
+          nearestEnemy.instanceId,
+          `Melee fallback attack on ${nearestEnemy.id}`,
+        );
       }
       const targetPos = calculateMoveTowardTarget(actor, nearestEnemy.position);
       return createMoveAction(targetPos, `Moving to melee range (out of ammo)`);
@@ -347,10 +338,7 @@ function decideRangedDpsAction(
  * Decide action for Support units (Priest, Bard).
  * Priority: heal wounded > buff allies > attack
  */
-function decideSupportAction(
-  context: DecisionContext,
-  _rng: SeededRandom,
-): AIDecisionOutput {
+function decideSupportAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
   const { actor, enemies, enemiesInRange, woundedAllies } = context;
 
   // Priority 1: Heal critically wounded allies (would use ability)
@@ -379,10 +367,7 @@ function decideSupportAction(
  * Decide action for Mage units (Mage, Warlock, Elementalist).
  * Priority: AoE if clustered > single target > attack
  */
-function decideMageAction(
-  context: DecisionContext,
-  _rng: SeededRandom,
-): AIDecisionOutput {
+function decideMageAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
   const { actor, enemies, enemiesInRange } = context;
 
   // Check ammo for mages (spell charges)
@@ -391,7 +376,10 @@ function decideMageAction(
     if (enemiesInRange.length > 0) {
       const target = selectNearestUnit(actor, enemiesInRange);
       if (target) {
-        return createAttackAction(target.instanceId, `Mage basic attack on ${target.id} (out of spells)`);
+        return createAttackAction(
+          target.instanceId,
+          `Mage basic attack on ${target.id} (out of spells)`,
+        );
       }
     }
     const nearestEnemy = selectNearestUnit(actor, enemies);
@@ -424,10 +412,7 @@ function decideMageAction(
  * Decide action for Control units (Enchanter).
  * Priority: stun high threat > attack
  */
-function decideControlAction(
-  context: DecisionContext,
-  _rng: SeededRandom,
-): AIDecisionOutput {
+function decideControlAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
   const { actor, enemies, enemiesInRange } = context;
 
   // Priority 1: Attack highest threat in range
@@ -452,10 +437,7 @@ function decideControlAction(
  * Default action for units without specific role logic.
  * Priority: attack nearest > move toward nearest
  */
-function decideDefaultAction(
-  context: DecisionContext,
-  _rng: SeededRandom,
-): AIDecisionOutput {
+function decideDefaultAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
   const { actor, enemies, enemiesInRange } = context;
 
   // Attack nearest enemy in range
@@ -488,15 +470,10 @@ function decideDefaultAction(
  * @param _state - Current battle state
  * @returns Move action toward deployment edge
  */
-function decideRoutingAction(
-  actor: BattleUnit,
-  _state: BattleState,
-): AIDecisionOutput {
+function decideRoutingAction(actor: BattleUnit, _state: BattleState): AIDecisionOutput {
   // Determine deployment edge based on team
   const deploymentY =
-    actor.team === 'player'
-      ? GRID_CONFIG.PLAYER_DEPLOYMENT_Y
-      : GRID_CONFIG.ENEMY_DEPLOYMENT_Y;
+    actor.team === 'player' ? GRID_CONFIG.PLAYER_DEPLOYMENT_Y : GRID_CONFIG.ENEMY_DEPLOYMENT_Y;
 
   // Calculate retreat position
   const retreatTarget: Position = {
@@ -525,9 +502,7 @@ function decideRoutingAction(
  * @param units - Array of units to select from
  * @returns Unit with lowest HP, or undefined if empty
  */
-function selectLowestHpUnit(
-  units: readonly BattleUnit[],
-): BattleUnit | undefined {
+function selectLowestHpUnit(units: readonly BattleUnit[]): BattleUnit | undefined {
   if (units.length === 0) return undefined;
 
   let lowest: BattleUnit | undefined;
@@ -568,8 +543,7 @@ function selectNearestUnit(
     const dist = manhattanDistance(fromUnit.position, unit.position);
     if (
       dist < nearestDist ||
-      (dist === nearestDist &&
-        (!nearest || unit.instanceId.localeCompare(nearest.instanceId) < 0))
+      (dist === nearestDist && (!nearest || unit.instanceId.localeCompare(nearest.instanceId) < 0))
     ) {
       nearest = unit;
       nearestDist = dist;
@@ -586,9 +560,7 @@ function selectNearestUnit(
  * @param units - Array of units to select from
  * @returns Unit with highest ATK, or undefined if empty
  */
-function selectHighestThreatUnit(
-  units: readonly BattleUnit[],
-): BattleUnit | undefined {
+function selectHighestThreatUnit(units: readonly BattleUnit[]): BattleUnit | undefined {
   if (units.length === 0) return undefined;
 
   let highest: BattleUnit | undefined;
@@ -615,9 +587,7 @@ function selectHighestThreatUnit(
  * @param units - Array of units to select from
  * @returns Unit with lowest armor, or undefined if empty
  */
-function selectLowestArmorUnit(
-  units: readonly BattleUnit[],
-): BattleUnit | undefined {
+function selectLowestArmorUnit(units: readonly BattleUnit[]): BattleUnit | undefined {
   if (units.length === 0) return undefined;
 
   let lowest: BattleUnit | undefined;
@@ -650,10 +620,7 @@ function selectLowestArmorUnit(
  * @param target - Target position to move toward
  * @returns New position after movement
  */
-function calculateMoveTowardTarget(
-  actor: BattleUnit,
-  target: Position,
-): Position {
+function calculateMoveTowardTarget(actor: BattleUnit, target: Position): Position {
   const dx = target.x - actor.position.x;
   const dy = target.y - actor.position.y;
   const speed = actor.stats.speed;

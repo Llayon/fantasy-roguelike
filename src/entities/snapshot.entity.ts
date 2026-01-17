@@ -1,7 +1,7 @@
 /**
  * Snapshot entity for async PvP matchmaking.
  * Represents a saved team state for use as an opponent in future battles.
- * 
+ *
  * @fileoverview Snapshot entity with team data storage, stage tracking,
  * and win record for matchmaking purposes.
  */
@@ -108,7 +108,7 @@ export class Snapshot {
 
   /**
    * Gets the number of units in this snapshot.
-   * 
+   *
    * @returns Number of units in the team
    * @example
    * const unitCount = snapshot.getUnitCount();
@@ -120,7 +120,7 @@ export class Snapshot {
 
   /**
    * Gets the number of times this snapshot has been used as opponent.
-   * 
+   *
    * @returns Number of battles using this snapshot
    * @example
    * const timesUsed = snapshot.getTimesUsedAsOpponent();
@@ -132,7 +132,7 @@ export class Snapshot {
 
   /**
    * Gets the win rate of battles using this snapshot as opponent.
-   * 
+   *
    * @returns Win rate as percentage (0-100), or 0 if no battles
    * @example
    * const winRate = snapshot.getOpponentWinRate();
@@ -149,7 +149,7 @@ export class Snapshot {
   /**
    * Checks if this snapshot is still valid for matchmaking.
    * Snapshots are valid if they're from recent runs.
-   * 
+   *
    * @param maxAgeHours - Maximum age in hours (default 24)
    * @returns True if snapshot is within age limit
    * @example
@@ -165,7 +165,7 @@ export class Snapshot {
 
   /**
    * Gets a summary of this snapshot.
-   * 
+   *
    * @returns Snapshot summary object
    * @example
    * const summary = snapshot.getSummary();

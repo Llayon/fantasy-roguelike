@@ -158,11 +158,7 @@ function createBattleUnit(
  * @param seed - Random seed for determinism
  * @returns Initial battle state
  */
-function initializeBattle(
-  playerTeam: TeamSetup,
-  enemyTeam: TeamSetup,
-  seed: number,
-): BattleState {
+function initializeBattle(playerTeam: TeamSetup, enemyTeam: TeamSetup, seed: number): BattleState {
   const battleId = `battle_${seed}_${Date.now()}`;
   const units: BattleUnit[] = [];
 

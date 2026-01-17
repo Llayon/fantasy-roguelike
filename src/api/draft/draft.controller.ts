@@ -59,7 +59,7 @@ export class DraftController {
     description:
       'Returns 3 cards available for the player to pick from. ' +
       'Available after each battle win when cards remain in the deck. ' +
-      'Cards are randomly selected from the faction\'s unit pool.',
+      "Cards are randomly selected from the faction's unit pool.",
   })
   @ApiParam({
     name: 'runId',
@@ -131,7 +131,7 @@ export class DraftController {
   @ApiOperation({
     summary: 'Pick a card from draft',
     description:
-      'Adds the selected card to the player\'s deck. ' +
+      "Adds the selected card to the player's deck. " +
       'Card must be one of the current draft options. ' +
       'Returns updated deck after the pick.',
   })
@@ -182,10 +182,7 @@ export class DraftController {
   })
   @ApiResponse({ status: 404, description: 'Run not found' })
   @ApiResponse({ status: 400, description: 'Invalid card ID or not in draft phase' })
-  pickCard(
-    @Param('runId') runId: string,
-    @Body() request: PickCardRequest,
-  ): PickCardResponse {
+  pickCard(@Param('runId') runId: string, @Body() request: PickCardRequest): PickCardResponse {
     this.logger.debug('Picking card from draft', { runId, cardId: request.cardId });
 
     return this.draftService.pickCard(runId, request.cardId);

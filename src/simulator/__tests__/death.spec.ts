@@ -137,13 +137,7 @@ describe('handleUnitDeath', () => {
     const unit = createTestUnit();
     const state = createTestState([unit]);
 
-    const result = handleUnitDeath(
-      state,
-      unit.instanceId,
-      undefined,
-      'damage',
-      eventContext,
-    );
+    const result = handleUnitDeath(state, unit.instanceId, undefined, 'damage', eventContext);
 
     expect(result.state.turnQueue).not.toContain(unit.instanceId);
   });
@@ -152,13 +146,7 @@ describe('handleUnitDeath', () => {
     const unit = createTestUnit({ position: { x: 3, y: 3 } });
     const state = createTestState([unit]);
 
-    const result = handleUnitDeath(
-      state,
-      unit.instanceId,
-      undefined,
-      'damage',
-      eventContext,
-    );
+    const result = handleUnitDeath(state, unit.instanceId, undefined, 'damage', eventContext);
 
     expect(result.state.occupiedPositions.has('3,3')).toBe(false);
   });
@@ -166,13 +154,7 @@ describe('handleUnitDeath', () => {
   it('returns unchanged state for non-existent unit', () => {
     const state = createTestState([]);
 
-    const result = handleUnitDeath(
-      state,
-      'non_existent',
-      undefined,
-      'damage',
-      eventContext,
-    );
+    const result = handleUnitDeath(state, 'non_existent', undefined, 'damage', eventContext);
 
     expect(result.events).toHaveLength(0);
     expect(result.state).toBe(state);
@@ -272,9 +254,7 @@ describe('applyAllyDeathResolveDamage', () => {
 
     const result = applyAllyDeathResolveDamage(state, deadUnit, eventContext);
 
-    const updatedAlly = result.state.units.find(
-      (u) => u.instanceId === 'adjacent_ally',
-    );
+    const updatedAlly = result.state.units.find((u) => u.instanceId === 'adjacent_ally');
     expect(updatedAlly?.resolve).toBe(100 - RESOLVE_DAMAGE_ADJACENT);
   });
 
@@ -293,9 +273,7 @@ describe('applyAllyDeathResolveDamage', () => {
 
     const result = applyAllyDeathResolveDamage(state, deadUnit, eventContext);
 
-    const updatedAlly = result.state.units.find(
-      (u) => u.instanceId === 'nearby_ally',
-    );
+    const updatedAlly = result.state.units.find((u) => u.instanceId === 'nearby_ally');
     expect(updatedAlly?.resolve).toBe(100 - RESOLVE_DAMAGE_NEARBY);
   });
 
@@ -314,9 +292,7 @@ describe('applyAllyDeathResolveDamage', () => {
 
     const result = applyAllyDeathResolveDamage(state, deadUnit, eventContext);
 
-    const updatedAlly = result.state.units.find(
-      (u) => u.instanceId === 'far_ally',
-    );
+    const updatedAlly = result.state.units.find((u) => u.instanceId === 'far_ally');
     expect(updatedAlly?.resolve).toBe(100); // Unchanged
   });
 
@@ -337,9 +313,7 @@ describe('applyAllyDeathResolveDamage', () => {
 
     const result = applyAllyDeathResolveDamage(state, deadUnit, eventContext);
 
-    const updatedEnemy = result.state.units.find(
-      (u) => u.instanceId === 'adjacent_enemy',
-    );
+    const updatedEnemy = result.state.units.find((u) => u.instanceId === 'adjacent_enemy');
     expect(updatedEnemy?.resolve).toBe(100); // Unchanged
   });
 
@@ -358,9 +332,7 @@ describe('applyAllyDeathResolveDamage', () => {
 
     const result = applyAllyDeathResolveDamage(state, deadUnit, eventContext);
 
-    const resolveEvents = result.events.filter(
-      (e) => e.type === 'resolve_changed',
-    );
+    const resolveEvents = result.events.filter((e) => e.type === 'resolve_changed');
     expect(resolveEvents).toHaveLength(1);
     expect(resolveEvents[0].actorId).toBe('adjacent_ally');
   });
@@ -380,9 +352,7 @@ describe('applyAllyDeathResolveDamage', () => {
 
     const result = applyAllyDeathResolveDamage(state, deadUnit, eventContext);
 
-    const updatedAlly = result.state.units.find(
-      (u) => u.instanceId === 'low_resolve_ally',
-    );
+    const updatedAlly = result.state.units.find((u) => u.instanceId === 'low_resolve_ally');
     expect(updatedAlly?.resolve).toBe(0);
   });
 });

@@ -273,11 +273,7 @@ export interface AmmunitionProcessor {
   ): CooldownTriggerResult;
 
   /** Reloads ammunition for a unit. */
-  reload(
-    unit: BattleUnit & UnitWithAmmunition,
-    state: BattleState,
-    amount?: number,
-  ): ReloadResult;
+  reload(unit: BattleUnit & UnitWithAmmunition, state: BattleState, amount?: number): ReloadResult;
 
   /** Reduces all cooldowns by 1 at turn start. */
   tickCooldowns(unit: BattleUnit & UnitWithAmmunition): CooldownTickResult;

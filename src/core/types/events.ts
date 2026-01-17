@@ -113,7 +113,6 @@ export const BATTLE_EVENT_TYPES = {
  */
 export type BattleEventType = (typeof BATTLE_EVENT_TYPES)[keyof typeof BATTLE_EVENT_TYPES];
 
-
 // =============================================================================
 // BASE EVENT INTERFACE
 // =============================================================================
@@ -292,7 +291,6 @@ export interface EngagementChangedEvent extends BaseBattleEvent {
   };
 }
 
-
 // =============================================================================
 // COMBAT EVENTS
 // =============================================================================
@@ -402,13 +400,7 @@ export interface ResolveChangedEvent extends BaseBattleEvent {
     delta: number;
     newValue: number;
     maxValue: number;
-    source:
-      | 'regeneration'
-      | 'ally_death'
-      | 'surrounded'
-      | 'flanking'
-      | 'phalanx'
-      | 'ability';
+    source: 'regeneration' | 'ally_death' | 'surrounded' | 'flanking' | 'phalanx' | 'ability';
   };
 }
 
@@ -483,7 +475,6 @@ export interface AuraPulseEvent extends BaseBattleEvent {
     effect: string;
   };
 }
-
 
 // =============================================================================
 // TIER 3: AMMUNITION, CHARGE, PHALANX, OVERWATCH, LOS EVENTS
@@ -712,7 +703,6 @@ export interface CooldownTickedEvent extends BaseBattleEvent {
   };
 }
 
-
 // =============================================================================
 // UNION TYPES
 // =============================================================================
@@ -731,19 +721,12 @@ export type CoreBattleEvent =
 /**
  * Union type of all movement events.
  */
-export type MovementEvent =
-  | MoveEvent
-  | InterceptTriggeredEvent
-  | EngagementChangedEvent;
+export type MovementEvent = MoveEvent | InterceptTriggeredEvent | EngagementChangedEvent;
 
 /**
  * Union type of all combat events.
  */
-export type CombatEvent =
-  | AttackEvent
-  | DamageEvent
-  | DodgeEvent
-  | UnitDiedEvent;
+export type CombatEvent = AttackEvent | DamageEvent | DodgeEvent | UnitDiedEvent;
 
 /**
  * Union type of all mechanic-specific events.
@@ -839,7 +822,6 @@ export function createEventTimestamp(): number {
 export function resetEventCounter(): void {
   eventCounter = 0;
 }
-
 
 // =============================================================================
 // EVENT FACTORY FUNCTIONS
@@ -1126,7 +1108,6 @@ export function createUnitDiedEvent(
     metadata: data,
   };
 }
-
 
 /**
  * Creates a facing rotated event.
@@ -1418,7 +1399,6 @@ export function createPhalanxBrokenEvent(
     metadata: data,
   };
 }
-
 
 /**
  * Creates a contagion spread event.

@@ -37,10 +37,7 @@ import {
   getTeamUnits,
   BatchUnitUpdate,
 } from '../core/utils/state-helpers';
-import {
-  createResolveProcessor,
-  DEFAULT_RESOLVE_CONFIG,
-} from '../core/mechanics';
+import { createResolveProcessor, DEFAULT_RESOLVE_CONFIG } from '../core/mechanics';
 import type { ResolveConfig } from '../core/mechanics';
 
 // =============================================================================
@@ -140,28 +137,19 @@ export function handleUnitDeath(
   // ==========================================================================
   // STEP 5: Apply resolve damage to nearby allies
   // ==========================================================================
-  const resolveResult = applyAllyDeathResolveDamage(
-    currentState,
-    deadUnit,
-    eventContext,
-  );
+  const resolveResult = applyAllyDeathResolveDamage(currentState, deadUnit, eventContext);
   currentState = resolveResult.state;
   events.push(...resolveResult.events);
 
   // ==========================================================================
   // STEP 6: Recalculate phalanx formations
   // ==========================================================================
-  const phalanxResult = recalculatePhalanxOnDeath(
-    currentState,
-    deadUnit,
-    eventContext,
-  );
+  const phalanxResult = recalculatePhalanxOnDeath(currentState, deadUnit, eventContext);
   currentState = phalanxResult.state;
   events.push(...phalanxResult.events);
 
   return { state: currentState, events };
 }
-
 
 // =============================================================================
 // MARK UNIT AS DEAD
@@ -180,10 +168,7 @@ export function handleUnitDeath(
  * @example
  * const { state: newState } = markUnitAsDead(state, 'enemy_rogue_0');
  */
-export function markUnitAsDead(
-  state: BattleState,
-  unitId: string,
-): { state: BattleState } {
+export function markUnitAsDead(state: BattleState, unitId: string): { state: BattleState } {
   const unit = findUnit(state, unitId);
   if (!unit) {
     return { state };
@@ -220,10 +205,7 @@ export function markUnitAsDead(
  * @example
  * const newState = removeDeadUnitFromTurnQueue(state, 'enemy_rogue_0');
  */
-export function removeDeadUnitFromTurnQueue(
-  state: BattleState,
-  deadUnitId: string,
-): BattleState {
+export function removeDeadUnitFromTurnQueue(state: BattleState, deadUnitId: string): BattleState {
   return removeFromTurnQueue(state, deadUnitId);
 }
 
@@ -282,17 +264,13 @@ export function applyAllyDeathResolveDamage(
 
     // Only emit event if resolve changed
     if (resolveDelta !== 0) {
-      const resolveEvent = createResolveChangedEvent(
-        eventContext,
-        allyBefore.instanceId,
-        {
-          unitId: allyBefore.instanceId,
-          delta: resolveDelta,
-          newValue: allyAfter.resolve,
-          maxValue: allyAfter.maxResolve,
-          source: 'ally_death',
-        },
-      );
+      const resolveEvent = createResolveChangedEvent(eventContext, allyBefore.instanceId, {
+        unitId: allyBefore.instanceId,
+        delta: resolveDelta,
+        newValue: allyAfter.resolve,
+        maxValue: allyAfter.maxResolve,
+        source: 'ally_death',
+      });
       events.push(resolveEvent);
     }
   }
@@ -440,10 +418,7 @@ function isOrthogonallyAdjacent(
  * @param pos2 - Second position
  * @returns Manhattan distance
  */
-function manhattanDistance(
-  pos1: { x: number; y: number },
-  pos2: { x: number; y: number },
-): number {
+function manhattanDistance(pos1: { x: number; y: number }, pos2: { x: number; y: number }): number {
   return Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y);
 }
 

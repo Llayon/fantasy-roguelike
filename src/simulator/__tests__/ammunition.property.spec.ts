@@ -57,9 +57,8 @@ const arbitraryUnitId: fc.Arbitrary<UnitId> = fc.constantFrom(...validUnitIds);
 /**
  * Arbitrary generator for ranged unit IDs (units that use ammo).
  */
-const arbitraryRangedUnitId: fc.Arbitrary<UnitId> = rangedUnitIds.length > 0
-  ? fc.constantFrom(...rangedUnitIds)
-  : arbitraryUnitId; // Fallback if no ranged units
+const arbitraryRangedUnitId: fc.Arbitrary<UnitId> =
+  rangedUnitIds.length > 0 ? fc.constantFrom(...rangedUnitIds) : arbitraryUnitId; // Fallback if no ranged units
 
 /**
  * Arbitrary generator for unit tier (1-3).
@@ -90,10 +89,7 @@ const arbitraryRangedTeamSetupUnit: fc.Arbitrary<TeamSetupUnit> = fc.record({
  * @param rows - Valid rows for this team
  * @returns Arbitrary that generates unique positions
  */
-function arbitraryUniquePositions(
-  count: number,
-  rows: number[],
-): fc.Arbitrary<Position[]> {
+function arbitraryUniquePositions(count: number, rows: number[]): fc.Arbitrary<Position[]> {
   return fc
     .array(
       fc.record({
@@ -199,12 +195,14 @@ const arbitraryEnemyTeam: fc.Arbitrary<TeamSetup> = arbitraryTeamSetup(ENEMY_ROW
 /**
  * Arbitrary generator for player team with ranged units.
  */
-const arbitraryPlayerTeamWithRanged: fc.Arbitrary<TeamSetup> = arbitraryTeamSetupWithRanged(PLAYER_ROWS);
+const arbitraryPlayerTeamWithRanged: fc.Arbitrary<TeamSetup> =
+  arbitraryTeamSetupWithRanged(PLAYER_ROWS);
 
 /**
  * Arbitrary generator for enemy team with ranged units.
  */
-const arbitraryEnemyTeamWithRanged: fc.Arbitrary<TeamSetup> = arbitraryTeamSetupWithRanged(ENEMY_ROWS);
+const arbitraryEnemyTeamWithRanged: fc.Arbitrary<TeamSetup> =
+  arbitraryTeamSetupWithRanged(ENEMY_ROWS);
 
 /**
  * Arbitrary generator for random seed.
@@ -278,9 +276,7 @@ describe('Ammunition Property-Based Tests', () => {
             if (!allValid) {
               const invalidUnits = findUnitsWithInvalidAmmo(result.finalState.units);
               for (const unit of invalidUnits) {
-                console.error(
-                  `Unit ${unit.instanceId} has invalid ammo: ${unit.ammo}`,
-                );
+                console.error(`Unit ${unit.instanceId} has invalid ammo: ${unit.ammo}`);
               }
               expect(allValid).toBe(true);
               return false;
@@ -315,9 +311,7 @@ describe('Ammunition Property-Based Tests', () => {
             if (!allValid) {
               const invalidUnits = findUnitsWithInvalidAmmo(result.finalState.units);
               for (const unit of invalidUnits) {
-                console.error(
-                  `Ranged unit ${unit.instanceId} has invalid ammo: ${unit.ammo}`,
-                );
+                console.error(`Ranged unit ${unit.instanceId} has invalid ammo: ${unit.ammo}`);
               }
               expect(allValid).toBe(true);
               return false;
@@ -347,9 +341,7 @@ describe('Ammunition Property-Based Tests', () => {
             for (const event of ammoEvents) {
               const remaining = (event as { remaining?: number }).remaining;
               if (typeof remaining === 'number' && remaining < 0) {
-                console.error(
-                  `ammo_consumed event has negative remaining: ${remaining}`,
-                );
+                console.error(`ammo_consumed event has negative remaining: ${remaining}`);
                 expect(remaining).toBeGreaterThanOrEqual(0);
                 return false;
               }
@@ -376,8 +368,7 @@ describe('Ammunition Property-Based Tests', () => {
             for (const unit of result.finalState.units) {
               // Ammo must be null (unlimited) or a non-negative number
               const isValid =
-                unit.ammo === null ||
-                (typeof unit.ammo === 'number' && unit.ammo >= 0);
+                unit.ammo === null || (typeof unit.ammo === 'number' && unit.ammo >= 0);
 
               if (!isValid) {
                 console.error(
@@ -429,9 +420,7 @@ describe('Ammunition Property-Based Tests', () => {
               for (const ammo of history) {
                 // Ammo should never be negative
                 if (ammo < 0) {
-                  console.error(
-                    `Unit ${unitId} has negative ammo in history: ${ammo}`,
-                  );
+                  console.error(`Unit ${unitId} has negative ammo in history: ${ammo}`);
                   expect(ammo).toBeGreaterThanOrEqual(0);
                   return false;
                 }

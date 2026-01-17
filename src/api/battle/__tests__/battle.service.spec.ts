@@ -228,9 +228,7 @@ describe('BattleService', () => {
 
     it('should throw error if battle not found', async () => {
       // Act & Assert
-      await expect(service.simulateBattle('invalid_battle')).rejects.toThrow(
-        NotFoundException
-      );
+      await expect(service.simulateBattle('invalid_battle')).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -304,9 +302,7 @@ describe('BattleService', () => {
       });
 
       // Act & Assert
-      expect(() => service.getBattleReplay(startResponse.battleId)).toThrow(
-        NotFoundException
-      );
+      expect(() => service.getBattleReplay(startResponse.battleId)).toThrow(NotFoundException);
     });
   });
 });

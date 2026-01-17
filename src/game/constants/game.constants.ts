@@ -184,8 +184,7 @@ export const ABILITY_TARGET_TYPES = {
   AREA: 'area',
 } as const;
 
-export type AbilityTargetType =
-  (typeof ABILITY_TARGET_TYPES)[keyof typeof ABILITY_TARGET_TYPES];
+export type AbilityTargetType = (typeof ABILITY_TARGET_TYPES)[keyof typeof ABILITY_TARGET_TYPES];
 
 /**
  * Ability effect type enumeration.
@@ -200,5 +199,4 @@ export const ABILITY_EFFECT_TYPES = {
   STUN: 'stun',
 } as const;
 
-export type AbilityEffectType =
-  (typeof ABILITY_EFFECT_TYPES)[keyof typeof ABILITY_EFFECT_TYPES];
+export type AbilityEffectType = (typeof ABILITY_EFFECT_TYPES)[keyof typeof ABILITY_EFFECT_TYPES];

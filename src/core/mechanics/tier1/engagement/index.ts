@@ -7,5 +7,8 @@
  */
 
 export * from './engagement.types';
-export { createEngagementProcessor, AOO_HIT_CHANCE, AOO_DAMAGE_MULTIPLIER } from './engagement.processor';
-
+export {
+  createEngagementProcessor,
+  AOO_HIT_CHANCE,
+  AOO_DAMAGE_MULTIPLIER,
+} from './engagement.processor';

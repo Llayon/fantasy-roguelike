@@ -89,10 +89,10 @@ function getCurrentShred(unit: BattleUnit & UnitWithArmorShred): number {
  * Updates units in state immutably.
  */
 function updateUnits(state: BattleState, updatedUnits: BattleUnit[]): BattleState {
-  const unitMap = new Map(updatedUnits.map(u => [getUnitId(u), u]));
+  const unitMap = new Map(updatedUnits.map((u) => [getUnitId(u), u]));
   return {
     ...state,
-    units: state.units.map(u => unitMap.get(getUnitId(u)) ?? u),
+    units: state.units.map((u) => unitMap.get(getUnitId(u)) ?? u),
   };
 }
 
@@ -100,7 +100,7 @@ function updateUnits(state: BattleState, updatedUnits: BattleUnit[]): BattleStat
  * Finds a unit by ID in state.
  */
 function findUnit(state: BattleState, unitId: string): BattleUnit | undefined {
-  return state.units.find(u => getUnitId(u) === unitId);
+  return state.units.find((u) => getUnitId(u) === unitId);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -304,10 +304,7 @@ export function createArmorShredProcessor(config: ShredConfig): ArmorShredProces
     /**
      * Processes shred decay for a unit at turn end.
      */
-    processDecay(
-      state: BattleState,
-      unitId: string,
-    ): ArmorShredDecayResult {
+    processDecay(state: BattleState, unitId: string): ArmorShredDecayResult {
       const unit = findUnit(state, unitId);
 
       if (!unit) {
@@ -399,4 +396,3 @@ export function createArmorShredProcessor(config: ShredConfig): ArmorShredProces
 }
 
 export default createArmorShredProcessor;
-

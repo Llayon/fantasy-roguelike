@@ -19,9 +19,7 @@ export interface ValidationResult {
 /**
  * Validates a mechanics configuration.
  */
-export function validateMechanicsConfig(
-  config: MechanicsConfig,
-): ValidationResult {
+export function validateMechanicsConfig(config: MechanicsConfig): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
 
@@ -31,9 +29,7 @@ export function validateMechanicsConfig(
     if (config[key]) {
       for (const dep of deps) {
         if (!config[dep]) {
-          errors.push(
-            `Mechanic '${key}' requires '${dep}' to be enabled, but it is disabled`,
-          );
+          errors.push(`Mechanic '${key}' requires '${dep}' to be enabled, but it is disabled`);
         }
       }
     }
@@ -51,10 +47,7 @@ export function validateMechanicsConfig(
 
   // Validate engagement config bounds
   if (config.engagement && typeof config.engagement === 'object') {
-    if (
-      config.engagement.archerPenaltyPercent < 0 ||
-      config.engagement.archerPenaltyPercent > 1
-    ) {
+    if (config.engagement.archerPenaltyPercent < 0 || config.engagement.archerPenaltyPercent > 1) {
       errors.push('engagement.archerPenaltyPercent must be between 0 and 1');
     }
   }

@@ -168,9 +168,7 @@ describe('Battle Simulator - Initialization', () => {
         expect(nextUnit).toBeDefined();
 
         // Current unit should have >= initiative than next unit
-        expect(currentUnit!.stats.initiative).toBeGreaterThanOrEqual(
-          nextUnit!.stats.initiative,
-        );
+        expect(currentUnit!.stats.initiative).toBeGreaterThanOrEqual(nextUnit!.stats.initiative);
       }
     });
 
@@ -295,9 +293,7 @@ describe('Battle Simulator - Turn Execution', () => {
       expect(firstRoundStart).toBeDefined();
 
       // Count turn_start events in first round
-      const firstRoundTurns = result.events.filter(
-        (e) => e.type === 'turn_start' && e.round === 1,
-      );
+      const firstRoundTurns = result.events.filter((e) => e.type === 'turn_start' && e.round === 1);
 
       // Should have one turn per unit (player + enemy)
       const totalUnits = playerTeam.units.length + enemyTeam.units.length;
@@ -322,9 +318,7 @@ describe('Battle Simulator - Turn Execution', () => {
 
         // Dead unit should not have any turn_start events after death
         const deadUnitId = deathEvent.metadata?.unitId;
-        const deadUnitTurns = laterTurnStarts.filter(
-          (e) => e.metadata?.unitId === deadUnitId,
-        );
+        const deadUnitTurns = laterTurnStarts.filter((e) => e.metadata?.unitId === deadUnitId);
 
         expect(deadUnitTurns.length).toBe(0);
       }

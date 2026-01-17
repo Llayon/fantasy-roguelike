@@ -32,11 +32,7 @@ export {
   DEVELOPMENT_CONFIG,
 } from './logger';
 
-export type {
-  BattleContext,
-  LogEntry,
-  LoggerConfig,
-} from './logger';
+export type { BattleContext, LogEntry, LoggerConfig } from './logger';
 
 // Error exports
 export {
@@ -58,8 +54,4 @@ export {
   createErrorLogger,
 } from './errors';
 
-export type {
-  RecoveryStrategy,
-  RecoveryResult,
-  RecoveryOptions,
-} from './errors';
+export type { RecoveryStrategy, RecoveryResult, RecoveryOptions } from './errors';

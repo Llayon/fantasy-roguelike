@@ -75,10 +75,7 @@ const arbitraryTeamSetupUnit: fc.Arbitrary<TeamSetupUnit> = fc.record({
  * @param rows - Valid rows for this team
  * @returns Arbitrary that generates unique positions
  */
-function arbitraryUniquePositions(
-  count: number,
-  rows: number[],
-): fc.Arbitrary<Position[]> {
+function arbitraryUniquePositions(count: number, rows: number[]): fc.Arbitrary<Position[]> {
   return fc
     .array(
       fc.record({
@@ -524,18 +521,14 @@ describe('Turn Execution Property-Based Tests', () => {
 
             // Phase sequences should be identical
             if (phases1.length !== phases2.length) {
-              console.error(
-                `Different event counts: ${phases1.length} vs ${phases2.length}`,
-              );
+              console.error(`Different event counts: ${phases1.length} vs ${phases2.length}`);
               expect(phases1.length).toBe(phases2.length);
               return false;
             }
 
             for (let i = 0; i < phases1.length; i++) {
               if (phases1[i] !== phases2[i]) {
-                console.error(
-                  `Phase mismatch at index ${i}: '${phases1[i]}' vs '${phases2[i]}'`,
-                );
+                console.error(`Phase mismatch at index ${i}: '${phases1[i]}' vs '${phases2[i]}'`);
                 expect(phases1[i]).toBe(phases2[i]);
                 return false;
               }

@@ -17,11 +17,7 @@
 
 import type { BattleUnit, Position } from '../../../types';
 import type { ChargeConfig } from '../../config/mechanics.types';
-import type {
-  ChargeProcessor,
-  UnitWithCharge,
-  ChargeEligibility,
-} from './charge.types';
+import type { ChargeProcessor, UnitWithCharge, ChargeEligibility } from './charge.types';
 import {
   SPEAR_WALL_TAG,
   CAVALRY_TAG,

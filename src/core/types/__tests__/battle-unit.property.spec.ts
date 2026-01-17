@@ -25,12 +25,7 @@ import { Position } from '../grid.types';
  * Set of all valid facing directions.
  * Used for validation in property tests.
  */
-const VALID_FACING_DIRECTIONS: ReadonlySet<FacingDirection> = new Set([
-  'N',
-  'S',
-  'E',
-  'W',
-]);
+const VALID_FACING_DIRECTIONS: ReadonlySet<FacingDirection> = new Set(['N', 'S', 'E', 'W']);
 
 // =============================================================================
 // ARBITRARIES (GENERATORS)
@@ -40,12 +35,7 @@ const VALID_FACING_DIRECTIONS: ReadonlySet<FacingDirection> = new Set([
  * Arbitrary generator for valid facing directions.
  * Generates only valid values: 'N', 'S', 'E', 'W'.
  */
-const arbitraryFacingDirection: fc.Arbitrary<FacingDirection> = fc.constantFrom(
-  'N',
-  'S',
-  'E',
-  'W',
-);
+const arbitraryFacingDirection: fc.Arbitrary<FacingDirection> = fc.constantFrom('N', 'S', 'E', 'W');
 
 /**
  * Arbitrary generator for valid positions on the grid.
@@ -59,18 +49,12 @@ const arbitraryPosition: fc.Arbitrary<Position> = fc.record({
 /**
  * Arbitrary generator for team type.
  */
-const arbitraryTeamType: fc.Arbitrary<TeamType> = fc.constantFrom(
-  'player',
-  'enemy',
-);
+const arbitraryTeamType: fc.Arbitrary<TeamType> = fc.constantFrom('player', 'enemy');
 
 /**
  * Arbitrary generator for unit faction.
  */
-const arbitraryFaction: fc.Arbitrary<UnitFaction> = fc.constantFrom(
-  'human',
-  'undead',
-);
+const arbitraryFaction: fc.Arbitrary<UnitFaction> = fc.constantFrom('human', 'undead');
 
 /**
  * Arbitrary generator for valid BattleUnitStats.
@@ -102,14 +86,7 @@ const arbitraryBattleUnit: fc.Arbitrary<BattleUnit> = fc
     team: arbitraryTeamType,
     stats: arbitraryBattleUnitStats,
     range: fc.integer({ min: 1, max: 5 }),
-    role: fc.constantFrom(
-      'tank',
-      'melee_dps',
-      'ranged_dps',
-      'mage',
-      'support',
-      'control',
-    ),
+    role: fc.constantFrom('tank', 'melee_dps', 'ranged_dps', 'mage', 'support', 'control'),
     cost: fc.integer({ min: 3, max: 8 }),
     abilities: fc.array(fc.string({ minLength: 1, maxLength: 20 }), {
       minLength: 0,

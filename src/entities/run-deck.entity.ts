@@ -1,7 +1,7 @@
 /**
  * RunDeck entity for tracking units in a roguelike run.
  * Represents a single unit card in a player's run deck.
- * 
+ *
  * @fileoverview RunDeck entity with unit tracking, tier management,
  * and deck position ordering.
  */
@@ -79,7 +79,7 @@ export class RunDeck {
   /**
    * Gets the display name for this deck entry.
    * Combines unit ID with tier information.
-   * 
+   *
    * @returns Display name string
    * @example
    * const name = deckEntry.getDisplayName();
@@ -92,7 +92,7 @@ export class RunDeck {
 
   /**
    * Checks if this unit can be upgraded to the next tier.
-   * 
+   *
    * @returns True if tier is less than 3
    * @example
    * if (deckEntry.canUpgrade()) {
@@ -105,7 +105,7 @@ export class RunDeck {
 
   /**
    * Upgrades this unit to the next tier.
-   * 
+   *
    * @throws Error if unit is already at max tier
    * @example
    * deckEntry.upgrade();
@@ -120,7 +120,7 @@ export class RunDeck {
 
   /**
    * Gets a summary of this deck entry.
-   * 
+   *
    * @returns Deck entry summary object
    * @example
    * const summary = deckEntry.getSummary();

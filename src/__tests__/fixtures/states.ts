@@ -124,13 +124,8 @@ export function createTestBattleState(
  * const state = createSimpleBattleState();
  * const state = createSimpleBattleState({ round: 3 });
  */
-export function createSimpleBattleState(
-  overrides: Partial<BattleState> = {},
-): BattleState {
-  return createTestBattleState(
-    [createPlayerKnight(), createEnemyKnight()],
-    overrides,
-  );
+export function createSimpleBattleState(overrides: Partial<BattleState> = {}): BattleState {
+  return createTestBattleState([createPlayerKnight(), createEnemyKnight()], overrides);
 }
 
 /**
@@ -146,9 +141,7 @@ export function createSimpleBattleState(
  * @example
  * const state = createBalancedBattleState();
  */
-export function createBalancedBattleState(
-  overrides: Partial<BattleState> = {},
-): BattleState {
+export function createBalancedBattleState(overrides: Partial<BattleState> = {}): BattleState {
   const playerTeam = createPlayerTeam();
   const enemyTeam = createEnemyTeam();
 
@@ -418,9 +411,7 @@ export function createStateWithEvents(
  * @example
  * const state = createPlayerVictoryState();
  */
-export function createPlayerVictoryState(
-  overrides: Partial<BattleState> = {},
-): BattleState {
+export function createPlayerVictoryState(overrides: Partial<BattleState> = {}): BattleState {
   const playerUnit = createPlayerKnight();
   const deadEnemy = createEnemyKnight({ alive: false, currentHp: 0 });
 
@@ -441,9 +432,7 @@ export function createPlayerVictoryState(
  * @example
  * const state = createEnemyVictoryState();
  */
-export function createEnemyVictoryState(
-  overrides: Partial<BattleState> = {},
-): BattleState {
+export function createEnemyVictoryState(overrides: Partial<BattleState> = {}): BattleState {
   const deadPlayer = createPlayerKnight({ alive: false, currentHp: 0 });
   const enemyUnit = createEnemyKnight();
 
@@ -558,7 +547,7 @@ export function isValidBattleState(state: BattleState): boolean {
     if (unit.currentHp < 0 || unit.currentHp > unit.maxHp) {
       return false;
     }
-    if (unit.alive !== (unit.currentHp > 0)) {
+    if (unit.alive !== unit.currentHp > 0) {
       return false;
     }
   }
@@ -649,9 +638,6 @@ export function getDeadUnits(state: BattleState): BattleUnit[] {
  * const state = createTestBattleState();
  * const playerUnits = getTeamUnits(state, 'player');
  */
-export function getTeamUnits(
-  state: BattleState,
-  team: 'player' | 'enemy',
-): BattleUnit[] {
+export function getTeamUnits(state: BattleState, team: 'player' | 'enemy'): BattleUnit[] {
   return state.units.filter((u) => u.team === team);
 }

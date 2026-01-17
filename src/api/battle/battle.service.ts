@@ -129,7 +129,7 @@ export class BattleService {
   constructor(
     private readonly runService: RunService,
     private readonly matchmakingService: MatchmakingService,
-    private readonly snapshotService: SnapshotService
+    private readonly snapshotService: SnapshotService,
   ) {}
 
   /**

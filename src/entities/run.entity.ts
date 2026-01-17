@@ -1,7 +1,7 @@
 /**
  * Run entity for roguelike progression.
  * Represents a player's roguelike run with progression tracking.
- * 
+ *
  * @fileoverview Run entity with status tracking, stage progression,
  * and win/loss records for roguelike mode.
  */
@@ -143,7 +143,7 @@ export class Run {
 
   /**
    * Checks if the run is still active.
-   * 
+   *
    * @returns True if run status is ACTIVE
    * @example
    * if (run.isActive()) {
@@ -156,7 +156,7 @@ export class Run {
 
   /**
    * Checks if the run has ended (won or lost).
-   * 
+   *
    * @returns True if run has reached end condition
    * @example
    * if (run.isEnded()) {
@@ -169,7 +169,7 @@ export class Run {
 
   /**
    * Checks if the run is won.
-   * 
+   *
    * @returns True if run has 9 wins
    * @example
    * if (run.isWon()) {
@@ -182,7 +182,7 @@ export class Run {
 
   /**
    * Checks if the run is lost.
-   * 
+   *
    * @returns True if run has 4 losses
    * @example
    * if (run.isLost()) {
@@ -196,7 +196,7 @@ export class Run {
   /**
    * Records a battle win and updates run state.
    * Increments wins, increases stage and budget.
-   * 
+   *
    * @example
    * run.recordWin();
    * if (run.isWon()) {
@@ -212,7 +212,7 @@ export class Run {
   /**
    * Records a battle loss and updates run state.
    * Increments losses.
-   * 
+   *
    * @example
    * run.recordLoss();
    * if (run.isLost()) {
@@ -225,7 +225,7 @@ export class Run {
 
   /**
    * Gets a summary of the run for display purposes.
-   * 
+   *
    * @returns Run summary object
    * @example
    * const summary = run.getSummary();

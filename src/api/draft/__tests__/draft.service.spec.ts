@@ -33,9 +33,7 @@ describe('DraftService', () => {
     });
 
     it('should throw NotFoundException for non-existent run', () => {
-      expect(() => service.getDraftOptions('non-existent-run')).toThrow(
-        NotFoundException,
-      );
+      expect(() => service.getDraftOptions('non-existent-run')).toThrow(NotFoundException);
     });
 
     it('should return same options on subsequent calls without reroll', () => {
@@ -70,9 +68,7 @@ describe('DraftService', () => {
 
       service.getDraftOptions(runId); // Initialize draft
 
-      expect(() => service.pickCard(runId, 'invalid-card')).toThrow(
-        BadRequestException,
-      );
+      expect(() => service.pickCard(runId, 'invalid-card')).toThrow(BadRequestException);
     });
 
     it('should reset rerolls after pick', () => {

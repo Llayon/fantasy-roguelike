@@ -105,7 +105,6 @@ function createTestState(units: BattleUnit[]): BattleState {
   };
 }
 
-
 // =============================================================================
 // FACING DIRECTION TESTS
 // =============================================================================
@@ -196,7 +195,6 @@ describe('getFlankingModifier', () => {
     expect(getFlankingModifier('rear')).toBe(FLANKING_REAR_MODIFIER);
   });
 });
-
 
 // =============================================================================
 // RIPOSTE TESTS
@@ -316,7 +314,6 @@ describe('calculateRiposteChance', () => {
   });
 });
 
-
 // =============================================================================
 // HANDLE ATTACK INTEGRATION TESTS
 // =============================================================================
@@ -345,9 +342,7 @@ describe('handleAttack', () => {
     );
 
     // Check facing was updated
-    const updatedAttacker = newState.units.find(
-      (u) => u.instanceId === 'player_knight_0',
-    );
+    const updatedAttacker = newState.units.find((u) => u.instanceId === 'player_knight_0');
     expect(updatedAttacker?.facing).toBe('S');
 
     // Check facing rotated event was emitted
@@ -375,12 +370,7 @@ describe('handleAttack', () => {
     const state = createTestState([attacker, target]);
     const rng = new SeededRandom(12345);
 
-    const { events } = handleAttack(
-      state,
-      'player_knight_0',
-      'enemy_rogue_0',
-      rng,
-    );
+    const { events } = handleAttack(state, 'player_knight_0', 'enemy_rogue_0', rng);
 
     const flankingEvent = events.find((e) => e.type === 'flanking_applied');
     expect(flankingEvent).toBeDefined();
@@ -415,9 +405,7 @@ describe('handleAttack', () => {
     );
 
     // Check target took damage
-    const updatedTarget = newState.units.find(
-      (u) => u.instanceId === 'enemy_rogue_0',
-    );
+    const updatedTarget = newState.units.find((u) => u.instanceId === 'enemy_rogue_0');
     expect(updatedTarget?.currentHp).toBeLessThan(100);
 
     // Check damage event was emitted
@@ -452,9 +440,7 @@ describe('handleAttack', () => {
     );
 
     // Check ammo was consumed
-    const updatedAttacker = newState.units.find(
-      (u) => u.instanceId === 'player_archer_0',
-    );
+    const updatedAttacker = newState.units.find((u) => u.instanceId === 'player_archer_0');
     expect(updatedAttacker?.ammo).toBe(11);
 
     // Check ammo consumed event was emitted
@@ -483,12 +469,7 @@ describe('handleAttack', () => {
     const state = createTestState([attacker, target]);
     const rng = new SeededRandom(12345);
 
-    const { events } = handleAttack(
-      state,
-      'player_knight_0',
-      'enemy_rogue_0',
-      rng,
-    );
+    const { events } = handleAttack(state, 'player_knight_0', 'enemy_rogue_0', rng);
 
     // Check no ammo consumed event was emitted
     const ammoEvent = events.find((e) => e.type === 'ammo_consumed');
@@ -520,9 +501,7 @@ describe('handleAttack', () => {
     );
 
     // Check target is dead
-    const updatedTarget = newState.units.find(
-      (u) => u.instanceId === 'enemy_rogue_0',
-    );
+    const updatedTarget = newState.units.find((u) => u.instanceId === 'enemy_rogue_0');
     expect(updatedTarget?.alive).toBe(false);
     expect(updatedTarget?.currentHp).toBe(0);
 
@@ -579,4 +558,3 @@ describe('handleAttack', () => {
     expect(events).toHaveLength(0);
   });
 });
-

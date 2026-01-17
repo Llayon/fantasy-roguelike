@@ -542,9 +542,7 @@ export function hasAbility(abilityId: string): abilityId is GameAbilityId {
  * const healingAbilities = getAbilitiesByEffectType('heal');
  * console.log(healingAbilities.map(a => a.id)); // ['heal', 'drain_life']
  */
-export function getAbilitiesByEffectType(
-  effectType: AbilityEffect['type'],
-): Ability[] {
+export function getAbilitiesByEffectType(effectType: AbilityEffect['type']): Ability[] {
   return Object.values(ABILITIES).filter((ability) =>
     ability.effects.some((effect) => effect.type === effectType),
   );
@@ -559,12 +557,8 @@ export function getAbilitiesByEffectType(
  * const selfAbilities = getAbilitiesByTargetType('self');
  * console.log(selfAbilities.map(a => a.id)); // ['shield_wall', 'taunt', 'rage']
  */
-export function getAbilitiesByTargetType(
-  targetType: Ability['targetType'],
-): Ability[] {
-  return Object.values(ABILITIES).filter(
-    (ability) => ability.targetType === targetType,
-  );
+export function getAbilitiesByTargetType(targetType: Ability['targetType']): Ability[] {
+  return Object.values(ABILITIES).filter((ability) => ability.targetType === targetType);
 }
 
 /**
@@ -635,10 +629,7 @@ export function isInAbilityRange(
     return true;
   }
 
-  if (
-    ability.targetType === 'all_allies' ||
-    ability.targetType === 'all_enemies'
-  ) {
+  if (ability.targetType === 'all_allies' || ability.targetType === 'all_enemies') {
     return true;
   }
 

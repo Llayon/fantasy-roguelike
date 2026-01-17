@@ -1,5 +1,10 @@
 # Fantasy Roguelike Battle Simulator
 
+[![CI](https://github.com/Llayon/fantasy-roguelike/actions/workflows/ci.yml/badge.svg)](https://github.com/Llayon/fantasy-roguelike/actions/workflows/ci.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
+[![NestJS](https://img.shields.io/badge/NestJS-10.x-red.svg)](https://nestjs.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A clean, modular battle simulator for roguelike autobattler games with deterministic combat, advanced mechanics, and async PvP.
 
 ## Overview

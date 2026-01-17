@@ -24,25 +24,21 @@ export function validateGridConfig(config: GridConfig): void {
   // Validate dimensions
   if (config.width <= 0 || config.height <= 0) {
     throw new Error(
-      `Grid dimensions must be positive. Got width=${config.width}, height=${config.height}`
+      `Grid dimensions must be positive. Got width=${config.width}, height=${config.height}`,
     );
   }
 
   // Validate player rows
   for (const row of config.playerRows) {
     if (row < 0 || row >= config.height) {
-      throw new Error(
-        `Player row ${row} is outside grid bounds [0, ${config.height - 1}]`
-      );
+      throw new Error(`Player row ${row} is outside grid bounds [0, ${config.height - 1}]`);
     }
   }
 
   // Validate enemy rows
   for (const row of config.enemyRows) {
     if (row < 0 || row >= config.height) {
-      throw new Error(
-        `Enemy row ${row} is outside grid bounds [0, ${config.height - 1}]`
-      );
+      throw new Error(`Enemy row ${row} is outside grid bounds [0, ${config.height - 1}]`);
     }
   }
 
@@ -50,9 +46,7 @@ export function validateGridConfig(config: GridConfig): void {
   const playerRowSet = new Set(config.playerRows);
   for (const row of config.enemyRows) {
     if (playerRowSet.has(row)) {
-      throw new Error(
-        `Row ${row} is assigned to both player and enemy deployment zones`
-      );
+      throw new Error(`Row ${row} is assigned to both player and enemy deployment zones`);
     }
   }
 }
@@ -73,22 +67,18 @@ export function validateGridConfig(config: GridConfig): void {
 export function validateBattleConfig(config: BattleConfig): void {
   // Validate max rounds
   if (config.maxRounds <= 0) {
-    throw new Error(
-      `Max rounds must be positive. Got maxRounds=${config.maxRounds}`
-    );
+    throw new Error(`Max rounds must be positive. Got maxRounds=${config.maxRounds}`);
   }
 
   // Validate min damage
   if (config.minDamage < 0) {
-    throw new Error(
-      `Min damage cannot be negative. Got minDamage=${config.minDamage}`
-    );
+    throw new Error(`Min damage cannot be negative. Got minDamage=${config.minDamage}`);
   }
 
   // Validate dodge cap
   if (config.dodgeCapPercent < 0 || config.dodgeCapPercent > 100) {
     throw new Error(
-      `Dodge cap must be between 0 and 100. Got dodgeCapPercent=${config.dodgeCapPercent}`
+      `Dodge cap must be between 0 and 100. Got dodgeCapPercent=${config.dodgeCapPercent}`,
     );
   }
 }
@@ -101,10 +91,7 @@ export function validateBattleConfig(config: BattleConfig): void {
  * @param battleConfig - Battle configuration to validate
  * @throws Error if any configuration is invalid
  */
-export function validateEngineConfig(
-  gridConfig: GridConfig,
-  battleConfig: BattleConfig
-): void {
+export function validateEngineConfig(gridConfig: GridConfig, battleConfig: BattleConfig): void {
   validateGridConfig(gridConfig);
   validateBattleConfig(battleConfig);
 }

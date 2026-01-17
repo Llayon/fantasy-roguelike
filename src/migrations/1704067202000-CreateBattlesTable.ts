@@ -2,16 +2,16 @@ import { MigrationInterface, QueryRunner, Table, TableIndex, TableForeignKey } f
 
 /**
  * Migration: Create battles table for tracking roguelike battles.
- * 
+ *
  * Stores individual battles in a player's run with results, seeds, and events.
  * References the runs table with cascade delete and snapshots table with set null.
- * 
+ *
  * @migration 1704067202000
  */
 export class CreateBattlesTable1704067202000 implements MigrationInterface {
   /**
    * Run migration up - creates the battles table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async up(queryRunner: QueryRunner): Promise<void> {
@@ -123,7 +123,7 @@ export class CreateBattlesTable1704067202000 implements MigrationInterface {
 
   /**
    * Run migration down - drops the battles table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async down(queryRunner: QueryRunner): Promise<void> {

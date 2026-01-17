@@ -72,13 +72,9 @@ function canPerformSoftIntercept(unit: BattleUnit & UnitWithIntercept): boolean 
 /**
  * Gets all enemy units for a given unit.
  */
-function getEnemyUnits(
-  unit: BattleUnit,
-  state: BattleState,
-): (BattleUnit & UnitWithIntercept)[] {
-  return state.units.filter(
-    (u) => u.alive && u.team !== unit.team,
-  ) as (BattleUnit & UnitWithIntercept)[];
+function getEnemyUnits(unit: BattleUnit, state: BattleState): (BattleUnit & UnitWithIntercept)[] {
+  return state.units.filter((u) => u.alive && u.team !== unit.team) as (BattleUnit &
+    UnitWithIntercept)[];
 }
 
 /**
@@ -112,9 +108,7 @@ function getMaxIntercepts(unit: BattleUnit & UnitWithIntercept): number {
  *   disengageCost: 2,
  * });
  */
-export function createInterceptProcessor(
-  config: InterceptConfig,
-): InterceptProcessor {
+export function createInterceptProcessor(config: InterceptConfig): InterceptProcessor {
   return {
     /**
      * Checks if a unit can perform hard intercept (stop cavalry).
@@ -449,4 +443,3 @@ export function createInterceptProcessor(
  * Default export for convenience.
  */
 export default createInterceptProcessor;
-

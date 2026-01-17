@@ -28,11 +28,7 @@ import fc from 'fast-check';
 import { BattleState, Phase, PHASE_ORDER } from '../../core/types/battle-state';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { BattleEvent } from '../../core/types/events';
-import {
-  arbitraryBattleUnit,
-  arbitraryDeadUnit,
-  arbitraryRoutingUnit,
-} from './unit.generator';
+import { arbitraryBattleUnit, arbitraryDeadUnit, arbitraryRoutingUnit } from './unit.generator';
 
 // =============================================================================
 // PHASE GENERATORS

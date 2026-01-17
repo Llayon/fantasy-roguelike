@@ -1,18 +1,12 @@
 /**
  * BotTeam entity for fallback opponents in roguelike mode.
  * Represents a pre-generated bot team used when no player snapshots are available.
- * 
+ *
  * @fileoverview BotTeam entity with difficulty scaling, stage tracking,
  * and team composition storage.
  */
 
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  Index,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Index } from 'typeorm';
 
 /**
  * Team snapshot interface for storing team data.
@@ -74,7 +68,7 @@ export class BotTeam {
 
   /**
    * Gets the number of units in this bot team.
-   * 
+   *
    * @returns Number of units in the team
    * @example
    * const unitCount = botTeam.getUnitCount();
@@ -87,7 +81,7 @@ export class BotTeam {
   /**
    * Gets the total cost of all units in this bot team.
    * Used for validation that team respects budget constraints.
-   * 
+   *
    * @param getUnitCost - Function to get unit cost by ID
    * @returns Total cost of all units
    * @example
@@ -103,7 +97,7 @@ export class BotTeam {
 
   /**
    * Gets the difficulty label for display purposes.
-   * 
+   *
    * @returns Human-readable difficulty label
    * @example
    * const label = botTeam.getDifficultyLabel();
@@ -119,7 +113,7 @@ export class BotTeam {
 
   /**
    * Checks if this bot team is appropriate for a given player progression.
-   * 
+   *
    * @param playerStage - Current stage of the player
    * @param playerWins - Number of wins the player has
    * @returns True if bot team is appropriate for player
@@ -145,7 +139,7 @@ export class BotTeam {
 
   /**
    * Gets a summary of this bot team.
-   * 
+   *
    * @returns Bot team summary object
    * @example
    * const summary = botTeam.getSummary();

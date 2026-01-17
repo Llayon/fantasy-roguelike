@@ -305,10 +305,7 @@ export interface PhalanxProcessor {
    * @param state - Current battle state
    * @returns Formation detection result
    */
-  detectFormation(
-    unit: BattleUnit & UnitWithPhalanx,
-    state: BattleState,
-  ): FormationDetectionResult;
+  detectFormation(unit: BattleUnit & UnitWithPhalanx, state: BattleState): FormationDetectionResult;
 
   /**
    * Calculates phalanx bonuses based on adjacent ally count.
@@ -316,10 +313,7 @@ export interface PhalanxProcessor {
    * @param config - Phalanx configuration
    * @returns Calculated bonuses
    */
-  calculateBonuses(
-    adjacentCount: number,
-    config: PhalanxConfig,
-  ): PhalanxBonusResult;
+  calculateBonuses(adjacentCount: number, config: PhalanxConfig): PhalanxBonusResult;
 
   /**
    * Gets the effective armor for a unit including phalanx bonus.
@@ -354,10 +348,7 @@ export interface PhalanxProcessor {
    * @param trigger - What triggered the recalculation
    * @returns Recalculation result with updated state
    */
-  recalculate(
-    state: BattleState,
-    trigger: RecalculationTrigger,
-  ): PhalanxRecalculationResult;
+  recalculate(state: BattleState, trigger: RecalculationTrigger): PhalanxRecalculationResult;
 
   /**
    * Clears phalanx state for a unit.

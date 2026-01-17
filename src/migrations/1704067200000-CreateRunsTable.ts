@@ -2,16 +2,16 @@ import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
 /**
  * Migration: Create runs table for roguelike progression tracking.
- * 
+ *
  * Stores player roguelike runs with stage, wins, losses, budget, and gold tracking.
  * Includes indexes for efficient querying by player and status.
- * 
+ *
  * @migration 1704067200000
  */
 export class CreateRunsTable1704067200000 implements MigrationInterface {
   /**
    * Run migration up - creates the runs table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async up(queryRunner: QueryRunner): Promise<void> {
@@ -138,7 +138,7 @@ export class CreateRunsTable1704067200000 implements MigrationInterface {
 
   /**
    * Run migration down - drops the runs table.
-   * 
+   *
    * @param queryRunner - TypeORM query runner for executing SQL
    */
   async down(queryRunner: QueryRunner): Promise<void> {

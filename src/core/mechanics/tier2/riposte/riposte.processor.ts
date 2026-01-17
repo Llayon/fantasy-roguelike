@@ -21,11 +21,7 @@ import type { BattleState } from '../../../types';
 import type { BattleUnit } from '../../../types/battle-unit';
 import type { RiposteConfig } from '../../config/mechanics.types';
 import { updateUnit, findUnit } from '../../../utils/state-helpers';
-import type {
-  AttackArc,
-  RiposteProcessor,
-  UnitWithRiposte,
-} from './riposte.types';
+import type { AttackArc, RiposteProcessor, UnitWithRiposte } from './riposte.types';
 import {
   RIPOSTE_DAMAGE_MULTIPLIER as DAMAGE_MULTIPLIER,
   MIN_RIPOSTE_CHANCE as MIN_CHANCE,

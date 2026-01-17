@@ -124,11 +124,7 @@ function bresenhamLine(from: Position, to: Position): Position[] {
  * This happens when the line passes through a corner of a cell.
  * For straight horizontal or vertical lines, there are no edge cells.
  */
-function isEdgePosition(
-  pos: Position,
-  from: Position,
-  to: Position,
-): boolean {
+function isEdgePosition(pos: Position, from: Position, to: Position): boolean {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
 
@@ -147,9 +143,8 @@ function isEdgePosition(
   const cellCenterY = pos.y + 0.5;
 
   // Calculate distance from cell center to line using point-to-line formula
-  const distance = Math.abs(
-    dy * cellCenterX - dx * cellCenterY + to.x * from.y - to.y * from.x,
-  ) / lineLength;
+  const distance =
+    Math.abs(dy * cellCenterX - dx * cellCenterY + to.x * from.y - to.y * from.x) / lineLength;
 
   // If distance is close to 0.5 (half cell), it's an edge cell
   return distance > 0.3 && distance < 0.7;
@@ -183,7 +178,8 @@ export function createLoSProcessor(
   config: LoSConfig,
   options: LoSProcessorOptions = {},
 ): LoSProcessor {
-  const arcFirePenalty = options.arcFirePenalty ?? config.arcFirePenalty ?? DEFAULT_ARC_FIRE_PENALTY;
+  const arcFirePenalty =
+    options.arcFirePenalty ?? config.arcFirePenalty ?? DEFAULT_ARC_FIRE_PENALTY;
   const partialCoverHitChance = options.partialCoverHitChance ?? PARTIAL_COVER_HIT_CHANCE;
   const coverDodgeBonus = options.coverDodgeBonus ?? COVER_DODGE_BONUS;
   const arcFireTags = options.arcFireTags ?? [ARC_FIRE_TAG, SIEGE_TAG];
@@ -254,12 +250,10 @@ export function createLoSProcessor(
       }
 
       // Calculate path and check for blocking units
-      const pathResult = this.calculatePath(
-        shooter.position,
-        target.position,
-        state,
-        [shooter.instanceId ?? '', target.instanceId ?? ''],
-      );
+      const pathResult = this.calculatePath(shooter.position, target.position, state, [
+        shooter.instanceId ?? '',
+        target.instanceId ?? '',
+      ]);
 
       if (!pathResult.isClear && pathResult.blockingCell) {
         return {

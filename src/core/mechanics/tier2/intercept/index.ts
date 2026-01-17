@@ -25,4 +25,3 @@ export {
   HARD_INTERCEPT_TAG,
   CAVALRY_TAG,
 } from './intercept.types';
-

@@ -126,9 +126,7 @@ export function setupDuelScenario(
  *   [createEnemyKnight(), { x: 7, y: 9 }],
  * ]);
  */
-export function setupPositionScenario(
-  positions: Array<[BattleUnit, Position]>,
-): {
+export function setupPositionScenario(positions: Array<[BattleUnit, Position]>): {
   state: BattleState;
   units: BattleUnit[];
 } {
@@ -338,9 +336,7 @@ export function updateUnitInState(
   unitId: string,
   updates: Partial<BattleUnit>,
 ): BattleState {
-  const units = state.units.map((u) =>
-    u.instanceId === unitId ? { ...u, ...updates } : u,
-  );
+  const units = state.units.map((u) => (u.instanceId === unitId ? { ...u, ...updates } : u));
 
   // Rebuild occupied positions
   const occupiedPositions = new Set<string>();
@@ -393,10 +389,7 @@ export function advanceToNextTurn(state: BattleState): BattleState {
  * const state = createTestBattleState();
  * const attackPhase = advanceToPhase(state, 'attack');
  */
-export function advanceToPhase(
-  state: BattleState,
-  phase: string,
-): BattleState {
+export function advanceToPhase(state: BattleState, phase: string): BattleState {
   return {
     ...state,
     currentPhase: phase as any,
@@ -489,10 +482,7 @@ export function assertUnitMinHp(unit: BattleUnit, minHp: number): void {
  * assertUnitPosition(unit, { x: 3, y: 1 }); // Passes
  */
 export function assertUnitPosition(unit: BattleUnit, expectedPosition: Position): void {
-  if (
-    unit.position.x !== expectedPosition.x ||
-    unit.position.y !== expectedPosition.y
-  ) {
+  if (unit.position.x !== expectedPosition.x || unit.position.y !== expectedPosition.y) {
     throw new Error(
       `Unit ${unit.instanceId} position mismatch: expected (${expectedPosition.x}, ${expectedPosition.y}), got (${unit.position.x}, ${unit.position.y})`,
     );
@@ -534,9 +524,7 @@ export function assertTeamUnitCount(
 ): void {
   const count = state.units.filter((u) => u.team === team && u.alive).length;
   if (count !== expectedCount) {
-    throw new Error(
-      `Team ${team} unit count mismatch: expected ${expectedCount}, got ${count}`,
-    );
+    throw new Error(`Team ${team} unit count mismatch: expected ${expectedCount}, got ${count}`);
   }
 }
 

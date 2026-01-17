@@ -92,7 +92,7 @@ export function createEmptyGrid(config: GridConfig = DEFAULT_GRID_CONFIG): Grid 
  */
 export function createGridWithUnits(
   units: GridUnit[],
-  config: GridConfig = DEFAULT_GRID_CONFIG
+  config: GridConfig = DEFAULT_GRID_CONFIG,
 ): Grid {
   const grid = createEmptyGrid(config);
 
@@ -129,10 +129,7 @@ export function createGridWithUnits(
  * console.log(isValidPosition({ x: 8, y: 0 })); // false (out of bounds)
  * console.log(isValidPosition({ x: -1, y: 5 })); // false (negative)
  */
-export function isValidPosition(
-  pos: Position,
-  config: GridConfig = DEFAULT_GRID_CONFIG
-): boolean {
+export function isValidPosition(pos: Position, config: GridConfig = DEFAULT_GRID_CONFIG): boolean {
   return pos.x >= 0 && pos.x < config.width && pos.y >= 0 && pos.y < config.height;
 }
 
@@ -150,7 +147,7 @@ export function isValidPosition(
 export function isWalkable(
   pos: Position,
   grid: Grid,
-  config: GridConfig = DEFAULT_GRID_CONFIG
+  config: GridConfig = DEFAULT_GRID_CONFIG,
 ): boolean {
   if (!isValidPosition(pos, config)) {
     return false;
@@ -177,7 +174,7 @@ export function isWalkable(
  */
 export function isPlayerDeploymentZone(
   pos: Position,
-  config: GridConfig = DEFAULT_GRID_CONFIG
+  config: GridConfig = DEFAULT_GRID_CONFIG,
 ): boolean {
   return config.playerRows.includes(pos.y);
 }
@@ -194,7 +191,7 @@ export function isPlayerDeploymentZone(
  */
 export function isEnemyDeploymentZone(
   pos: Position,
-  config: GridConfig = DEFAULT_GRID_CONFIG
+  config: GridConfig = DEFAULT_GRID_CONFIG,
 ): boolean {
   return config.enemyRows.includes(pos.y);
 }
@@ -217,10 +214,7 @@ export function isEnemyDeploymentZone(
  * const cornerNeighbors = getNeighbors({ x: 0, y: 0 });
  * console.log(cornerNeighbors.length); // 2 (only right and down)
  */
-export function getNeighbors(
-  pos: Position,
-  config: GridConfig = DEFAULT_GRID_CONFIG
-): Position[] {
+export function getNeighbors(pos: Position, config: GridConfig = DEFAULT_GRID_CONFIG): Position[] {
   const neighbors: Position[] = [];
 
   // 4-directional movement: up, down, left, right
@@ -262,7 +256,7 @@ export function getPositionsInMovementRange(
   center: Position,
   range: number,
   grid: Grid,
-  config: GridConfig = DEFAULT_GRID_CONFIG
+  config: GridConfig = DEFAULT_GRID_CONFIG,
 ): Position[] {
   if (range <= 0) return [];
 
@@ -366,7 +360,7 @@ export function isInRange(a: Position, b: Position, range: number): boolean {
 export function getUnitsInRange<T extends GridUnit>(
   center: Position,
   range: number,
-  units: T[]
+  units: T[],
 ): T[] {
   return units.filter((unit) => unit.alive && isInRange(center, unit.position, range));
 }
@@ -381,10 +375,7 @@ export function getUnitsInRange<T extends GridUnit>(
  * @example
  * const closest = getClosestUnit({ x: 0, y: 0 }, enemyUnits);
  */
-export function getClosestUnit<T extends GridUnit>(
-  center: Position,
-  units: T[]
-): T | undefined {
+export function getClosestUnit<T extends GridUnit>(center: Position, units: T[]): T | undefined {
   let closestUnit: T | undefined;
   let minDistance = Infinity;
 
@@ -410,15 +401,9 @@ export function getClosestUnit<T extends GridUnit>(
  * @example
  * const unitAtPos = getUnitAtPosition({ x: 0, y: 0 }, allUnits);
  */
-export function getUnitAtPosition<T extends GridUnit>(
-  pos: Position,
-  units: T[]
-): T | undefined {
-  return units.find(
-    (unit) => unit.alive && unit.position.x === pos.x && unit.position.y === pos.y
-  );
+export function getUnitAtPosition<T extends GridUnit>(pos: Position, units: T[]): T | undefined {
+  return units.find((unit) => unit.alive && unit.position.x === pos.x && unit.position.y === pos.y);
 }
-
 
 // =============================================================================
 // AREA OF EFFECT FUNCTIONS
@@ -439,7 +424,7 @@ export function getUnitAtPosition<T extends GridUnit>(
 export function getAoEPositions(
   center: Position,
   radius: number,
-  config: GridConfig = DEFAULT_GRID_CONFIG
+  config: GridConfig = DEFAULT_GRID_CONFIG,
 ): Position[] {
   const positions: Position[] = [];
 
@@ -474,7 +459,7 @@ export function getUnitsInAoE<T extends GridUnit>(
   center: Position,
   radius: number,
   units: T[],
-  config: GridConfig = DEFAULT_GRID_CONFIG
+  config: GridConfig = DEFAULT_GRID_CONFIG,
 ): T[] {
   const aoePositions = getAoEPositions(center, radius, config);
   const affectedUnits: T[] = [];

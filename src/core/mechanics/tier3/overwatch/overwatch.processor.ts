@@ -140,11 +140,7 @@ function getVigilantEnemies(
 ): (BattleUnit & UnitWithOverwatch)[] {
   return state.units.filter((u) => {
     const unitWithOverwatch = u as BattleUnit & UnitWithOverwatch;
-    return (
-      u.alive &&
-      u.team !== movingUnit.team &&
-      unitWithOverwatch.vigilance === 'active'
-    );
+    return u.alive && u.team !== movingUnit.team && unitWithOverwatch.vigilance === 'active';
   }) as (BattleUnit & UnitWithOverwatch)[];
 }
 
@@ -194,10 +190,7 @@ export function createOverwatchProcessor(
     /**
      * Enters vigilance state for a unit.
      */
-    enterVigilance(
-      unit: BattleUnit & UnitWithOverwatch,
-      state: BattleState,
-    ): EnterVigilanceResult {
+    enterVigilance(unit: BattleUnit & UnitWithOverwatch, state: BattleState): EnterVigilanceResult {
       if (!hasOverwatchCapability(unit, overwatchTags)) {
         return {
           success: false,
@@ -258,10 +251,7 @@ export function createOverwatchProcessor(
     /**
      * Exits vigilance state for a unit.
      */
-    exitVigilance(
-      unit: BattleUnit & UnitWithOverwatch,
-      state: BattleState,
-    ): ExitVigilanceResult {
+    exitVigilance(unit: BattleUnit & UnitWithOverwatch, state: BattleState): ExitVigilanceResult {
       if (unit.vigilance === 'inactive' || unit.vigilance === undefined) {
         return {
           success: false,
@@ -434,9 +424,7 @@ export function createOverwatchProcessor(
               ...(reason !== undefined && { reason }),
             };
 
-            const existingIndex = opportunities.findIndex(
-              (o) => o.watcher.id === watcher.id,
-            );
+            const existingIndex = opportunities.findIndex((o) => o.watcher.id === watcher.id);
 
             if (existingIndex === -1) {
               opportunities.push(opportunity);
@@ -536,9 +524,7 @@ export function createOverwatchProcessor(
     /**
      * Resets overwatch state for a unit.
      */
-    resetOverwatch(
-      unit: BattleUnit & UnitWithOverwatch,
-    ): BattleUnit & UnitWithOverwatch {
+    resetOverwatch(unit: BattleUnit & UnitWithOverwatch): BattleUnit & UnitWithOverwatch {
       return {
         ...unit,
         vigilance: 'inactive',
@@ -551,9 +537,7 @@ export function createOverwatchProcessor(
     /**
      * Resets overwatch shots for a unit at round start.
      */
-    resetOverwatchShots(
-      unit: BattleUnit & UnitWithOverwatch,
-    ): BattleUnit & UnitWithOverwatch {
+    resetOverwatchShots(unit: BattleUnit & UnitWithOverwatch): BattleUnit & UnitWithOverwatch {
       if (unit.vigilance !== 'active' && unit.vigilance !== 'triggered') {
         return unit;
       }

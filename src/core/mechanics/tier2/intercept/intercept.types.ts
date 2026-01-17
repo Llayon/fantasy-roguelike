@@ -213,10 +213,7 @@ export interface DisengageResult {
 /**
  * Reasons why a disengage might fail.
  */
-export type DisengageFailReason =
-  | 'insufficient_movement'
-  | 'pinned'
-  | 'blocked';
+export type DisengageFailReason = 'insufficient_movement' | 'pinned' | 'blocked';
 
 // ═══════════════════════════════════════════════════════════════
 // PROCESSOR INTERFACE
@@ -300,4 +297,3 @@ export interface InterceptProcessor {
     round: number,
   ): BattleUnit & UnitWithIntercept;
 }
-

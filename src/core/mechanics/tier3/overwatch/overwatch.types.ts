@@ -230,10 +230,7 @@ export type VigilanceBlockReason =
 /**
  * Reasons why exiting vigilance might fail.
  */
-export type VigilanceExitBlockReason =
-  | 'not_vigilant'
-  | 'already_triggered'
-  | 'exhausted';
+export type VigilanceExitBlockReason = 'not_vigilant' | 'already_triggered' | 'exhausted';
 
 // ═══════════════════════════════════════════════════════════════
 // PROCESSOR OPTIONS
@@ -270,22 +267,13 @@ export interface OverwatchProcessor {
   canExitVigilance(unit: BattleUnit & UnitWithOverwatch): boolean;
 
   /** Toggles vigilance state for a unit */
-  toggleVigilance(
-    unit: BattleUnit & UnitWithOverwatch,
-    state: BattleState,
-  ): ToggleVigilanceResult;
+  toggleVigilance(unit: BattleUnit & UnitWithOverwatch, state: BattleState): ToggleVigilanceResult;
 
   /** Enters vigilance state for a unit */
-  enterVigilance(
-    unit: BattleUnit & UnitWithOverwatch,
-    state: BattleState,
-  ): EnterVigilanceResult;
+  enterVigilance(unit: BattleUnit & UnitWithOverwatch, state: BattleState): EnterVigilanceResult;
 
   /** Exits vigilance state for a unit */
-  exitVigilance(
-    unit: BattleUnit & UnitWithOverwatch,
-    state: BattleState,
-  ): ExitVigilanceResult;
+  exitVigilance(unit: BattleUnit & UnitWithOverwatch, state: BattleState): ExitVigilanceResult;
 
   /** Checks if a unit is currently in vigilance state */
   isVigilant(unit: BattleUnit & UnitWithOverwatch): boolean;

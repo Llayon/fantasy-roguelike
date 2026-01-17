@@ -172,10 +172,11 @@ export class RunService {
     // Store run
     this.runs.set(runId, run);
 
-    this.logger.debug(
-      `Run started: ${runId} with faction ${factionId} and leader ${leaderId}`,
-      { runId, factionId, leaderId }
-    );
+    this.logger.debug(`Run started: ${runId} with faction ${factionId} and leader ${leaderId}`, {
+      runId,
+      factionId,
+      leaderId,
+    });
 
     return {
       runId,
@@ -239,9 +240,7 @@ export class RunService {
     }
 
     if (run.status !== 'active') {
-      throw new BadRequestException(
-        `Cannot abandon run with status: ${run.status}`
-      );
+      throw new BadRequestException(`Cannot abandon run with status: ${run.status}`);
     }
 
     // Mark run as lost
@@ -364,7 +363,7 @@ export class RunService {
     }
 
     // Find unit in deck
-    const unitCard = run.state.deck.find(u => u.unitId === unitId);
+    const unitCard = run.state.deck.find((u) => u.unitId === unitId);
     if (!unitCard) {
       throw new BadRequestException(`Unit ${unitId} not in deck`);
     }

@@ -1,7 +1,7 @@
 /**
  * Snapshot service for async PvP matchmaking.
  * Handles creation and management of team snapshots for opponent matching.
- * 
+ *
  * @fileoverview Service for creating snapshots after battle wins,
  * storing team composition and positions for async PvP matchmaking.
  */
@@ -42,7 +42,7 @@ export interface CreateSnapshotResponse {
 /**
  * Snapshot service for managing team snapshots.
  * Creates snapshots after battle wins for use in async PvP matchmaking.
- * 
+ *
  * @example
  * const snapshot = await snapshotService.createSnapshot({
  *   playerId: 'player_123',
@@ -60,19 +60,19 @@ export class SnapshotService {
 
   /**
    * Create a snapshot after a battle win.
-   * 
+   *
    * Stores the player's team composition and positions at the current stage.
    * Snapshots are indexed by stage for efficient matchmaking queries.
-   * 
+   *
    * Requirements:
    * - 34.1: Create snapshot after each battle win
    * - 34.2: Store team composition and positions
    * - 34.3: Index by stage for efficient matchmaking
-   * 
+   *
    * @param request - Snapshot creation request
    * @returns Created snapshot details
    * @throws BadRequestException if team setup is invalid
-   * 
+   *
    * @example
    * const response = await snapshotService.createSnapshot({
    *   playerId: 'player_123',
@@ -123,7 +123,7 @@ export class SnapshotService {
     for (const position of request.playerTeam.positions) {
       if (position.x < 0 || position.x >= 8 || position.y < 0 || position.y >= 10) {
         throw new BadRequestException(
-          `Invalid position: (${position.x}, ${position.y}). Must be within 8x10 grid.`
+          `Invalid position: (${position.x}, ${position.y}). Must be within 8x10 grid.`,
         );
       }
     }
@@ -166,10 +166,10 @@ export class SnapshotService {
 
   /**
    * Get a snapshot by ID.
-   * 
+   *
    * @param snapshotId - Snapshot ID
    * @returns Snapshot entity or null if not found
-   * 
+   *
    * @example
    * const snapshot = await snapshotService.getSnapshot('snap_123');
    */
@@ -185,13 +185,13 @@ export class SnapshotService {
 
   /**
    * Get snapshots for a specific stage (for matchmaking).
-   * 
+   *
    * Returns snapshots ordered by win count for difficulty scaling.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @param limit - Maximum number of snapshots to return
    * @returns Array of snapshots at the specified stage
-   * 
+   *
    * @example
    * const opponents = await snapshotService.getSnapshotsForStage(3, 10);
    */
@@ -205,11 +205,11 @@ export class SnapshotService {
 
   /**
    * Get snapshots for a player at a specific stage.
-   * 
+   *
    * @param playerId - Player ID
    * @param stage - Stage number (1-9)
    * @returns Array of snapshots created by the player at the stage
-   * 
+   *
    * @example
    * const snapshots = await snapshotService.getPlayerSnapshotsAtStage(
    *   'player_123',
@@ -230,10 +230,10 @@ export class SnapshotService {
 
   /**
    * Get all snapshots for a player.
-   * 
+   *
    * @param playerId - Player ID
    * @returns Array of all snapshots created by the player
-   * 
+   *
    * @example
    * const snapshots = await snapshotService.getPlayerSnapshots('player_123');
    */
@@ -247,10 +247,10 @@ export class SnapshotService {
 
   /**
    * Get statistics for a stage.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @returns Stage statistics
-   * 
+   *
    * @example
    * const stats = await snapshotService.getStageStats(3);
    * // Returns: { totalSnapshots: 50, avgWins: 2.5, maxWins: 8, minWins: 0 }
@@ -270,10 +270,10 @@ export class SnapshotService {
 
   /**
    * Delete a snapshot.
-   * 
+   *
    * @param snapshotId - Snapshot ID
    * @returns True if deletion was successful
-   * 
+   *
    * @example
    * const deleted = await snapshotService.deleteSnapshot('snap_123');
    */

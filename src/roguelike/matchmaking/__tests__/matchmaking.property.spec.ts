@@ -11,7 +11,12 @@
  */
 
 import * as fc from 'fast-check';
-import { MatchmakingService, BotOpponent, SnapshotOpponent, MatchmakingResult } from '../matchmaking.service';
+import {
+  MatchmakingService,
+  BotOpponent,
+  SnapshotOpponent,
+  MatchmakingResult,
+} from '../matchmaking.service';
 import { TeamSetup, TeamSetupUnit } from '../../../core/types';
 import { UnitId, getAllUnitIds, getUnitTemplate } from '../../../game/units/unit.data';
 
@@ -347,7 +352,9 @@ describe('Matchmaking Property-Based Tests', () => {
                 `Opponent team has invalid units for stage ${stage}, wins ${wins}:`,
                 opponent.team.units,
               );
-              expect(Array.isArray(opponent.team.units) && opponent.team.units.length > 0).toBe(true);
+              expect(Array.isArray(opponent.team.units) && opponent.team.units.length > 0).toBe(
+                true,
+              );
               return false;
             }
 
@@ -488,37 +495,33 @@ describe('Matchmaking Property-Based Tests', () => {
 
     it('difficulty increases with player wins', () => {
       fc.assert(
-        fc.property(
-          arbitraryStage,
-          arbitrarySeed,
-          (stage: number, seed: number): boolean => {
-            // Get opponents at different win counts
-            const opponent0 = service.findOpponent(stage, 0, seed) as BotOpponent;
-            const opponent4 = service.findOpponent(stage, 4, seed) as BotOpponent;
-            const opponent8 = service.findOpponent(stage, 8, seed) as BotOpponent;
+        fc.property(arbitraryStage, arbitrarySeed, (stage: number, seed: number): boolean => {
+          // Get opponents at different win counts
+          const opponent0 = service.findOpponent(stage, 0, seed) as BotOpponent;
+          const opponent4 = service.findOpponent(stage, 4, seed) as BotOpponent;
+          const opponent8 = service.findOpponent(stage, 8, seed) as BotOpponent;
 
-            // If all are bots, difficulty should be non-decreasing
-            if ('botId' in opponent0 && 'botId' in opponent4 && 'botId' in opponent8) {
-              if (opponent4.difficulty < opponent0.difficulty) {
-                console.error(
-                  `Difficulty decreased from 0 wins to 4 wins: ${opponent0.difficulty} -> ${opponent4.difficulty}`,
-                );
-                expect(opponent4.difficulty).toBeGreaterThanOrEqual(opponent0.difficulty);
-                return false;
-              }
-
-              if (opponent8.difficulty < opponent4.difficulty) {
-                console.error(
-                  `Difficulty decreased from 4 wins to 8 wins: ${opponent4.difficulty} -> ${opponent8.difficulty}`,
-                );
-                expect(opponent8.difficulty).toBeGreaterThanOrEqual(opponent4.difficulty);
-                return false;
-              }
+          // If all are bots, difficulty should be non-decreasing
+          if ('botId' in opponent0 && 'botId' in opponent4 && 'botId' in opponent8) {
+            if (opponent4.difficulty < opponent0.difficulty) {
+              console.error(
+                `Difficulty decreased from 0 wins to 4 wins: ${opponent0.difficulty} -> ${opponent4.difficulty}`,
+              );
+              expect(opponent4.difficulty).toBeGreaterThanOrEqual(opponent0.difficulty);
+              return false;
             }
 
-            return true;
-          },
-        ),
+            if (opponent8.difficulty < opponent4.difficulty) {
+              console.error(
+                `Difficulty decreased from 4 wins to 8 wins: ${opponent4.difficulty} -> ${opponent8.difficulty}`,
+              );
+              expect(opponent8.difficulty).toBeGreaterThanOrEqual(opponent4.difficulty);
+              return false;
+            }
+          }
+
+          return true;
+        }),
         { numRuns: 100 },
       );
     });
@@ -547,9 +550,7 @@ describe('Matchmaking Property-Based Tests', () => {
             const isBoth2Bot = 'botId' in opponent2;
 
             if (isBoth1Bot !== isBoth2Bot) {
-              console.error(
-                `Opponent type changed between calls for stage ${stage}, wins ${wins}`,
-              );
+              console.error(`Opponent type changed between calls for stage ${stage}, wins ${wins}`);
               expect(isBoth1Bot).toBe(isBoth2Bot);
               return false;
             }
@@ -560,9 +561,7 @@ describe('Matchmaking Property-Based Tests', () => {
               const bot2 = opponent2 as BotOpponent;
 
               if (bot1.difficulty !== bot2.difficulty) {
-                console.error(
-                  `Bot difficulty changed: ${bot1.difficulty} vs ${bot2.difficulty}`,
-                );
+                console.error(`Bot difficulty changed: ${bot1.difficulty} vs ${bot2.difficulty}`);
                 expect(bot1.difficulty).toBe(bot2.difficulty);
                 return false;
               }

@@ -1,7 +1,7 @@
 /**
  * BotTeam repository for database access.
  * Provides query methods for bot team persistence and selection.
- * 
+ *
  * @fileoverview Repository pattern implementation for BotTeam entity
  * with methods for CRUD operations and bot selection queries.
  */
@@ -13,7 +13,7 @@ import { BotTeam } from '../entities/bot-team.entity';
 /**
  * BotTeam repository for database operations.
  * Extends TypeORM Repository with custom query methods for bot selection.
- * 
+ *
  * @example
  * const botTeams = await botTeamRepository.findBotTeamsForStage(3);
  */
@@ -23,7 +23,7 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Constructor for dependency injection.
-   * 
+   *
    * @param dataSource - TypeORM DataSource for database connection
    */
   constructor(dataSource: DataSource) {
@@ -33,10 +33,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
   /**
    * Find bot teams for a specific stage.
    * Returns all difficulties for the stage.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @returns Array of bot teams at the specified stage
-   * 
+   *
    * @example
    * const botTeams = await botTeamRepository.findBotTeamsForStage(3);
    * // Returns: [{ id: 'bot_1', stage: 3, difficulty: 1, ... }, ...]
@@ -54,22 +54,19 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Find bot teams for a specific stage and difficulty.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @param difficulty - Difficulty level (1-10)
    * @returns Array of bot teams matching criteria
-   * 
+   *
    * @example
    * const botTeams = await botTeamRepository.findBotTeamsByDifficulty(3, 5);
    */
-  async findBotTeamsByDifficulty(
-    stage: number,
-    difficulty: number
-  ): Promise<BotTeam[]> {
-    this.logger.debug(
-      `Finding bot teams for stage ${stage} with difficulty ${difficulty}`,
-      { stage, difficulty }
-    );
+  async findBotTeamsByDifficulty(stage: number, difficulty: number): Promise<BotTeam[]> {
+    this.logger.debug(`Finding bot teams for stage ${stage} with difficulty ${difficulty}`, {
+      stage,
+      difficulty,
+    });
 
     return this.find({
       where: { stage, difficulty },
@@ -79,19 +76,19 @@ export class BotTeamRepository extends Repository<BotTeam> {
   /**
    * Find a random bot team for a specific stage and difficulty.
    * Used for matchmaking when multiple bot teams exist.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @param difficulty - Difficulty level (1-10)
    * @returns Random bot team or null if none exist
-   * 
+   *
    * @example
    * const botTeam = await botTeamRepository.findRandomBotTeam(3, 5);
    */
   async findRandomBotTeam(stage: number, difficulty: number): Promise<BotTeam | null> {
-    this.logger.debug(
-      `Finding random bot team for stage ${stage} with difficulty ${difficulty}`,
-      { stage, difficulty }
-    );
+    this.logger.debug(`Finding random bot team for stage ${stage} with difficulty ${difficulty}`, {
+      stage,
+      difficulty,
+    });
 
     const botTeams = await this.find({
       where: { stage, difficulty },
@@ -108,12 +105,12 @@ export class BotTeamRepository extends Repository<BotTeam> {
   /**
    * Find bot teams for a stage within a difficulty range.
    * Used for difficulty scaling based on player progression.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @param minDifficulty - Minimum difficulty (1-10)
    * @param maxDifficulty - Maximum difficulty (1-10)
    * @returns Array of bot teams in difficulty range
-   * 
+   *
    * @example
    * const botTeams = await botTeamRepository.findBotTeamsByDifficultyRange(
    *   3,
@@ -124,11 +121,11 @@ export class BotTeamRepository extends Repository<BotTeam> {
   async findBotTeamsByDifficultyRange(
     stage: number,
     minDifficulty: number,
-    maxDifficulty: number
+    maxDifficulty: number,
   ): Promise<BotTeam[]> {
     this.logger.debug(
       `Finding bot teams for stage ${stage} with difficulty ${minDifficulty}-${maxDifficulty}`,
-      { stage, minDifficulty, maxDifficulty }
+      { stage, minDifficulty, maxDifficulty },
     );
 
     return this.find({
@@ -137,17 +134,15 @@ export class BotTeamRepository extends Repository<BotTeam> {
         difficulty: 'ASC',
       },
     }).then((botTeams) =>
-      botTeams.filter(
-        (b) => b.difficulty >= minDifficulty && b.difficulty <= maxDifficulty
-      )
+      botTeams.filter((b) => b.difficulty >= minDifficulty && b.difficulty <= maxDifficulty),
     );
   }
 
   /**
    * Find all bot teams.
-   * 
+   *
    * @returns Array of all bot teams
-   * 
+   *
    * @example
    * const allBotTeams = await botTeamRepository.findAllBotTeams();
    */
@@ -165,9 +160,9 @@ export class BotTeamRepository extends Repository<BotTeam> {
   /**
    * Get bot team statistics.
    * Calculates total teams, coverage by stage, etc.
-   * 
+   *
    * @returns Bot team statistics object
-   * 
+   *
    * @example
    * const stats = await botTeamRepository.getBotTeamStats();
    * // Returns: { totalTeams: 90, stagesCovered: 9, avgTeamsPerStage: 10 }
@@ -207,10 +202,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
   /**
    * Get bot team coverage for a stage.
    * Shows how many teams exist for each difficulty.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @returns Coverage object with difficulty distribution
-   * 
+   *
    * @example
    * const coverage = await botTeamRepository.getStageCoverage(3);
    * // Returns: { stage: 3, totalTeams: 10, difficulties: { 1: 1, 2: 1, ..., 10: 1 } }
@@ -240,10 +235,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Create and save a new bot team.
-   * 
+   *
    * @param botTeam - BotTeam entity to save
    * @returns Saved bot team with ID
-   * 
+   *
    * @example
    * const newBotTeam = await botTeamRepository.createBotTeam(botTeam);
    */
@@ -258,10 +253,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Create multiple bot teams in batch.
-   * 
+   *
    * @param botTeams - Array of BotTeam entities to save
    * @returns Array of saved bot teams with IDs
-   * 
+   *
    * @example
    * const newBotTeams = await botTeamRepository.createBotTeamsBatch(botTeams);
    */
@@ -273,10 +268,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Update an existing bot team.
-   * 
+   *
    * @param botTeam - BotTeam entity with updated values
    * @returns Updated bot team
-   * 
+   *
    * @example
    * botTeam.team = newTeamData;
    * const updated = await botTeamRepository.updateBotTeam(botTeam);
@@ -289,10 +284,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Delete a bot team.
-   * 
+   *
    * @param botTeamId - BotTeam UUID
    * @returns True if deletion was successful
-   * 
+   *
    * @example
    * const deleted = await botTeamRepository.deleteBotTeam(botTeamId);
    */
@@ -306,10 +301,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
   /**
    * Delete all bot teams for a stage.
    * Used for re-seeding a stage.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @returns Number of deleted teams
-   * 
+   *
    * @example
    * const deleted = await botTeamRepository.deleteStage(3);
    */
@@ -323,9 +318,9 @@ export class BotTeamRepository extends Repository<BotTeam> {
   /**
    * Delete all bot teams.
    * Used for complete re-seeding.
-   * 
+   *
    * @returns Number of deleted teams
-   * 
+   *
    * @example
    * const deleted = await botTeamRepository.deleteAllBotTeams();
    */
@@ -338,10 +333,10 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Count bot teams for a stage.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @returns Number of bot teams at the stage
-   * 
+   *
    * @example
    * const count = await botTeamRepository.countByStage(3);
    */
@@ -353,11 +348,11 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Count bot teams for a stage and difficulty.
-   * 
+   *
    * @param stage - Stage number (1-9)
    * @param difficulty - Difficulty level (1-10)
    * @returns Number of bot teams matching criteria
-   * 
+   *
    * @example
    * const count = await botTeamRepository.countByDifficulty(3, 5);
    */
@@ -369,9 +364,9 @@ export class BotTeamRepository extends Repository<BotTeam> {
 
   /**
    * Count total bot teams.
-   * 
+   *
    * @returns Total number of bot teams
-   * 
+   *
    * @example
    * const total = await botTeamRepository.countAll();
    */

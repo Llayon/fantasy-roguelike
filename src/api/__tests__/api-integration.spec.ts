@@ -1,14 +1,14 @@
 /**
  * API Integration Tests for Roguelike Mode
- * 
+ *
  * Tests the complete API flow:
  * - Run lifecycle (start → battle → draft → upgrade)
  * - Battle simulation endpoint
  * - Matchmaking with snapshots
  * - Matchmaking with bot fallback
- * 
+ *
  * Requirements: 7.1, 7.2
- * 
+ *
  * @module api/__tests__
  */
 
@@ -50,12 +50,7 @@ describe('API Integration Tests', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [
-        RunController,
-        BattleController,
-        DraftController,
-        UpgradeController,
-      ],
+      controllers: [RunController, BattleController, DraftController, UpgradeController],
       providers: [
         RunService,
         BattleService,
@@ -88,13 +83,13 @@ describe('API Integration Tests', () => {
 
   /**
    * Task 41.1: Test run lifecycle (start → battle → draft → upgrade)
-   * 
+   *
    * Tests the complete flow of a roguelike run:
    * 1. Start a new run
    * 2. Start and simulate a battle
    * 3. Draft a new unit after win
    * 4. Upgrade a unit
-   * 
+   *
    * Validates: Requirements 7.1
    */
   describe('41.1 Run Lifecycle (start → battle → draft → upgrade)', () => {
@@ -131,10 +126,9 @@ describe('API Integration Tests', () => {
       const battleId = startBattleResponse.battleId;
 
       // Step 3: Simulate the battle
-      const simulateResponse = await battleController.simulateBattle(
-        battleId,
-        { playerId: 'test_player' }
-      );
+      const simulateResponse = await battleController.simulateBattle(battleId, {
+        playerId: 'test_player',
+      });
 
       expect(simulateResponse).toBeDefined();
       expect(simulateResponse.result).toMatch(/^(win|loss|draw)$/);
@@ -206,7 +200,7 @@ describe('API Integration Tests', () => {
 
         const simulateResponse = await battleController.simulateBattle(
           startBattleResponse.battleId,
-          { playerId: 'test_player' }
+          { playerId: 'test_player' },
         );
 
         expect(simulateResponse.result).toMatch(/^(win|loss|draw)$/);
@@ -256,13 +250,13 @@ describe('API Integration Tests', () => {
 
   /**
    * Task 41.2: Test battle simulation endpoint
-   * 
+   *
    * Tests the battle simulation endpoint:
    * - Battle initialization
    * - Simulation execution
    * - Event generation (including Core 2.0 mechanic events)
    * - Final state correctness
-   * 
+   *
    * Validates: Requirements 7.2
    */
   describe('41.2 Battle Simulation Endpoint', () => {
@@ -289,10 +283,9 @@ describe('API Integration Tests', () => {
       });
 
       // Simulate battle
-      const simulateResponse = await battleController.simulateBattle(
-        startBattleResponse.battleId,
-        { playerId: 'test_player' }
-      );
+      const simulateResponse = await battleController.simulateBattle(startBattleResponse.battleId, {
+        playerId: 'test_player',
+      });
 
       // Verify response structure
       expect(simulateResponse.result).toMatch(/^(win|loss|draw)$/);
@@ -347,13 +340,12 @@ describe('API Integration Tests', () => {
       });
 
       // Simulate battle
-      const simulateResponse = await battleController.simulateBattle(
-        startBattleResponse.battleId,
-        { playerId: 'test_player' }
-      );
+      const simulateResponse = await battleController.simulateBattle(startBattleResponse.battleId, {
+        playerId: 'test_player',
+      });
 
       // Check for Core 2.0 mechanic event types
-      const eventTypes = new Set(simulateResponse.events.map(e => e.type));
+      const eventTypes = new Set(simulateResponse.events.map((e) => e.type));
 
       // Core 2.0 mechanic events that should appear in battles:
       // - facing_rotated (units rotate to face targets)
@@ -361,23 +353,28 @@ describe('API Integration Tests', () => {
       // - resolve_changed (resolve regeneration/damage)
       // - riposte_triggered (if conditions met)
       // - ammo_consumed (for ranged units)
-      
+
       // At minimum, we should see facing and flanking events
-      const hasFacingEvents = Array.from(eventTypes).some(type => 
-        type === 'facing_rotated' || type === 'flanking_applied'
+      const hasFacingEvents = Array.from(eventTypes).some(
+        (type) => type === 'facing_rotated' || type === 'flanking_applied',
       );
-      
+
       // Note: Not all mechanic events will appear in every battle
       // (e.g., riposte requires specific conditions)
       // But we should see at least some mechanic events
       expect(simulateResponse.events.length).toBeGreaterThan(0);
-      
+
       // Verify event structure for mechanic events
-      const mechanicEvents = simulateResponse.events.filter(e => 
-        ['facing_rotated', 'flanking_applied', 'resolve_changed', 
-         'riposte_triggered', 'ammo_consumed'].includes(e.type)
+      const mechanicEvents = simulateResponse.events.filter((e) =>
+        [
+          'facing_rotated',
+          'flanking_applied',
+          'resolve_changed',
+          'riposte_triggered',
+          'ammo_consumed',
+        ].includes(e.type),
       );
-      
+
       if (mechanicEvents.length > 0) {
         const mechanicEvent = mechanicEvents[0];
         expect(mechanicEvent).toHaveProperty('metadata');
@@ -401,10 +398,9 @@ describe('API Integration Tests', () => {
       });
 
       // Simulate battle
-      const simulateResponse = await battleController.simulateBattle(
-        startBattleResponse.battleId,
-        { playerId: 'test_player' }
-      );
+      const simulateResponse = await battleController.simulateBattle(startBattleResponse.battleId, {
+        playerId: 'test_player',
+      });
 
       // If battle was won, should have rewards
       if (simulateResponse.result === 'win') {
@@ -435,10 +431,9 @@ describe('API Integration Tests', () => {
       const seed = battle1.seed;
 
       // Simulate first battle
-      const result1 = await battleController.simulateBattle(
-        battle1.battleId,
-        { playerId: 'test_player' }
-      );
+      const result1 = await battleController.simulateBattle(battle1.battleId, {
+        playerId: 'test_player',
+      });
 
       // Start second battle with same setup (will get different seed)
       const battle2 = battleController.startBattle({
@@ -472,15 +467,12 @@ describe('API Integration Tests', () => {
       });
 
       // Simulate battle
-      await battleController.simulateBattle(
-        startBattleResponse.battleId,
-        { playerId: 'test_player' }
-      );
+      await battleController.simulateBattle(startBattleResponse.battleId, {
+        playerId: 'test_player',
+      });
 
       // Get battle replay
-      const replayResponse = battleController.getBattleReplay(
-        startBattleResponse.battleId
-      );
+      const replayResponse = battleController.getBattleReplay(startBattleResponse.battleId);
 
       expect(replayResponse).toBeDefined();
       expect(replayResponse.events).toBeDefined();
@@ -493,12 +485,12 @@ describe('API Integration Tests', () => {
 
   /**
    * Task 41.3: Test matchmaking with snapshots
-   * 
+   *
    * Tests matchmaking using player snapshots:
    * - Snapshot creation after battle win
    * - Snapshot retrieval for matchmaking
    * - Opponent selection from snapshots
-   * 
+   *
    * Validates: Requirements 7.1, 5.4
    */
   describe('41.3 Matchmaking with Snapshots', () => {
@@ -571,14 +563,14 @@ describe('API Integration Tests', () => {
           positions: [{ x: 4, y: 9 }],
         },
         mockSnapshot.wins,
-        mockSnapshot.stage
+        mockSnapshot.stage,
       );
 
       // Find opponent at stage 2
       const opponent = matchmakingService.findOpponent(2, 1, 12345);
 
       expect(opponent).toBeDefined();
-      
+
       // Check if it's a snapshot opponent
       if ('snapshotId' in opponent) {
         expect(opponent.snapshotId).toBe(mockSnapshot.id);
@@ -600,7 +592,7 @@ describe('API Integration Tests', () => {
             units: [],
             positions: [],
           },
-        })
+        }),
       ).rejects.toThrow('Player team must have at least one unit');
     });
 
@@ -616,7 +608,7 @@ describe('API Integration Tests', () => {
             units: [{ unitId: 'knight', tier: 1 }],
             positions: [{ x: 10, y: 15 }], // Out of bounds (8x10 grid)
           },
-        })
+        }),
       ).rejects.toThrow('Invalid position');
     });
 
@@ -635,7 +627,7 @@ describe('API Integration Tests', () => {
             ],
             positions: [{ x: 3, y: 0 }], // Only 1 position for 2 units
           },
-        })
+        }),
       ).rejects.toThrow('Units and positions arrays must have same length');
     });
 
@@ -678,10 +670,9 @@ describe('API Integration Tests', () => {
       });
 
       // Simulate battle with playerId
-      const simulateResponse = await battleController.simulateBattle(
-        startBattleResponse.battleId,
-        { playerId: 'test_player' }
-      );
+      const simulateResponse = await battleController.simulateBattle(startBattleResponse.battleId, {
+        playerId: 'test_player',
+      });
 
       // If battle was won, snapshot should be created
       if (simulateResponse.result === 'win') {
@@ -694,13 +685,13 @@ describe('API Integration Tests', () => {
 
   /**
    * Task 41.4: Test matchmaking with bot fallback
-   * 
+   *
    * Tests matchmaking bot generation:
    * - Bot generation when no snapshots available
    * - Bot difficulty scaling based on player wins
    * - Bot team budget constraints
    * - Deterministic bot generation with seed
-   * 
+   *
    * Validates: Requirements 8.1, 8.2, 8.3
    */
   describe('41.4 Matchmaking with Bot Fallback', () => {
@@ -712,10 +703,10 @@ describe('API Integration Tests', () => {
       const opponent = matchmakingService.findOpponent(1, 0, 12345);
 
       expect(opponent).toBeDefined();
-      
+
       // Should be a bot opponent
       expect('botId' in opponent).toBe(true);
-      
+
       if ('botId' in opponent) {
         expect(opponent.botId).toBeDefined();
         expect(opponent.team).toBeDefined();
@@ -744,7 +735,7 @@ describe('API Integration Tests', () => {
         // Difficulty should increase with wins
         expect(opponent5Wins.difficulty).toBeGreaterThan(opponent0Wins.difficulty);
         expect(opponent10Wins.difficulty).toBeGreaterThanOrEqual(opponent5Wins.difficulty);
-        
+
         // Difficulty should be capped at 10
         expect(opponent10Wins.difficulty).toBeLessThanOrEqual(10);
       }
@@ -766,7 +757,7 @@ describe('API Integration Tests', () => {
       if ('botId' in opponent1 && 'botId' in opponent2) {
         // Bot IDs should be the same (deterministic)
         expect(opponent1.botId).toBe(opponent2.botId);
-        
+
         // Teams should have same structure
         expect(opponent1.team.units.length).toBe(opponent2.team.units.length);
         expect(opponent1.difficulty).toBe(opponent2.difficulty);
@@ -839,7 +830,7 @@ describe('API Integration Tests', () => {
           positions: [{ x: 3, y: 9 }],
         },
         1,
-        2
+        2,
       );
 
       // Find opponent at stage 2
@@ -847,7 +838,7 @@ describe('API Integration Tests', () => {
 
       // Should return snapshot, not bot
       expect('snapshotId' in opponent).toBe(true);
-      
+
       if ('snapshotId' in opponent) {
         expect(opponent.snapshotId).toBe('snap_priority_test');
       }
@@ -878,10 +869,9 @@ describe('API Integration Tests', () => {
       expect(startBattleResponse.enemyTeam.units.length).toBeGreaterThan(0);
 
       // Simulate battle with bot opponent
-      const simulateResponse = await battleController.simulateBattle(
-        startBattleResponse.battleId,
-        { playerId: 'test_player' }
-      );
+      const simulateResponse = await battleController.simulateBattle(startBattleResponse.battleId, {
+        playerId: 'test_player',
+      });
 
       // Battle should complete successfully
       expect(simulateResponse.result).toMatch(/^(win|loss|draw)$/);
@@ -905,12 +895,12 @@ describe('API Integration Tests', () => {
         // All difficulties should be valid (1-10)
         expect(opponent0.difficulty).toBeGreaterThanOrEqual(1);
         expect(opponent0.difficulty).toBeLessThanOrEqual(10);
-        
+
         // Negative wins may result in difficulty < 1 (edge case)
         // Just verify it's a valid number
         expect(typeof opponentNegative.difficulty).toBe('number');
         expect(opponentNegative.difficulty).toBeLessThanOrEqual(10);
-        
+
         expect(opponentVeryHigh.difficulty).toBeGreaterThanOrEqual(1);
         expect(opponentVeryHigh.difficulty).toBeLessThanOrEqual(10);
       }

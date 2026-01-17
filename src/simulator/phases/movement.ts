@@ -126,12 +126,7 @@ export function handleMovement(
   // ==========================================================================
   // STEP 2: Check for Hard Intercept (Spearman vs Cavalry)
   // ==========================================================================
-  const hardInterceptResult = checkHardIntercept(
-    currentState,
-    unit,
-    pathResult.path,
-    eventContext,
-  );
+  const hardInterceptResult = checkHardIntercept(currentState, unit, pathResult.path, eventContext);
   currentState = hardInterceptResult.state;
   events.push(...hardInterceptResult.events);
 
@@ -143,12 +138,7 @@ export function handleMovement(
   // ==========================================================================
   // STEP 3: Check for Soft Intercept (Entering Enemy ZoC)
   // ==========================================================================
-  const softInterceptResult = checkSoftIntercept(
-    currentState,
-    unit,
-    pathResult.path,
-    eventContext,
-  );
+  const softInterceptResult = checkSoftIntercept(currentState, unit, pathResult.path, eventContext);
   currentState = softInterceptResult.state;
   events.push(...softInterceptResult.events);
 
@@ -158,24 +148,14 @@ export function handleMovement(
   // ==========================================================================
   // STEP 4: Execute Movement
   // ==========================================================================
-  const moveResult = executeMovement(
-    currentState,
-    unitId,
-    unit.position,
-    finalPath,
-    eventContext,
-  );
+  const moveResult = executeMovement(currentState, unitId, unit.position, finalPath, eventContext);
   currentState = moveResult.state;
   events.push(...moveResult.events);
 
   // ==========================================================================
   // STEP 5: Update Engagement Status
   // ==========================================================================
-  const engagementResult = updateEngagementStatus(
-    currentState,
-    unitId,
-    eventContext,
-  );
+  const engagementResult = updateEngagementStatus(currentState, unitId, eventContext);
   currentState = engagementResult.state;
   events.push(...engagementResult.events);
 
@@ -194,7 +174,6 @@ export function handleMovement(
 
   return { state: currentState, events };
 }
-
 
 // =============================================================================
 // PATH CALCULATION
@@ -221,11 +200,7 @@ interface PathResult {
  * @param targetPosition - Target position
  * @returns Path result with positions and distance
  */
-function calculatePath(
-  state: BattleState,
-  unit: BattleUnit,
-  targetPosition: Position,
-): PathResult {
+function calculatePath(state: BattleState, unit: BattleUnit, targetPosition: Position): PathResult {
   // Create grid with current unit positions
   const aliveUnits = getAliveUnits(state);
   const grid = createGridWithUnits([...aliveUnits]);
@@ -401,7 +376,6 @@ function isFacingPosition(unit: BattleUnit, targetPos: Position): boolean {
   }
 }
 
-
 // =============================================================================
 // SOFT INTERCEPT (ENTERING ENEMY ZOC)
 // =============================================================================
@@ -441,7 +415,7 @@ function checkSoftIntercept(
   eventContext: { round: number; turn: number; phase: Phase },
 ): SoftInterceptResult {
   const events: BattleEvent[] = [];
-  let currentState = state;
+  const currentState = state;
 
   // Get enemy units
   const enemyTeam = unit.team === 'player' ? 'enemy' : 'player';
@@ -630,16 +604,12 @@ function updateEngagementStatus(
       });
 
       // Emit engagement changed event for enemy
-      const enemyEngagementEvent = createEngagementChangedEvent(
-        eventContext,
-        enemy.instanceId,
-        {
-          unitId: enemy.instanceId,
-          engaged: true,
-          engagedBy: enemyEngagedBy,
-          reason: 'entered_zoc',
-        },
-      );
+      const enemyEngagementEvent = createEngagementChangedEvent(eventContext, enemy.instanceId, {
+        unitId: enemy.instanceId,
+        engaged: true,
+        engagedBy: enemyEngagedBy,
+        reason: 'entered_zoc',
+      });
       events.push(enemyEngagementEvent);
     }
   }
@@ -656,7 +626,6 @@ function arraysEqual(a: string[], b: string[]): boolean {
   const sortedB = [...b].sort();
   return sortedA.every((val, idx) => val === sortedB[idx]);
 }
-
 
 // =============================================================================
 // CHARGE MOMENTUM CALCULATION
@@ -769,10 +738,7 @@ function calculateChargeMomentum(
  * @param unitId - Routing unit
  * @returns Target position for retreat
  */
-export function getRoutingTargetPosition(
-  state: BattleState,
-  unitId: string,
-): Position | null {
+export function getRoutingTargetPosition(state: BattleState, unitId: string): Position | null {
   const unit = findUnit(state, unitId);
   if (!unit || !unit.alive || !unit.isRouting) {
     return null;
@@ -784,9 +750,7 @@ export function getRoutingTargetPosition(
   // Find closest position on deployment edge
   const aliveUnits = getAliveUnits(state);
   const occupiedPositions = new Set(
-    aliveUnits
-      .filter((u) => u.instanceId !== unitId)
-      .map((u) => `${u.position.x},${u.position.y}`),
+    aliveUnits.filter((u) => u.instanceId !== unitId).map((u) => `${u.position.x},${u.position.y}`),
   );
 
   // Try positions on the deployment edge
@@ -826,4 +790,3 @@ export {
   MAX_MOMENTUM,
   SPEAR_WALL_COUNTER_MULTIPLIER,
 };
-

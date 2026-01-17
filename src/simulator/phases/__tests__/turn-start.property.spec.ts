@@ -13,7 +13,12 @@
 import * as fc from 'fast-check';
 import { handleTurnStart, DEFAULT_RIPOSTE_CHARGES } from '../turn-start';
 import { BattleState, Phase } from '../../../core/types';
-import { BattleUnit, FacingDirection, TeamType, UnitFaction } from '../../../core/types/battle-unit';
+import {
+  BattleUnit,
+  FacingDirection,
+  TeamType,
+  UnitFaction,
+} from '../../../core/types/battle-unit';
 import { Position } from '../../../core/types/grid.types';
 
 // =============================================================================
@@ -70,43 +75,53 @@ const arbitraryRiposteCharges: fc.Arbitrary<number> = fc.integer({ min: 0, max: 
  * Arbitrary generator for a valid BattleUnit.
  * Generates units with various riposte charge states.
  */
-const arbitraryBattleUnit: fc.Arbitrary<BattleUnit> = fc.record({
-  id: fc.constantFrom('knight', 'archer', 'mage', 'rogue', 'priest'),
-  instanceId: fc.string({ minLength: 1, maxLength: 30 }).map((s) => `unit_${s.replace(/[^a-zA-Z0-9]/g, '_')}`),
-  name: fc.constantFrom('Knight', 'Archer', 'Mage', 'Rogue', 'Priest'),
-  team: arbitraryTeam,
-  stats: fc.record({
-    hp: fc.integer({ min: 50, max: 200 }),
-    atk: fc.integer({ min: 5, max: 50 }),
-    atkCount: fc.integer({ min: 1, max: 3 }),
-    armor: fc.integer({ min: 0, max: 30 }),
-    speed: fc.integer({ min: 1, max: 5 }),
-    initiative: fc.integer({ min: 1, max: 20 }),
-    dodge: fc.integer({ min: 0, max: 50 }),
-  }),
-  range: fc.integer({ min: 1, max: 5 }),
-  role: fc.constantFrom('tank', 'melee_dps', 'ranged_dps', 'mage', 'support'),
-  cost: fc.integer({ min: 3, max: 8 }),
-  abilities: fc.array(fc.constantFrom('shield_wall', 'riposte', 'heal', 'fireball'), { minLength: 0, maxLength: 3 }),
-  position: arbitraryPosition,
-  currentHp: fc.integer({ min: 1, max: 200 }),
-  maxHp: fc.integer({ min: 50, max: 200 }),
-  alive: fc.constant(true), // Only test alive units for turn start
-  facing: arbitraryFacing,
-  resolve: fc.integer({ min: 0, max: 100 }),
-  maxResolve: fc.integer({ min: 50, max: 100 }),
-  isRouting: fc.boolean(),
-  engaged: fc.boolean(),
-  engagedBy: fc.array(fc.string(), { minLength: 0, maxLength: 3 }),
-  riposteCharges: arbitraryRiposteCharges,
-  ammo: fc.oneof(fc.constant(null), fc.integer({ min: 0, max: 20 })),
-  maxAmmo: fc.oneof(fc.constant(null), fc.integer({ min: 5, max: 20 })),
-  momentum: fc.integer({ min: 0, max: 5 }),
-  armorShred: fc.integer({ min: 0, max: 20 }),
-  inPhalanx: fc.boolean(),
-  tags: fc.array(fc.constantFrom('infantry', 'cavalry', 'ranged', 'mage'), { minLength: 0, maxLength: 3 }),
-  faction: arbitraryFaction,
-}).filter((unit) => unit.currentHp <= unit.maxHp && unit.resolve <= unit.maxResolve);
+const arbitraryBattleUnit: fc.Arbitrary<BattleUnit> = fc
+  .record({
+    id: fc.constantFrom('knight', 'archer', 'mage', 'rogue', 'priest'),
+    instanceId: fc
+      .string({ minLength: 1, maxLength: 30 })
+      .map((s) => `unit_${s.replace(/[^a-zA-Z0-9]/g, '_')}`),
+    name: fc.constantFrom('Knight', 'Archer', 'Mage', 'Rogue', 'Priest'),
+    team: arbitraryTeam,
+    stats: fc.record({
+      hp: fc.integer({ min: 50, max: 200 }),
+      atk: fc.integer({ min: 5, max: 50 }),
+      atkCount: fc.integer({ min: 1, max: 3 }),
+      armor: fc.integer({ min: 0, max: 30 }),
+      speed: fc.integer({ min: 1, max: 5 }),
+      initiative: fc.integer({ min: 1, max: 20 }),
+      dodge: fc.integer({ min: 0, max: 50 }),
+    }),
+    range: fc.integer({ min: 1, max: 5 }),
+    role: fc.constantFrom('tank', 'melee_dps', 'ranged_dps', 'mage', 'support'),
+    cost: fc.integer({ min: 3, max: 8 }),
+    abilities: fc.array(fc.constantFrom('shield_wall', 'riposte', 'heal', 'fireball'), {
+      minLength: 0,
+      maxLength: 3,
+    }),
+    position: arbitraryPosition,
+    currentHp: fc.integer({ min: 1, max: 200 }),
+    maxHp: fc.integer({ min: 50, max: 200 }),
+    alive: fc.constant(true), // Only test alive units for turn start
+    facing: arbitraryFacing,
+    resolve: fc.integer({ min: 0, max: 100 }),
+    maxResolve: fc.integer({ min: 50, max: 100 }),
+    isRouting: fc.boolean(),
+    engaged: fc.boolean(),
+    engagedBy: fc.array(fc.string(), { minLength: 0, maxLength: 3 }),
+    riposteCharges: arbitraryRiposteCharges,
+    ammo: fc.oneof(fc.constant(null), fc.integer({ min: 0, max: 20 })),
+    maxAmmo: fc.oneof(fc.constant(null), fc.integer({ min: 5, max: 20 })),
+    momentum: fc.integer({ min: 0, max: 5 }),
+    armorShred: fc.integer({ min: 0, max: 20 }),
+    inPhalanx: fc.boolean(),
+    tags: fc.array(fc.constantFrom('infantry', 'cavalry', 'ranged', 'mage'), {
+      minLength: 0,
+      maxLength: 3,
+    }),
+    faction: arbitraryFaction,
+  })
+  .filter((unit) => unit.currentHp <= unit.maxHp && unit.resolve <= unit.maxResolve);
 
 /**
  * Create a valid BattleState from a unit.
@@ -144,30 +159,25 @@ describe('Turn Start Phase Property-Based Tests', () => {
   describe('Property 9: Riposte Charge Reset', () => {
     it('riposte charges are reset to default at turn start for any alive unit', () => {
       fc.assert(
-        fc.property(
-          arbitraryBattleUnit,
-          (unit: BattleUnit): boolean => {
-            // Ensure unit is alive (turn start only applies to alive units)
-            const aliveUnit = { ...unit, alive: true, currentHp: Math.max(1, unit.currentHp) };
-            const state = createBattleState(aliveUnit);
+        fc.property(arbitraryBattleUnit, (unit: BattleUnit): boolean => {
+          // Ensure unit is alive (turn start only applies to alive units)
+          const aliveUnit = { ...unit, alive: true, currentHp: Math.max(1, unit.currentHp) };
+          const state = createBattleState(aliveUnit);
 
-            // Execute turn start phase
-            const result = handleTurnStart(state, aliveUnit.instanceId);
+          // Execute turn start phase
+          const result = handleTurnStart(state, aliveUnit.instanceId);
 
-            // Find the updated unit
-            const updatedUnit = result.state.units.find(
-              (u) => u.instanceId === aliveUnit.instanceId,
-            );
+          // Find the updated unit
+          const updatedUnit = result.state.units.find((u) => u.instanceId === aliveUnit.instanceId);
 
-            // Property 9: Riposte charges must be reset to default
-            const chargesReset = updatedUnit?.riposteCharges === DEFAULT_RIPOSTE_CHARGES;
+          // Property 9: Riposte charges must be reset to default
+          const chargesReset = updatedUnit?.riposteCharges === DEFAULT_RIPOSTE_CHARGES;
 
-            expect(updatedUnit).toBeDefined();
-            expect(updatedUnit?.riposteCharges).toBe(DEFAULT_RIPOSTE_CHARGES);
+          expect(updatedUnit).toBeDefined();
+          expect(updatedUnit?.riposteCharges).toBe(DEFAULT_RIPOSTE_CHARGES);
 
-            return chargesReset;
-          },
-        ),
+          return chargesReset;
+        }),
         { numRuns: 100 },
       );
     });
@@ -209,34 +219,31 @@ describe('Turn Start Phase Property-Based Tests', () => {
 
     it('riposte charges reset for units with zero charges (depleted)', () => {
       fc.assert(
-        fc.property(
-          arbitraryBattleUnit,
-          (unit: BattleUnit): boolean => {
-            // Specifically test with depleted charges
-            const depletedUnit: BattleUnit = {
-              ...unit,
-              alive: true,
-              currentHp: Math.max(1, unit.currentHp),
-              riposteCharges: 0,
-            };
-            const state = createBattleState(depletedUnit);
+        fc.property(arbitraryBattleUnit, (unit: BattleUnit): boolean => {
+          // Specifically test with depleted charges
+          const depletedUnit: BattleUnit = {
+            ...unit,
+            alive: true,
+            currentHp: Math.max(1, unit.currentHp),
+            riposteCharges: 0,
+          };
+          const state = createBattleState(depletedUnit);
 
-            // Execute turn start phase
-            const result = handleTurnStart(state, depletedUnit.instanceId);
+          // Execute turn start phase
+          const result = handleTurnStart(state, depletedUnit.instanceId);
 
-            // Find the updated unit
-            const updatedUnit = result.state.units.find(
-              (u) => u.instanceId === depletedUnit.instanceId,
-            );
+          // Find the updated unit
+          const updatedUnit = result.state.units.find(
+            (u) => u.instanceId === depletedUnit.instanceId,
+          );
 
-            // Property 9: Depleted charges must be restored
-            const chargesRestored = updatedUnit?.riposteCharges === DEFAULT_RIPOSTE_CHARGES;
+          // Property 9: Depleted charges must be restored
+          const chargesRestored = updatedUnit?.riposteCharges === DEFAULT_RIPOSTE_CHARGES;
 
-            expect(updatedUnit?.riposteCharges).toBe(DEFAULT_RIPOSTE_CHARGES);
+          expect(updatedUnit?.riposteCharges).toBe(DEFAULT_RIPOSTE_CHARGES);
 
-            return chargesRestored;
-          },
-        ),
+          return chargesRestored;
+        }),
         { numRuns: 100 },
       );
     });
@@ -277,88 +284,80 @@ describe('Turn Start Phase Property-Based Tests', () => {
 
     it('riposte reset does not emit event when already at max charges', () => {
       fc.assert(
-        fc.property(
-          arbitraryBattleUnit,
-          (unit: BattleUnit): boolean => {
-            // Set charges to default (no change needed)
-            const testUnit: BattleUnit = {
-              ...unit,
-              alive: true,
-              currentHp: Math.max(1, unit.currentHp),
-              riposteCharges: DEFAULT_RIPOSTE_CHARGES,
-            };
-            const state = createBattleState(testUnit);
+        fc.property(arbitraryBattleUnit, (unit: BattleUnit): boolean => {
+          // Set charges to default (no change needed)
+          const testUnit: BattleUnit = {
+            ...unit,
+            alive: true,
+            currentHp: Math.max(1, unit.currentHp),
+            riposteCharges: DEFAULT_RIPOSTE_CHARGES,
+          };
+          const state = createBattleState(testUnit);
 
-            // Execute turn start phase
-            const result = handleTurnStart(state, testUnit.instanceId);
+          // Execute turn start phase
+          const result = handleTurnStart(state, testUnit.instanceId);
 
-            // Check for riposte_reset event
-            const riposteResetEvent = result.events.find((e) => e.type === 'riposte_reset');
+          // Check for riposte_reset event
+          const riposteResetEvent = result.events.find((e) => e.type === 'riposte_reset');
 
-            // No event should be emitted when charges don't change
-            const noEventEmitted = riposteResetEvent === undefined;
+          // No event should be emitted when charges don't change
+          const noEventEmitted = riposteResetEvent === undefined;
 
-            expect(riposteResetEvent).toBeUndefined();
+          expect(riposteResetEvent).toBeUndefined();
 
-            return noEventEmitted;
-          },
-        ),
+          return noEventEmitted;
+        }),
         { numRuns: 100 },
       );
     });
 
     it('riposte charges reset preserves other unit properties', () => {
       fc.assert(
-        fc.property(
-          arbitraryBattleUnit,
-          (unit: BattleUnit): boolean => {
-            const testUnit: BattleUnit = {
-              ...unit,
-              alive: true,
-              currentHp: Math.max(1, unit.currentHp),
-              riposteCharges: 0, // Depleted
-            };
-            const state = createBattleState(testUnit);
+        fc.property(arbitraryBattleUnit, (unit: BattleUnit): boolean => {
+          const testUnit: BattleUnit = {
+            ...unit,
+            alive: true,
+            currentHp: Math.max(1, unit.currentHp),
+            riposteCharges: 0, // Depleted
+          };
+          const state = createBattleState(testUnit);
 
-            // Capture original values
-            const originalFacing = testUnit.facing;
-            const originalAmmo = testUnit.ammo;
-            const originalMomentum = testUnit.momentum;
-            const originalArmorShred = testUnit.armorShred;
-            const originalPosition = { ...testUnit.position };
+          // Capture original values
+          const originalFacing = testUnit.facing;
+          const originalAmmo = testUnit.ammo;
+          const originalMomentum = testUnit.momentum;
+          const originalArmorShred = testUnit.armorShred;
+          const originalPosition = { ...testUnit.position };
 
-            // Execute turn start phase
-            const result = handleTurnStart(state, testUnit.instanceId);
+          // Execute turn start phase
+          const result = handleTurnStart(state, testUnit.instanceId);
 
-            // Find the updated unit
-            const updatedUnit = result.state.units.find(
-              (u) => u.instanceId === testUnit.instanceId,
-            );
+          // Find the updated unit
+          const updatedUnit = result.state.units.find((u) => u.instanceId === testUnit.instanceId);
 
-            // Property 9 + Property 8: Riposte reset should not affect other properties
-            const facingPreserved = updatedUnit?.facing === originalFacing;
-            const ammoPreserved = updatedUnit?.ammo === originalAmmo;
-            const momentumPreserved = updatedUnit?.momentum === originalMomentum;
-            const armorShredPreserved = updatedUnit?.armorShred === originalArmorShred;
-            const positionPreserved =
-              updatedUnit?.position.x === originalPosition.x &&
-              updatedUnit?.position.y === originalPosition.y;
+          // Property 9 + Property 8: Riposte reset should not affect other properties
+          const facingPreserved = updatedUnit?.facing === originalFacing;
+          const ammoPreserved = updatedUnit?.ammo === originalAmmo;
+          const momentumPreserved = updatedUnit?.momentum === originalMomentum;
+          const armorShredPreserved = updatedUnit?.armorShred === originalArmorShred;
+          const positionPreserved =
+            updatedUnit?.position.x === originalPosition.x &&
+            updatedUnit?.position.y === originalPosition.y;
 
-            expect(updatedUnit?.facing).toBe(originalFacing);
-            expect(updatedUnit?.ammo).toBe(originalAmmo);
-            expect(updatedUnit?.momentum).toBe(originalMomentum);
-            expect(updatedUnit?.armorShred).toBe(originalArmorShred);
-            expect(updatedUnit?.position).toEqual(originalPosition);
+          expect(updatedUnit?.facing).toBe(originalFacing);
+          expect(updatedUnit?.ammo).toBe(originalAmmo);
+          expect(updatedUnit?.momentum).toBe(originalMomentum);
+          expect(updatedUnit?.armorShred).toBe(originalArmorShred);
+          expect(updatedUnit?.position).toEqual(originalPosition);
 
-            return (
-              facingPreserved &&
-              ammoPreserved &&
-              momentumPreserved &&
-              armorShredPreserved &&
-              positionPreserved
-            );
-          },
-        ),
+          return (
+            facingPreserved &&
+            ammoPreserved &&
+            momentumPreserved &&
+            armorShredPreserved &&
+            positionPreserved
+          );
+        }),
         { numRuns: 100 },
       );
     });

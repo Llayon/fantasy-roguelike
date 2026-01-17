@@ -157,11 +157,7 @@ export class MatchmakingService {
    *
    * @internal
    */
-  private generateBotOpponent(
-    stage: number,
-    playerWins: number,
-    seed: number
-  ): BotOpponent {
+  private generateBotOpponent(stage: number, playerWins: number, seed: number): BotOpponent {
     // Calculate difficulty based on player wins
     const difficulty = this.calculateBotDifficulty(playerWins);
 
@@ -207,8 +203,7 @@ export class MatchmakingService {
    */
   private calculateBotDifficulty(playerWins: number): number {
     const config = this.botDifficultyConfig;
-    const difficulty =
-      config.baseDifficulty + playerWins * config.difficultyPerWin;
+    const difficulty = config.baseDifficulty + playerWins * config.difficultyPerWin;
     return Math.min(difficulty, config.maxDifficulty);
   }
 
@@ -287,12 +282,7 @@ export class MatchmakingService {
    *
    * @internal
    */
-  storeSnapshot(
-    snapshotId: string,
-    team: TeamSetup,
-    wins: number,
-    stage: number
-  ): void {
+  storeSnapshot(snapshotId: string, team: TeamSetup, wins: number, stage: number): void {
     this.snapshots.set(snapshotId, {
       snapshotId,
       team,

@@ -211,10 +211,7 @@ export interface EngagementProcessor {
    * @param state - Current battle state
    * @returns Engagement status (free, engaged, or pinned)
    */
-  getEngagementStatus(
-    unit: BattleUnit & UnitWithEngagement,
-    state: BattleState,
-  ): EngagementStatus;
+  getEngagementStatus(unit: BattleUnit & UnitWithEngagement, state: BattleState): EngagementStatus;
 
   /**
    * Gets the Zone of Control for a unit.
@@ -263,11 +260,7 @@ export interface EngagementProcessor {
    * @param seed - Random seed for determinism
    * @returns AoO result with updated state
    */
-  executeAttackOfOpportunity(
-    trigger: AoOTrigger,
-    state: BattleState,
-    seed: number,
-  ): AoOResult;
+  executeAttackOfOpportunity(trigger: AoOTrigger, state: BattleState, seed: number): AoOResult;
 
   /**
    * Calculates archer penalty when engaged.
@@ -302,4 +295,3 @@ export interface EngagementProcessor {
    */
   resetAoOUsage(state: BattleState, unitId: string): BattleState;
 }
-

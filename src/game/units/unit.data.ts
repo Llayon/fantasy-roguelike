@@ -479,10 +479,7 @@ export const UNIT_TEMPLATES: Record<UnitId, UnitTemplate> = {
  * Maps old UnitType to new UnitTemplate system.
  * @deprecated Use UNIT_TEMPLATES directly for new code.
  */
-export const LEGACY_UNIT_TEMPLATES: Record<
-  UnitType,
-  Omit<LegacyUnitStats, 'maxHp'>
-> = {
+export const LEGACY_UNIT_TEMPLATES: Record<UnitType, Omit<LegacyUnitStats, 'maxHp'>> = {
   Warrior: {
     type: 'Warrior',
     hp: 100,

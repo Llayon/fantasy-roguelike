@@ -19,11 +19,7 @@ export type {
   RiposteContext,
   RiposteCheckResult,
 } from './riposte.types';
-export {
-  RIPOSTE_DAMAGE_MULTIPLIER,
-  MIN_RIPOSTE_CHANCE,
-  MAX_RIPOSTE_CHANCE,
-} from './riposte.types';
+export { RIPOSTE_DAMAGE_MULTIPLIER, MIN_RIPOSTE_CHANCE, MAX_RIPOSTE_CHANCE } from './riposte.types';
 
 // Note: Event types (RiposteTriggeredEvent, etc.) are defined in core/types/events.ts
 // to avoid duplication and maintain a single source of truth for event types.

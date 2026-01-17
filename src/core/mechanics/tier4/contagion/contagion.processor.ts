@@ -118,20 +118,17 @@ function withContagionProps(
  * Updates units in state immutably.
  */
 function updateUnits(state: BattleState, updatedUnits: BattleUnit[]): BattleState {
-  const unitMap = new Map(updatedUnits.map(u => [getUnitId(u), u]));
+  const unitMap = new Map(updatedUnits.map((u) => [getUnitId(u), u]));
   return {
     ...state,
-    units: state.units.map(u => unitMap.get(getUnitId(u)) ?? u),
+    units: state.units.map((u) => unitMap.get(getUnitId(u)) ?? u),
   };
 }
 
 /**
  * Gets the base spread chance for an effect type from config.
  */
-function getBaseSpreadChance(
-  effectType: ContagionEffectType,
-  config: ContagionConfig,
-): number {
+function getBaseSpreadChance(effectType: ContagionEffectType, config: ContagionConfig): number {
   switch (effectType) {
     case 'fire':
       return config.fireSpread ?? DEFAULT_FIRE_SPREAD;
@@ -193,10 +190,7 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
     /**
      * Gets the spread chance for an effect type.
      */
-    getSpreadChance(
-      effectType: ContagionEffectType,
-      targetInPhalanx: boolean,
-    ): number {
+    getSpreadChance(effectType: ContagionEffectType, targetInPhalanx: boolean): number {
       const baseChance = getBaseSpreadChance(effectType, config);
       const bonus = targetInPhalanx ? phalanxBonus : 0;
       return Math.min(1, baseChance + bonus);
@@ -276,7 +270,7 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
 
       // Check if target already has this effect (can refresh but counts as "active")
       const targetProps = getContagionProps(baseTarget);
-      const existingEffect = targetProps.statusEffects?.find(e => e.type === effectType);
+      const existingEffect = targetProps.statusEffects?.find((e) => e.type === effectType);
       if (existingEffect) {
         // Effect exists - spread will refresh duration, not stack
         // We still allow the spread attempt
@@ -295,10 +289,7 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
     /**
      * Gets adjacent allies that could receive spread effects.
      */
-    getAdjacentTargets(
-      unit: BattleUnit & UnitWithContagion,
-      state: BattleState,
-    ): AdjacentTarget[] {
+    getAdjacentTargets(unit: BattleUnit & UnitWithContagion, state: BattleState): AdjacentTarget[] {
       const baseUnit = unit as BattleUnit;
       const position = baseUnit.position;
       const targets: AdjacentTarget[] = [];
@@ -310,10 +301,7 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
         };
 
         const neighbor = state.units.find(
-          (u) =>
-            u.position &&
-            u.position.x === neighborPos.x &&
-            u.position.y === neighborPos.y,
+          (u) => u.position && u.position.x === neighborPos.x && u.position.y === neighborPos.y,
         );
 
         if (
@@ -324,7 +312,7 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
         ) {
           const neighborProps = getContagionProps(neighbor);
           const existingEffects = (neighborProps.statusEffects ?? [])
-            .map(e => e.type)
+            .map((e) => e.type)
             .filter(isSpreadableEffect);
 
           targets.push({
@@ -342,12 +330,10 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
     /**
      * Gets spreadable effects from a unit.
      */
-    getSpreadableEffects(
-      unit: BattleUnit & UnitWithContagion,
-    ): StatusEffect[] {
+    getSpreadableEffects(unit: BattleUnit & UnitWithContagion): StatusEffect[] {
       const props = getContagionProps(unit as BattleUnit);
       const effects = props.statusEffects ?? [];
-      return effects.filter(e => isSpreadableEffect(e.type));
+      return effects.filter((e) => isSpreadableEffect(e.type));
     },
 
     /**
@@ -412,15 +398,13 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
       const existingEffects = props.statusEffects ?? [];
 
       // Check if effect already exists - refresh duration if so
-      const existingIndex = existingEffects.findIndex(e => e.type === effect.type);
+      const existingIndex = existingEffects.findIndex((e) => e.type === effect.type);
       let newEffects: StatusEffect[];
 
       if (existingIndex >= 0) {
         // Refresh duration (take max of existing and new)
         newEffects = existingEffects.map((e, i) =>
-          i === existingIndex
-            ? { ...e, duration: Math.max(e.duration, effect.duration) }
-            : e,
+          i === existingIndex ? { ...e, duration: Math.max(e.duration, effect.duration) } : e,
         );
       } else {
         // Add new effect
@@ -437,12 +421,8 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
     /**
      * Processes contagion spread for a unit at turn_end.
      */
-    processSpread(
-      state: BattleState,
-      unitId: string,
-      rolls: number[],
-    ): ContagionSpreadResult {
-      const unit = state.units.find(u => getUnitId(u) === unitId);
+    processSpread(state: BattleState, unitId: string, rolls: number[]): ContagionSpreadResult {
+      const unit = state.units.find((u) => getUnitId(u) === unitId);
 
       if (!unit || !isUnitAlive(unit)) {
         return {
@@ -503,11 +483,7 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
           });
 
           if (result.success && result.spreadEffect) {
-            currentState = this.applySpreadEffect(
-              target.unit,
-              result.spreadEffect,
-              currentState,
-            );
+            currentState = this.applySpreadEffect(target.unit, result.spreadEffect, currentState);
 
             const targetId = getUnitId(target.unit as BattleUnit);
             if (!affectedUnits.includes(targetId)) {

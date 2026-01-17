@@ -56,9 +56,8 @@ export function createTestUnit(
   team: 'player' | 'enemy' = 'player',
   index: number = 0,
 ): BattleUnit {
-  const defaultPosition: Position = team === 'player'
-    ? { x: index % 8, y: 0 }
-    : { x: index % 8, y: 9 };
+  const defaultPosition: Position =
+    team === 'player' ? { x: index % 8, y: 0 } : { x: index % 8, y: 9 };
 
   return {
     // Identity

@@ -92,14 +92,7 @@ export function arbitraryFaction(): fc.Arbitrary<'human' | 'undead'> {
  * @returns Arbitrary<string>
  */
 export function arbitraryRole(): fc.Arbitrary<string> {
-  return fc.constantFrom(
-    'tank',
-    'melee_dps',
-    'ranged_dps',
-    'mage',
-    'support',
-    'control',
-  );
+  return fc.constantFrom('tank', 'melee_dps', 'ranged_dps', 'mage', 'support', 'control');
 }
 
 /**
@@ -177,10 +170,7 @@ export function arbitraryBattleUnitStats(): fc.Arbitrary<any> {
  * );
  */
 export function arbitraryAmmo(): fc.Arbitrary<number | null> {
-  return fc.oneof(
-    fc.constant(null),
-    fc.integer({ min: 0, max: 20 }),
-  );
+  return fc.oneof(fc.constant(null), fc.integer({ min: 0, max: 20 }));
 }
 
 // =============================================================================
@@ -291,10 +281,9 @@ export function arbitraryRiposteCharges(): fc.Arbitrary<number> {
  */
 export function arbitraryEngagedBy(): fc.Arbitrary<string[]> {
   return fc.array(
-    fc.tuple(
-      fc.constantFrom('player', 'enemy'),
-      fc.string({ minLength: 1, maxLength: 10 }),
-    ).map(([team, id]) => `${team}_${id}`),
+    fc
+      .tuple(fc.constantFrom('player', 'enemy'), fc.string({ minLength: 1, maxLength: 10 }))
+      .map(([team, id]) => `${team}_${id}`),
     { maxLength: 3 },
   );
 }

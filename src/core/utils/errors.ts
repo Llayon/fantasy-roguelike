@@ -75,7 +75,7 @@ export class BattleError extends Error {
     message: string,
     code: BattleErrorCode = BattleErrorCode.UNKNOWN,
     context: BattleContext = {},
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown>,
   ) {
     super(message);
     this.name = 'BattleError';
@@ -124,7 +124,7 @@ export class ValidationError extends BattleError {
     message: string,
     code: BattleErrorCode = BattleErrorCode.INVALID_STATE,
     context: BattleContext = {},
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown>,
   ) {
     super(message, code, context, metadata);
     this.name = 'ValidationError';
@@ -147,7 +147,7 @@ export class MechanicError extends BattleError {
     message: string,
     code: BattleErrorCode = BattleErrorCode.MECHANIC_FAILED,
     context: BattleContext = {},
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown>,
   ) {
     super(message, code, context, metadata);
     this.name = 'MechanicError';
@@ -169,13 +169,12 @@ export class SimulatorError extends BattleError {
     message: string,
     code: BattleErrorCode = BattleErrorCode.SIMULATION_FAILED,
     context: BattleContext = {},
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown>,
   ) {
     super(message, code, context, metadata);
     this.name = 'SimulatorError';
   }
 }
-
 
 /**
  * Error recovery strategy type.
@@ -256,10 +255,7 @@ export class ErrorBoundary {
    *   { fallback: 0, maxRetries: 1 }
    * );
    */
-  execute<T>(
-    operation: () => T,
-    options: RecoveryOptions<T> = {}
-  ): RecoveryResult<T> {
+  execute<T>(operation: () => T, options: RecoveryOptions<T> = {}): RecoveryResult<T> {
     const { maxRetries = 0, fallback, onRecovery } = options;
 
     let lastError: BattleError | undefined;
@@ -327,7 +323,7 @@ export class ErrorBoundary {
    */
   async executeAsync<T>(
     operation: () => Promise<T>,
-    options: RecoveryOptions<T> = {}
+    options: RecoveryOptions<T> = {},
   ): Promise<RecoveryResult<T>> {
     const { maxRetries = 0, fallback, onRecovery } = options;
 
@@ -399,16 +395,11 @@ export class ErrorBoundary {
         error.message,
         BattleErrorCode.UNKNOWN,
         {},
-        { originalError: error.name, stack: error.stack }
+        { originalError: error.name, stack: error.stack },
       );
     }
 
-    return new BattleError(
-      String(error),
-      BattleErrorCode.UNKNOWN,
-      {},
-      { originalValue: error }
-    );
+    return new BattleError(String(error), BattleErrorCode.UNKNOWN, {}, { originalValue: error });
   }
 
   /**
@@ -467,13 +458,12 @@ export class ErrorBoundary {
 export function invalidUnitError(
   unitId: string,
   reason: string,
-  context: BattleContext = {}
+  context: BattleContext = {},
 ): ValidationError {
-  return new ValidationError(
-    `Invalid unit '${unitId}': ${reason}`,
-    BattleErrorCode.INVALID_UNIT,
-    { ...context, unitId }
-  );
+  return new ValidationError(`Invalid unit '${unitId}': ${reason}`, BattleErrorCode.INVALID_UNIT, {
+    ...context,
+    unitId,
+  });
 }
 
 /**
@@ -487,13 +477,13 @@ export function invalidUnitError(
 export function invalidPositionError(
   position: { x: number; y: number },
   reason: string,
-  context: BattleContext = {}
+  context: BattleContext = {},
 ): ValidationError {
   return new ValidationError(
     `Invalid position (${position.x}, ${position.y}): ${reason}`,
     BattleErrorCode.INVALID_POSITION,
     context,
-    { position }
+    { position },
   );
 }
 
@@ -508,12 +498,12 @@ export function invalidPositionError(
 export function invalidTargetError(
   targetId: string,
   reason: string,
-  context: BattleContext = {}
+  context: BattleContext = {},
 ): ValidationError {
   return new ValidationError(
     `Invalid target '${targetId}': ${reason}`,
     BattleErrorCode.INVALID_TARGET,
-    { ...context, targetId }
+    { ...context, targetId },
   );
 }
 
@@ -530,7 +520,7 @@ export function mechanicError(
   mechanic: string,
   reason: string,
   context: BattleContext = {},
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown>,
 ): MechanicError {
   const codeMap: Record<string, BattleErrorCode> = {
     facing: BattleErrorCode.FACING_ERROR,
@@ -546,7 +536,7 @@ export function mechanicError(
     `${mechanic} mechanic failed: ${reason}`,
     codeMap[mechanic.toLowerCase()] ?? BattleErrorCode.MECHANIC_FAILED,
     { ...context, mechanic },
-    metadata
+    metadata,
   );
 }
 
@@ -561,13 +551,13 @@ export function mechanicError(
 export function deadUnitActionError(
   unitId: string,
   action: string,
-  context: BattleContext = {}
+  context: BattleContext = {},
 ): SimulatorError {
   return new SimulatorError(
     `Dead unit '${unitId}' attempted action: ${action}`,
     BattleErrorCode.DEAD_UNIT_ACTION,
     { ...context, unitId },
-    { action }
+    { action },
   );
 }
 
@@ -580,13 +570,13 @@ export function deadUnitActionError(
  */
 export function maxRoundsExceededError(
   maxRounds: number,
-  context: BattleContext = {}
+  context: BattleContext = {},
 ): SimulatorError {
   return new SimulatorError(
     `Battle exceeded maximum rounds (${maxRounds})`,
     BattleErrorCode.MAX_ROUNDS_EXCEEDED,
     context,
-    { maxRounds }
+    { maxRounds },
   );
 }
 
@@ -615,17 +605,13 @@ export function isRecoverableError(error: BattleError): boolean {
 
   // Some mechanic errors are recoverable
   if (error instanceof MechanicError) {
-    const recoverableCodes = [
-      BattleErrorCode.RIPOSTE_ERROR,
-      BattleErrorCode.AMMUNITION_ERROR,
-    ];
+    const recoverableCodes = [BattleErrorCode.RIPOSTE_ERROR, BattleErrorCode.AMMUNITION_ERROR];
     return recoverableCodes.includes(error.code);
   }
 
   // Simulator errors are generally not recoverable
   return false;
 }
-
 
 /**
  * Error logger that combines BattleLogger with error handling.
@@ -641,13 +627,9 @@ export class ErrorLogger {
     error: (
       message: string,
       context?: BattleContext,
-      error?: Error | Record<string, unknown>
+      error?: Error | Record<string, unknown>,
     ) => void;
-    warn: (
-      message: string,
-      context?: BattleContext,
-      metadata?: Record<string, unknown>
-    ) => void;
+    warn: (message: string, context?: BattleContext, metadata?: Record<string, unknown>) => void;
   };
 
   /**
@@ -659,13 +641,9 @@ export class ErrorLogger {
     error: (
       message: string,
       context?: BattleContext,
-      error?: Error | Record<string, unknown>
+      error?: Error | Record<string, unknown>,
     ) => void;
-    warn: (
-      message: string,
-      context?: BattleContext,
-      metadata?: Record<string, unknown>
-    ) => void;
+    warn: (message: string, context?: BattleContext, metadata?: Record<string, unknown>) => void;
   }) {
     this.logger = logger;
   }
@@ -737,7 +715,7 @@ export class ErrorLogger {
           {
             strategy: result.strategy,
             originalError: result.originalError?.message,
-          }
+          },
         );
       }
     } else {
@@ -769,16 +747,15 @@ export class ErrorLogger {
               error.message,
               error.code,
               { ...error.context, ...context },
-              error.metadata
+              error.metadata,
             )
           : new BattleError(
               error instanceof Error ? error.message : String(error),
               BattleErrorCode.UNKNOWN,
               context,
               {
-                originalError:
-                  error instanceof Error ? error.name : typeof error,
-              }
+                originalError: error instanceof Error ? error.name : typeof error,
+              },
             );
 
       this.logAndThrow(battleError);
@@ -793,10 +770,7 @@ export class ErrorLogger {
    * @returns Promise of operation result
    * @throws BattleError with context if operation fails
    */
-  async wrapOperationAsync<T>(
-    operation: () => Promise<T>,
-    context: BattleContext
-  ): Promise<T> {
+  async wrapOperationAsync<T>(operation: () => Promise<T>, context: BattleContext): Promise<T> {
     try {
       return await operation();
     } catch (error) {
@@ -806,16 +780,15 @@ export class ErrorLogger {
               error.message,
               error.code,
               { ...error.context, ...context },
-              error.metadata
+              error.metadata,
             )
           : new BattleError(
               error instanceof Error ? error.message : String(error),
               BattleErrorCode.UNKNOWN,
               context,
               {
-                originalError:
-                  error instanceof Error ? error.name : typeof error,
-              }
+                originalError: error instanceof Error ? error.name : typeof error,
+              },
             );
 
       this.logAndThrow(battleError);
@@ -838,13 +811,9 @@ export function createErrorLogger(logger: {
   error: (
     message: string,
     context?: BattleContext,
-    error?: Error | Record<string, unknown>
+    error?: Error | Record<string, unknown>,
   ) => void;
-  warn: (
-    message: string,
-    context?: BattleContext,
-    metadata?: Record<string, unknown>
-  ) => void;
+  warn: (message: string, context?: BattleContext, metadata?: Record<string, unknown>) => void;
 }): ErrorLogger {
   return new ErrorLogger(logger);
 }
