@@ -1,0 +1,303 @@
+﻿
+> fantasy-roguelike@0.1.0 lint
+> eslint "{src,apps,libs,test}/**/*.ts" --fix
+
+
+D:\Max\Autobattler\fantasy-roguelike\src\__tests__\fixtures\helpers.ts
+   31:3   error  'createTestUnit' is defined but never used  @typescript-eslint/no-unused-vars
+  395:28  error  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\__tests__\fixtures\states.ts
+  27:30  error  'PHASE_ORDER' is defined but never used         @typescript-eslint/no-unused-vars
+  33:3   error  'createPlayerArcher' is defined but never used  @typescript-eslint/no-unused-vars
+  34:3   error  'createEnemyArcher' is defined but never used   @typescript-eslint/no-unused-vars
+  35:3   error  'createTestUnit' is defined but never used      @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\__tests__\fixtures\units.ts
+  669:3  error  'team' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\__tests__\generators\state.generator.ts
+   31:50  error  'arbitraryRoutingUnit' is defined but never used  @typescript-eslint/no-unused-vars
+  298:63  error  Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+  306:20  error  Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\__tests__\generators\team.generator.ts
+  373:61  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\__tests__\generators\unit.generator.ts
+  144:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  428:62  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  436:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\api\__tests__\api-integration.spec.ts
+   32:7   error  'battleService' is assigned a value but never used    @typescript-eslint/no-unused-vars
+   34:7   error  'draftService' is assigned a value but never used     @typescript-eslint/no-unused-vars
+   36:7   error  'upgradeService' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  224:24  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  242:24  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  358:13  error  'hasFacingEvents' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  431:13  error  'seed' is assigned a value but never used             @typescript-eslint/no-unused-vars
+  439:13  error  'battle2' is assigned a value but never used          @typescript-eslint/no-unused-vars
+  516:27  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  659:27  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  700:30  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  722:30  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  746:30  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  769:30  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  804:30  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  849:30  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  883:30  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\api\draft\__tests__\draft.service.spec.ts
+  93:13  error  'originalOptions' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\api\run\run.service.ts
+  3:26  error  'RunStatus' is defined but never used  @typescript-eslint/no-unused-vars
+  3:37  error  'RunPhase' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\api\upgrade\upgrade.service.ts
+  1:51  error  'NotFoundException' is defined but never used  @typescript-eslint/no-unused-vars
+  2:32  error  'GetRunResponse' is defined but never used     @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier2\intercept\intercept.processor.ts
+  111:42  error  'config' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier2\riposte\riposte.types.ts
+  20:28  error  'BattleEvent' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier3\charge\charge.processor.ts
+   78:39  error  'config' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  203:36  error  '_chargeStartPosition' is assigned a value but never used                 @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier3\los\los.processor.ts
+  183:9  error  'partialCoverHitChance' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier3\los\los.types.ts
+  18:15  error  'LoSConfig' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier3\phalanx\phalanx.processor.ts
+  20:50  error  'FacingDirection' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier4\armor-shred\armor-shred.processor.ts
+  76:12  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier4\armor-shred\armor-shred.types.ts
+  18:15  error  'ShredConfig' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier4\contagion\contagion.processor.ts
+   26:3   error  'SpreadBlockReason' is defined but never used  @typescript-eslint/no-unused-vars
+  396:13  error  'targetId' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\mechanics\tier4\contagion\contagion.types.ts
+  20:15  error  'ContagionConfig' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\utils\errors.ts
+  272:26  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  305:24  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  313:22  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  340:26  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  371:24  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  378:22  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+D:\Max\Autobattler\fantasy-roguelike\src\core\utils\logger.ts
+  424:5  warning  Missing return type on function  @typescript-eslint/explicit-function-return-type
+
+D:\Max\Autobattler\fantasy-roguelike\src\entities\battle.entity.ts
+  72:9   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  91:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\entities\run-deck.entity.ts
+  48:9  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\entities\run.entity.ts
+  116:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:10  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  130:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\entities\snapshot.entity.ts
+   68:9   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Max\Autobattler\fantasy-roguelike\src\roguelike\bot\__tests__\bot-generator.property.spec.ts
+   76:15  error  Unexpected console statement               no-console
+  263:19  error  'team' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\roguelike\bot\bot-generator.ts
+  19:32  error  'TEAM_LIMITS' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\roguelike\matchmaking\__tests__\matchmaking.property.spec.ts
+   35:7   error  'GRID_HEIGHT' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   38:7   error  'ENEMY_ROWS' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  125:10  error  'arbitraryTeamSetup' is defined but never used    @typescript-eslint/no-unused-vars
+  311:15  error  Unexpected console statement                      no-console
+  318:15  error  Unexpected console statement                      no-console
+  344:15  error  Unexpected console statement                      no-console
+  351:15  error  Unexpected console statement                      no-console
+  363:15  error  Unexpected console statement                      no-console
+  373:15  error  Unexpected console statement                      no-console
+  400:17  error  Unexpected console statement                      no-console
+  411:17  error  Unexpected console statement                      no-console
+  440:17  error  Unexpected console statement                      no-console
+  450:17  error  Unexpected console statement                      no-console
+  480:17  error  Unexpected console statement                      no-console
+  507:15  error  Unexpected console statement                      no-console
+  515:15  error  Unexpected console statement                      no-console
+  542:15  error  Unexpected console statement                      no-console
+  553:15  error  Unexpected console statement                      no-console
+  564:17  error  Unexpected console statement                      no-console
+  570:17  error  Unexpected console statement                      no-console
+  580:19  error  Unexpected console statement                      no-console
+
+D:\Max\Autobattler\fantasy-roguelike\src\roguelike\matchmaking\__tests__\matchmaking.service.spec.ts
+  101:13  error  'totalCost' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  238:32  error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+
+D:\Max\Autobattler\fantasy-roguelike\src\roguelike\matchmaking\matchmaking.service.ts
+  133:31  error  'stage' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  261:37  error  'index' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\roguelike\snapshot\__tests__\snapshot.service.spec.ts
+  10:20  error  'TeamSnapshot' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\ammunition.property.spec.ts
+   26:7   error  'GRID_HEIGHT' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  279:17  error  Unexpected console statement                      no-console
+  295:9   error  Unexpected console statement                      no-console
+  314:17  error  Unexpected console statement                      no-console
+  344:17  error  Unexpected console statement                      no-console
+  374:17  error  Unexpected console statement                      no-console
+  413:17  error  Forbidden non-null assertion                      @typescript-eslint/no-non-null-assertion
+  423:19  error  Unexpected console statement                      no-console
+  429:17  error  'prevAmmo' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  457:17  error  Unexpected console statement                      no-console
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\death.property.spec.ts
+   26:7   error  'GRID_HEIGHT' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  286:15  error  Unexpected console statement                      no-console
+  320:17  error  Unexpected console statement                      no-console
+  357:17  error  Unexpected console statement                      no-console
+  397:17  error  Unexpected console statement                      no-console
+  429:17  error  Unexpected console statement                      no-console
+  466:19  error  Unexpected console statement                      no-console
+  504:17  error  Unexpected console statement                      no-console
+  538:15  error  Unexpected console statement                      no-console
+  545:17  error  Unexpected console statement                      no-console
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\death.spec.ts
+  17:3  error  'PHALANX_MIN_ALLIES' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\mechanics-integration-task40.spec.ts
+   19:49  error  'assertUnitDead' is defined but never used  @typescript-eslint/no-unused-vars
+  400:13  error  'rng' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  515:13  error  'rng' is assigned a value but never used    @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\mechanics-integration.spec.ts
+   18:26  error  'createBattleUnit' is defined but never used          @typescript-eslint/no-unused-vars
+   19:34  error  'BattleEvent' is defined but never used               @typescript-eslint/no-unused-vars
+   22:10  error  'executeTurn' is defined but never used               @typescript-eslint/no-unused-vars
+   26:20  error  'updateUnit' is defined but never used                @typescript-eslint/no-unused-vars
+   26:32  error  'getTeamUnits' is defined but never used              @typescript-eslint/no-unused-vars
+   28:3   error  'createChargeProcessor' is defined but never used     @typescript-eslint/no-unused-vars
+   29:3   error  'createRiposteProcessor' is defined but never used    @typescript-eslint/no-unused-vars
+   30:3   error  'createPhalanxProcessor' is defined but never used    @typescript-eslint/no-unused-vars
+   33:3   error  'createInterceptProcessor' is defined but never used  @typescript-eslint/no-unused-vars
+   34:3   error  'DEFAULT_CHARGE_CONFIG' is defined but never used     @typescript-eslint/no-unused-vars
+   35:3   error  'DEFAULT_RIPOSTE_CONFIG' is defined but never used    @typescript-eslint/no-unused-vars
+   36:3   error  'DEFAULT_PHALANX_CONFIG' is defined but never used    @typescript-eslint/no-unused-vars
+   39:3   error  'DEFAULT_INTERCEPT_CONFIG' is defined but never used  @typescript-eslint/no-unused-vars
+  252:13  error  'ammoEvents' is assigned a value but never used       @typescript-eslint/no-unused-vars
+  451:11  error  'riposteEvents' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  526:46  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  649:68  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  658:11  error  'contagionEvents' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  695:68  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  787:64  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  873:11  error  'knight' is assigned a value but never used           @typescript-eslint/no-unused-vars
+  903:11  error  'skeleton' is assigned a value but never used         @typescript-eslint/no-unused-vars
+  966:11  error  'knight' is assigned a value but never used           @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\simulator.property.spec.ts
+  17:33  error  'getUnitTemplate' is defined but never used                   @typescript-eslint/no-unused-vars
+  28:7   error  'GRID_HEIGHT' is assigned a value but never used              @typescript-eslint/no-unused-vars
+  66:7   error  'arbitraryPlayerPosition' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  74:7   error  'arbitraryEnemyPosition' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\simulator.spec.ts
+  141:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  141:44  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  142:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  142:48  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  145:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  145:44  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  146:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  146:48  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  171:16  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  171:70  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  202:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  203:46  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  204:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  205:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  206:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  207:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  208:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  209:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  210:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  211:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  212:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  213:28  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  214:14  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\__tests__\turn.property.spec.ts
+   14:10  error  'executeTurn' is defined but never used           @typescript-eslint/no-unused-vars
+   16:10  error  'BattleState' is defined but never used           @typescript-eslint/no-unused-vars
+   17:10  error  'BattleUnit' is defined but never used            @typescript-eslint/no-unused-vars
+   17:22  error  'FacingDirection' is defined but never used       @typescript-eslint/no-unused-vars
+   20:10  error  'SeededRandom' is defined but never used          @typescript-eslint/no-unused-vars
+   29:7   error  'GRID_HEIGHT' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  318:17  error  Unexpected console statement                      no-console
+  351:17  error  Unexpected console statement                      no-console
+  361:17  error  Unexpected console statement                      no-console
+  391:17  error  Unexpected console statement                      no-console
+  421:17  error  Unexpected console statement                      no-console
+  461:19  error  Unexpected console statement                      no-console
+  494:17  error  Unexpected console statement                      no-console
+  524:15  error  Unexpected console statement                      no-console
+  531:17  error  Unexpected console statement                      no-console
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\ai\decision.ts
+   18:23  error  'BattleAction' is defined but never used            @typescript-eslint/no-unused-vars
+  342:43  error  'woundedAllies' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\phases\__tests__\attack.spec.ts
+  22:3  error  'BASE_RIPOSTE_CHANCE' is defined but never used  @typescript-eslint/no-unused-vars
+  23:3  error  'MAX_RIPOSTE_CHANCE' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\phases\attack.ts
+  1118:10  error  'calculateRiposteDamage' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\phases\movement.ts
+  441:13  error  'engagingEnemyIds' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\phases\turn-end.ts
+   25:3   error  'createCooldownTickedEvent' is defined but never used                           @typescript-eslint/no-unused-vars
+   28:20  error  'updateUnit' is defined but never used                                          @typescript-eslint/no-unused-vars
+  335:9   error  'unitWithShred' is assigned a value but never used                              @typescript-eslint/no-unused-vars
+  362:6   error  'AbilityCooldowns' is defined but never used                                    @typescript-eslint/no-unused-vars
+  382:3   error  'eventContext' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\phases\turn-start.ts
+  56:7  error  'resolveProcessor' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\src\simulator\turn.ts
+  25:3  error  'PHASE_ORDER' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Max\Autobattler\fantasy-roguelike\test\app.e2e-spec.ts
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/test\app.e2e-spec.ts` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+тЬЦ 195 problems (194 errors, 1 warning)
+

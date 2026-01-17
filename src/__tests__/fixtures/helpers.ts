@@ -20,7 +20,7 @@
  * assertDamageDealt(playerUnit, enemyUnit, 10);
  */
 
-import { BattleState } from '../../core/types/battle-state';
+import { BattleState, Phase } from '../../core/types/battle-state';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { Position } from '../../core/types/grid.types';
 import {
@@ -28,7 +28,6 @@ import {
   createEnemyKnight,
   createPlayerArcher,
   createEnemyArcher,
-  createTestUnit,
 } from './units';
 import { createTestBattleState, isValidBattleState } from './states';
 
@@ -392,7 +391,7 @@ export function advanceToNextTurn(state: BattleState): BattleState {
 export function advanceToPhase(state: BattleState, phase: string): BattleState {
   return {
     ...state,
-    currentPhase: phase as any,
+    currentPhase: phase as Phase,
   };
 }
 

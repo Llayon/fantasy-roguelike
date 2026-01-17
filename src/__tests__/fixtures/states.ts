@@ -24,15 +24,12 @@
  * const simpleState = createSimpleBattleState();
  */
 
-import { BattleState, Phase, PHASE_ORDER } from '../../core/types/battle-state';
+import { BattleState, Phase } from '../../core/types/battle-state';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { BattleEvent } from '../../core/types/events';
 import {
   createPlayerKnight,
   createEnemyKnight,
-  createPlayerArcher,
-  createEnemyArcher,
-  createTestUnit,
 } from './units';
 import {
   createPlayerTeam,
