@@ -15,6 +15,9 @@ import {
   OneToMany,
   Index,
 } from 'typeorm';
+import { Battle } from './battle.entity';
+import { RunDeck } from './run-deck.entity';
+import { Snapshot } from './snapshot.entity';
 
 /**
  * Run status enumeration.
@@ -113,21 +116,21 @@ export class Run {
    * One-to-many relationship with Battle entity.
    */
   @OneToMany('Battle', 'run', { cascade: true })
-  battles!: any[];
+  battles!: Battle[];
 
   /**
    * Run deck (units in current run).
    * One-to-many relationship with RunDeck entity.
    */
   @OneToMany('RunDeck', 'run', { cascade: true })
-  deck!: any[];
+  deck!: RunDeck[];
 
   /**
    * Snapshots created from this run.
    * One-to-many relationship with Snapshot entity.
    */
   @OneToMany('Snapshot', 'run', { cascade: true })
-  snapshots!: any[];
+  snapshots!: Snapshot[];
 
   /**
    * Run creation timestamp.

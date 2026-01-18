@@ -15,6 +15,8 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
+import { Run } from './run.entity';
+import { Snapshot } from './snapshot.entity';
 
 /**
  * Battle result enumeration.
@@ -69,7 +71,7 @@ export class Battle {
     eager: false,
   })
   @JoinColumn({ name: 'runId' })
-  run!: any;
+  run!: Run;
 
   /**
    * ID of the enemy snapshot (if battling a player).
@@ -88,7 +90,7 @@ export class Battle {
     nullable: true,
   })
   @JoinColumn({ name: 'enemySnapshotId' })
-  enemySnapshot!: any;
+  enemySnapshot!: Snapshot | null;
 
   /**
    * Random seed used for battle simulation.

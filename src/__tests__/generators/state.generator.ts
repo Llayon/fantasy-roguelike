@@ -28,7 +28,7 @@ import fc from 'fast-check';
 import { BattleState, Phase, PHASE_ORDER } from '../../core/types/battle-state';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { BattleEvent } from '../../core/types/events';
-import { arbitraryBattleUnit, arbitraryDeadUnit, arbitraryRoutingUnit } from './unit.generator';
+import { arbitraryBattleUnit, arbitraryDeadUnit } from './unit.generator';
 
 // =============================================================================
 // PHASE GENERATORS
@@ -295,7 +295,7 @@ export function arbitraryBattleState(): fc.Arbitrary<BattleState> {
  * });
  */
 export function arbitraryBattleStateWith(
-  constraints: Partial<Record<keyof BattleState, fc.Arbitrary<any>>>,
+  constraints: Partial<Record<keyof BattleState, fc.Arbitrary<unknown>>>,
 ): fc.Arbitrary<BattleState> {
   return arbitraryBattleState().map((state) => {
     const result: BattleState = { ...state };
@@ -303,7 +303,8 @@ export function arbitraryBattleStateWith(
     // Apply constraints
     for (const [key, arbitrary] of Object.entries(constraints)) {
       if (arbitrary) {
-        (result as any)[key] = fc.sample(arbitrary, 1)[0];
+        // Type assertion is safe here as we're dynamically setting properties in tests
+        (result as unknown as Record<string, unknown>)[key] = fc.sample(arbitrary, 1)[0];
       }
     }
 

@@ -17,8 +17,8 @@ import {
   SnapshotOpponent,
   MatchmakingResult,
 } from '../matchmaking.service';
-import { TeamSetup, TeamSetupUnit } from '../../../core/types';
-import { UnitId, getAllUnitIds, getUnitTemplate } from '../../../game/units/unit.data';
+import { TeamSetup } from '../../../core/types';
+import { UnitId, getUnitTemplate } from '../../../game/units/unit.data';
 
 // =============================================================================
 // CONSTANTS
@@ -32,10 +32,6 @@ const VALID_WIN_COUNTS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 /** Grid dimensions */
 const GRID_WIDTH = 8;
-const GRID_HEIGHT = 10;
-
-/** Enemy deployment rows (8-9) */
-const ENEMY_ROWS = [8, 9];
 
 // =============================================================================
 // ARBITRARIES (GENERATORS)
@@ -44,101 +40,7 @@ const ENEMY_ROWS = [8, 9];
 /**
  * Get all valid unit IDs for team generation.
  */
-const validUnitIds = getAllUnitIds();
-
-/**
- * Arbitrary generator for valid unit IDs.
- */
-const arbitraryUnitId: fc.Arbitrary<UnitId> = fc.constantFrom(...validUnitIds);
-
-/**
- * Arbitrary generator for unit tier (1-3).
- */
-const arbitraryTier: fc.Arbitrary<number> = fc.integer({ min: 1, max: 3 });
-
-/**
- * Arbitrary generator for TeamSetupUnit.
- */
-const arbitraryTeamSetupUnit: fc.Arbitrary<TeamSetupUnit> = fc.record({
-  unitId: arbitraryUnitId,
-  tier: arbitraryTier,
-});
-
-/**
- * Generate unique positions for a team.
- * Ensures no two units occupy the same position.
- *
- * @param count - Number of positions to generate
- * @param rows - Valid rows for this team
- * @returns Arbitrary that generates unique positions
- */
-function arbitraryUniquePositions(
-  count: number,
-  rows: number[],
-): fc.Arbitrary<{ x: number; y: number }[]> {
-  return fc
-    .array(
-      fc.record({
-        x: fc.integer({ min: 0, max: GRID_WIDTH - 1 }),
-        y: fc.constantFrom(...rows),
-      }),
-      { minLength: count, maxLength: count },
-    )
-    .map((positions) => {
-      // Ensure uniqueness by using a Set
-      const seen = new Set<string>();
-      const unique: { x: number; y: number }[] = [];
-
-      for (const pos of positions) {
-        const key = `${pos.x},${pos.y}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          unique.push(pos);
-        }
-      }
-
-      // If we don't have enough unique positions, generate more deterministically
-      while (unique.length < count) {
-        for (let x = 0; x < GRID_WIDTH && unique.length < count; x++) {
-          for (const y of rows) {
-            const key = `${x},${y}`;
-            if (!seen.has(key)) {
-              seen.add(key);
-              unique.push({ x, y });
-              if (unique.length >= count) break;
-            }
-          }
-        }
-      }
-
-      return unique;
-    });
-}
-
-/**
- * Arbitrary generator for a valid team setup.
- * Generates 1-6 units with unique positions.
- *
- * @param rows - Valid deployment rows for this team
- * @returns Arbitrary that generates valid TeamSetup
- */
-function arbitraryTeamSetup(rows: number[]): fc.Arbitrary<TeamSetup> {
-  return fc
-    .integer({ min: 1, max: 6 })
-    .chain((teamSize) =>
-      fc.tuple(
-        fc.array(arbitraryTeamSetupUnit, {
-          minLength: teamSize,
-          maxLength: teamSize,
-        }),
-        arbitraryUniquePositions(teamSize, rows),
-      ),
-    )
-    .map(([units, positions]) => ({
-      units,
-      positions,
-    }));
-}
+// const validUnitIds = getAllUnitIds();
 
 /**
  * Arbitrary generator for valid run stage (1-9).
@@ -308,17 +210,12 @@ describe('Matchmaking Property-Based Tests', () => {
 
             // Check opponent is defined
             if (!opponent) {
-              console.error(`Matchmaking returned undefined for stage ${stage}, wins ${wins}`);
               expect(opponent).toBeDefined();
               return false;
             }
 
             // Check opponent is valid
             if (!isValidMatchmakingResult(opponent)) {
-              console.error(
-                `Matchmaking returned invalid opponent for stage ${stage}, wins ${wins}:`,
-                opponent,
-              );
               expect(isValidMatchmakingResult(opponent)).toBe(true);
               return false;
             }
@@ -341,17 +238,12 @@ describe('Matchmaking Property-Based Tests', () => {
 
             // Check team exists
             if (!opponent.team) {
-              console.error(`Opponent has no team for stage ${stage}, wins ${wins}`);
               expect(opponent.team).toBeDefined();
               return false;
             }
 
             // Check units array
             if (!Array.isArray(opponent.team.units) || opponent.team.units.length === 0) {
-              console.error(
-                `Opponent team has invalid units for stage ${stage}, wins ${wins}:`,
-                opponent.team.units,
-              );
               expect(Array.isArray(opponent.team.units) && opponent.team.units.length > 0).toBe(
                 true,
               );
@@ -360,20 +252,12 @@ describe('Matchmaking Property-Based Tests', () => {
 
             // Check positions array
             if (!Array.isArray(opponent.team.positions)) {
-              console.error(
-                `Opponent team has invalid positions for stage ${stage}, wins ${wins}:`,
-                opponent.team.positions,
-              );
               expect(Array.isArray(opponent.team.positions)).toBe(true);
               return false;
             }
 
             // Check positions match units count
             if (opponent.team.positions.length !== opponent.team.units.length) {
-              console.error(
-                `Opponent team positions count mismatch for stage ${stage}, wins ${wins}: ` +
-                  `${opponent.team.positions.length} positions vs ${opponent.team.units.length} units`,
-              );
               expect(opponent.team.positions.length).toBe(opponent.team.units.length);
               return false;
             }
@@ -397,10 +281,6 @@ describe('Matchmaking Property-Based Tests', () => {
             // Check each unit has valid ID
             for (const unit of opponent.team.units) {
               if (typeof unit.unitId !== 'string' || unit.unitId.length === 0) {
-                console.error(
-                  `Opponent has unit with invalid ID for stage ${stage}, wins ${wins}:`,
-                  unit.unitId,
-                );
                 expect(typeof unit.unitId === 'string' && unit.unitId.length > 0).toBe(true);
                 return false;
               }
@@ -408,10 +288,6 @@ describe('Matchmaking Property-Based Tests', () => {
               // Check unit ID exists in game data
               const template = getUnitTemplate(unit.unitId as UnitId);
               if (!template) {
-                console.error(
-                  `Opponent has unknown unit ID for stage ${stage}, wins ${wins}:`,
-                  unit.unitId,
-                );
                 expect(template).toBeDefined();
                 return false;
               }
@@ -437,20 +313,12 @@ describe('Matchmaking Property-Based Tests', () => {
             for (const pos of opponent.team.positions) {
               // Check x coordinate
               if (typeof pos.x !== 'number' || pos.x < 0 || pos.x >= GRID_WIDTH) {
-                console.error(
-                  `Opponent has invalid x position for stage ${stage}, wins ${wins}:`,
-                  pos.x,
-                );
                 expect(pos.x >= 0 && pos.x < GRID_WIDTH).toBe(true);
                 return false;
               }
 
               // Check y coordinate (enemy deployment zone: 8-9)
               if (typeof pos.y !== 'number' || pos.y < 8 || pos.y >= 10) {
-                console.error(
-                  `Opponent has invalid y position for stage ${stage}, wins ${wins}:`,
-                  pos.y,
-                );
                 expect(pos.y >= 8 && pos.y < 10).toBe(true);
                 return false;
               }
@@ -477,10 +345,6 @@ describe('Matchmaking Property-Based Tests', () => {
               const bot = opponent as BotOpponent;
 
               if (typeof bot.difficulty !== 'number' || bot.difficulty < 1 || bot.difficulty > 10) {
-                console.error(
-                  `Bot has invalid difficulty for stage ${stage}, wins ${wins}:`,
-                  bot.difficulty,
-                );
                 expect(bot.difficulty >= 1 && bot.difficulty <= 10).toBe(true);
                 return false;
               }
@@ -504,17 +368,11 @@ describe('Matchmaking Property-Based Tests', () => {
           // If all are bots, difficulty should be non-decreasing
           if ('botId' in opponent0 && 'botId' in opponent4 && 'botId' in opponent8) {
             if (opponent4.difficulty < opponent0.difficulty) {
-              console.error(
-                `Difficulty decreased from 0 wins to 4 wins: ${opponent0.difficulty} -> ${opponent4.difficulty}`,
-              );
               expect(opponent4.difficulty).toBeGreaterThanOrEqual(opponent0.difficulty);
               return false;
             }
 
             if (opponent8.difficulty < opponent4.difficulty) {
-              console.error(
-                `Difficulty decreased from 4 wins to 8 wins: ${opponent4.difficulty} -> ${opponent8.difficulty}`,
-              );
               expect(opponent8.difficulty).toBeGreaterThanOrEqual(opponent4.difficulty);
               return false;
             }
@@ -539,7 +397,6 @@ describe('Matchmaking Property-Based Tests', () => {
 
             // Both should be defined
             if (!opponent1 || !opponent2) {
-              console.error(`Matchmaking returned undefined`);
               expect(opponent1).toBeDefined();
               expect(opponent2).toBeDefined();
               return false;
@@ -550,7 +407,6 @@ describe('Matchmaking Property-Based Tests', () => {
             const isBoth2Bot = 'botId' in opponent2;
 
             if (isBoth1Bot !== isBoth2Bot) {
-              console.error(`Opponent type changed between calls for stage ${stage}, wins ${wins}`);
               expect(isBoth1Bot).toBe(isBoth2Bot);
               return false;
             }
@@ -561,15 +417,11 @@ describe('Matchmaking Property-Based Tests', () => {
               const bot2 = opponent2 as BotOpponent;
 
               if (bot1.difficulty !== bot2.difficulty) {
-                console.error(`Bot difficulty changed: ${bot1.difficulty} vs ${bot2.difficulty}`);
                 expect(bot1.difficulty).toBe(bot2.difficulty);
                 return false;
               }
 
               if (bot1.team.units.length !== bot2.team.units.length) {
-                console.error(
-                  `Bot team size changed: ${bot1.team.units.length} vs ${bot2.team.units.length}`,
-                );
                 expect(bot1.team.units.length).toBe(bot2.team.units.length);
                 return false;
               }
@@ -577,9 +429,6 @@ describe('Matchmaking Property-Based Tests', () => {
               // Check unit IDs match
               for (let i = 0; i < bot1.team.units.length; i++) {
                 if (bot1.team.units[i].unitId !== bot2.team.units[i].unitId) {
-                  console.error(
-                    `Bot unit ID changed at index ${i}: ${bot1.team.units[i].unitId} vs ${bot2.team.units[i].unitId}`,
-                  );
                   expect(bot1.team.units[i].unitId).toBe(bot2.team.units[i].unitId);
                   return false;
                 }

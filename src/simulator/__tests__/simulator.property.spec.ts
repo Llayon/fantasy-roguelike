@@ -14,7 +14,7 @@ import * as fc from 'fast-check';
 import { simulateBattle } from '../simulator';
 import { TeamSetup, TeamSetupUnit } from '../../core/types/battle-state';
 import { Position } from '../../core/types/grid.types';
-import { UnitId, getAllUnitIds, getUnitTemplate } from '../../game/units/unit.data';
+import { UnitId, getAllUnitIds } from '../../game/units/unit.data';
 
 // =============================================================================
 // CONSTANTS
@@ -25,7 +25,6 @@ const MAX_ROUNDS = 100;
 
 /** Grid dimensions */
 const GRID_WIDTH = 8;
-const GRID_HEIGHT = 10;
 
 /** Player deployment rows (0-1) */
 const PLAYER_ROWS = [0, 1];
@@ -58,22 +57,6 @@ const arbitraryTier: fc.Arbitrary<number> = fc.integer({ min: 1, max: 3 });
 const arbitraryTeamSetupUnit: fc.Arbitrary<TeamSetupUnit> = fc.record({
   unitId: arbitraryUnitId,
   tier: arbitraryTier,
-});
-
-/**
- * Arbitrary generator for player position (rows 0-1).
- */
-const arbitraryPlayerPosition: fc.Arbitrary<Position> = fc.record({
-  x: fc.integer({ min: 0, max: GRID_WIDTH - 1 }),
-  y: fc.constantFrom(...PLAYER_ROWS),
-});
-
-/**
- * Arbitrary generator for enemy position (rows 8-9).
- */
-const arbitraryEnemyPosition: fc.Arbitrary<Position> = fc.record({
-  x: fc.integer({ min: 0, max: GRID_WIDTH - 1 }),
-  y: fc.constantFrom(...ENEMY_ROWS),
 });
 
 /**

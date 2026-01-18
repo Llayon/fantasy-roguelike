@@ -11,13 +11,10 @@
  */
 
 import * as fc from 'fast-check';
-import { executeTurn } from '../turn';
 import { simulateBattle } from '../simulator';
-import { BattleState, PHASE_ORDER, TeamSetup, TeamSetupUnit } from '../../core/types/battle-state';
-import { BattleUnit, FacingDirection } from '../../core/types/battle-unit';
-import { BattleEvent, Phase } from '../../core/types/events';
+import { TeamSetup, TeamSetupUnit } from '../../core/types/battle-state';
+import { Phase } from '../../core/types/events';
 import { Position } from '../../core/types/grid.types';
-import { SeededRandom } from '../../core/utils/random';
 import { UnitId, getAllUnitIds } from '../../game/units/unit.data';
 
 // =============================================================================
@@ -26,7 +23,6 @@ import { UnitId, getAllUnitIds } from '../../game/units/unit.data';
 
 /** Grid dimensions */
 const GRID_WIDTH = 8;
-const GRID_HEIGHT = 10;
 
 /** Player deployment rows (0-1) */
 const PLAYER_ROWS = [0, 1];
@@ -258,29 +254,30 @@ function isValidPhaseOrder(events: BattleEvent[]): boolean {
  * @param events - Events within a single turn
  * @returns Description of violation or null
  */
-function findPhaseOrderViolation(events: BattleEvent[]): string | null {
-  if (events.length === 0) return null;
-
-  const sortedEvents = [...events].sort((a, b) => a.timestamp - b.timestamp);
-
-  let lastPhaseIndex = -1;
-  let lastPhase: Phase | null = null;
-
-  for (const event of sortedEvents) {
-    const currentPhaseIndex = getPhaseIndex(event.phase);
-
-    if (currentPhaseIndex === -1) continue;
-
-    if (currentPhaseIndex < lastPhaseIndex) {
-      return `Phase order violation: ${lastPhase} (index ${lastPhaseIndex}) followed by ${event.phase} (index ${currentPhaseIndex}) in event type '${event.type}'`;
-    }
-
-    lastPhaseIndex = currentPhaseIndex;
-    lastPhase = event.phase;
-  }
-
-  return null;
-}
+// Unused - kept for future reference
+// function findPhaseOrderViolation(events: BattleEvent[]): string | null {
+//   if (events.length === 0) return null;
+//
+//   const sortedEvents = [...events].sort((a, b) => a.timestamp - b.timestamp);
+//
+//   let lastPhaseIndex = -1;
+//   let lastPhase: Phase | null = null;
+//
+//   for (const event of sortedEvents) {
+//     const currentPhaseIndex = getPhaseIndex(event.phase);
+//
+//     if (currentPhaseIndex === -1) continue;
+//
+//     if (currentPhaseIndex < lastPhaseIndex) {
+//       return `Phase order violation: ${lastPhase} (index ${lastPhaseIndex}) followed by ${event.phase} (index ${currentPhaseIndex}) in event type '${event.type}'`;
+//     }
+//
+//     lastPhaseIndex = currentPhaseIndex;
+//     lastPhase = event.phase;
+//   }
+//
+//   return null;
+// }
 
 // =============================================================================
 // PROPERTY-BASED TESTS
@@ -314,8 +311,7 @@ describe('Turn Execution Property-Based Tests', () => {
               const isValid = isValidPhaseOrder(unitTurn.events);
 
               if (!isValid) {
-                const violation = findPhaseOrderViolation(unitTurn.events);
-                console.error(`Unit ${unitTurn.actorId} turn ${unitTurn.turnNumber}: ${violation}`);
+                // const _violation = findPhaseOrderViolation(unitTurn.events);
                 expect(isValid).toBe(true);
                 return false;
               }
@@ -348,9 +344,6 @@ describe('Turn Execution Property-Based Tests', () => {
 
               // Both should exist in a complete unit turn
               if (turnStartIndex === -1 || turnEndIndex === -1) {
-                console.error(
-                  `Unit ${unitTurn.actorId} turn ${unitTurn.turnNumber}: Missing turn_start or turn_end`,
-                );
                 expect(turnStartIndex).not.toBe(-1);
                 expect(turnEndIndex).not.toBe(-1);
                 return false;
@@ -358,9 +351,6 @@ describe('Turn Execution Property-Based Tests', () => {
 
               // turn_start must come before turn_end
               if (turnStartIndex >= turnEndIndex) {
-                console.error(
-                  `Unit ${unitTurn.actorId} turn ${unitTurn.turnNumber}: turn_start (index ${turnStartIndex}) should come before turn_end (index ${turnEndIndex})`,
-                );
                 expect(turnStartIndex).toBeLessThan(turnEndIndex);
                 return false;
               }
@@ -388,9 +378,6 @@ describe('Turn Execution Property-Based Tests', () => {
             // All attack events should be in attack phase
             for (const event of attackEvents) {
               if (event.phase !== 'attack') {
-                console.error(
-                  `Attack event in wrong phase: expected 'attack', got '${event.phase}'`,
-                );
                 expect(event.phase).toBe('attack');
                 return false;
               }
@@ -418,9 +405,6 @@ describe('Turn Execution Property-Based Tests', () => {
             // All move events should be in movement phase
             for (const event of moveEvents) {
               if (event.phase !== 'movement') {
-                console.error(
-                  `Move event in wrong phase: expected 'movement', got '${event.phase}'`,
-                );
                 expect(event.phase).toBe('movement');
                 return false;
               }
@@ -458,9 +442,6 @@ describe('Turn Execution Property-Based Tests', () => {
 
                 // Phase index should never decrease within a unit's turn
                 if (currentPhaseIndex < lastPhaseIndex) {
-                  console.error(
-                    `Unit ${unitTurn.actorId} turn ${unitTurn.turnNumber}: Phase went backwards from index ${lastPhaseIndex} to ${currentPhaseIndex}`,
-                  );
                   expect(currentPhaseIndex).toBeGreaterThanOrEqual(lastPhaseIndex);
                   return false;
                 }
@@ -491,7 +472,6 @@ describe('Turn Execution Property-Based Tests', () => {
 
               // Phase should be in the expected order list
               if (phaseIndex === -1) {
-                console.error(`Event has invalid phase: '${event.phase}'`);
                 expect(EXPECTED_PHASE_ORDER).toContain(event.phase);
                 return false;
               }
@@ -521,14 +501,12 @@ describe('Turn Execution Property-Based Tests', () => {
 
             // Phase sequences should be identical
             if (phases1.length !== phases2.length) {
-              console.error(`Different event counts: ${phases1.length} vs ${phases2.length}`);
               expect(phases1.length).toBe(phases2.length);
               return false;
             }
 
             for (let i = 0; i < phases1.length; i++) {
               if (phases1[i] !== phases2[i]) {
-                console.error(`Phase mismatch at index ${i}: '${phases1[i]}' vs '${phases2[i]}'`);
                 expect(phases1[i]).toBe(phases2[i]);
                 return false;
               }

@@ -370,7 +370,7 @@ export function arbitraryEnemyTeamSetup(): fc.Arbitrary<TeamSetup> {
  * });
  */
 export function arbitraryTeamSetupWith(
-  constraints: Partial<Record<keyof TeamSetup, fc.Arbitrary<any>>>,
+  constraints: Partial<Record<keyof TeamSetup, fc.Arbitrary<unknown>>>,
 ): fc.Arbitrary<TeamSetup> {
   return arbitraryTeamSetup().map((team) => {
     const result = { ...team };
@@ -378,11 +378,12 @@ export function arbitraryTeamSetupWith(
     // Apply constraints
     for (const [key, arbitrary] of Object.entries(constraints)) {
       if (arbitrary) {
-        result[key as keyof TeamSetup] = fc.sample(arbitrary, 1)[0];
+        // Type assertion is safe here as we're dynamically setting properties in tests
+        (result as unknown as Record<string, unknown>)[key] = fc.sample(arbitrary, 1)[0];
       }
     }
 
-    return result;
+    return result as TeamSetup;
   });
 }
 

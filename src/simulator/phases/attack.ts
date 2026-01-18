@@ -61,7 +61,6 @@ import {
   AmmunitionProcessor,
   ChargeProcessor,
   LoSProcessor,
-  RIPOSTE_DAMAGE_MULTIPLIER,
 } from '../../core/mechanics';
 
 // =============================================================================
@@ -1115,11 +1114,12 @@ export function calculateRiposteChance(defender: BattleUnit, attacker: BattleUni
  * @param _attacker - Attacking unit (receiving riposte) - unused but kept for API consistency
  * @returns Riposte damage amount
  */
-function calculateRiposteDamage(defender: BattleUnit, _attacker: BattleUnit): number {
-  // Riposte deals 50% of defender's ATK (from RIPOSTE_DAMAGE_MULTIPLIER)
-  const defenderAtk = defender.stats?.atk ?? 0;
-  return Math.floor(defenderAtk * RIPOSTE_DAMAGE_MULTIPLIER);
-}
+// Unused - kept for future reference
+// function calculateRiposteDamage(defender: BattleUnit, _attacker: BattleUnit): number {
+//   // Riposte deals 50% of defender's ATK (from RIPOSTE_DAMAGE_MULTIPLIER)
+//   const defenderAtk = defender.stats?.atk ?? 0;
+//   return Math.floor(defenderAtk * RIPOSTE_DAMAGE_MULTIPLIER);
+// }
 
 // =============================================================================
 // AMMUNITION CONSUMPTION

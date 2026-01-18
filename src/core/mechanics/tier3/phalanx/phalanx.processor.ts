@@ -17,7 +17,7 @@
  * @module core/mechanics/tier3/phalanx
  */
 
-import type { BattleState, BattleUnit, Position, FacingDirection } from '../../../types';
+import type { BattleState, BattleUnit, Position } from '../../../types';
 import type { PhalanxConfig } from '../../config/mechanics.types';
 import type {
   PhalanxProcessor,

@@ -438,7 +438,7 @@ function checkSoftIntercept(
 
     if (adjacentEnemies.length > 0) {
       // Soft intercept triggered - unit becomes engaged
-      const engagingEnemyIds = adjacentEnemies.map((e) => e.instanceId);
+      // const _engagingEnemyIds = adjacentEnemies.map((e) => e.instanceId);
       const firstInterceptor = adjacentEnemies[0];
 
       // Emit intercept event

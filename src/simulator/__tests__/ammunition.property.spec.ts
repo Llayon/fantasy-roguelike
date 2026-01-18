@@ -9,6 +9,8 @@
  *
  * @module simulator/__tests__/ammunition.property.spec
  */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as fc from 'fast-check';
 import { simulateBattle } from '../simulator';
@@ -23,8 +25,6 @@ import { UnitId, getAllUnitIds, getUnitTemplate } from '../../game/units/unit.da
 
 /** Grid dimensions */
 const GRID_WIDTH = 8;
-const GRID_HEIGHT = 10;
-
 /** Player deployment rows (0-1) */
 const PLAYER_ROWS = [0, 1];
 
@@ -229,16 +229,6 @@ function hasValidAmmo(unit: BattleUnit): boolean {
 }
 
 /**
- * Find units with invalid ammunition in a list.
- *
- * @param units - Units to check
- * @returns Array of units with invalid ammo
- */
-function findUnitsWithInvalidAmmo(units: readonly BattleUnit[]): BattleUnit[] {
-  return units.filter((unit) => !hasValidAmmo(unit));
-}
-
-/**
  * Check all units in final state have valid ammunition.
  *
  * @param units - All units in final state
@@ -274,10 +264,6 @@ describe('Ammunition Property-Based Tests', () => {
             const allValid = allUnitsHaveValidAmmo(result.finalState.units);
 
             if (!allValid) {
-              const invalidUnits = findUnitsWithInvalidAmmo(result.finalState.units);
-              for (const unit of invalidUnits) {
-                console.error(`Unit ${unit.instanceId} has invalid ammo: ${unit.ammo}`);
-              }
               expect(allValid).toBe(true);
               return false;
             }
@@ -292,7 +278,6 @@ describe('Ammunition Property-Based Tests', () => {
     it('ammunition never goes negative with ranged units', () => {
       // Skip if no ranged units available
       if (rangedUnitIds.length === 0) {
-        console.log('No ranged units available, skipping test');
         return;
       }
 
@@ -309,10 +294,6 @@ describe('Ammunition Property-Based Tests', () => {
             const allValid = allUnitsHaveValidAmmo(result.finalState.units);
 
             if (!allValid) {
-              const invalidUnits = findUnitsWithInvalidAmmo(result.finalState.units);
-              for (const unit of invalidUnits) {
-                console.error(`Ranged unit ${unit.instanceId} has invalid ammo: ${unit.ammo}`);
-              }
               expect(allValid).toBe(true);
               return false;
             }
@@ -341,7 +322,6 @@ describe('Ammunition Property-Based Tests', () => {
             for (const event of ammoEvents) {
               const remaining = (event as { remaining?: number }).remaining;
               if (typeof remaining === 'number' && remaining < 0) {
-                console.error(`ammo_consumed event has negative remaining: ${remaining}`);
                 expect(remaining).toBeGreaterThanOrEqual(0);
                 return false;
               }
@@ -371,9 +351,6 @@ describe('Ammunition Property-Based Tests', () => {
                 unit.ammo === null || (typeof unit.ammo === 'number' && unit.ammo >= 0);
 
               if (!isValid) {
-                console.error(
-                  `Unit ${unit.instanceId} has invalid ammo value: ${unit.ammo} (type: ${typeof unit.ammo})`,
-                );
                 expect(isValid).toBe(true);
                 return false;
               }
@@ -420,7 +397,6 @@ describe('Ammunition Property-Based Tests', () => {
               for (const ammo of history) {
                 // Ammo should never be negative
                 if (ammo < 0) {
-                  console.error(`Unit ${unitId} has negative ammo in history: ${ammo}`);
                   expect(ammo).toBeGreaterThanOrEqual(0);
                   return false;
                 }
@@ -454,9 +430,6 @@ describe('Ammunition Property-Based Tests', () => {
               const unit2 = result2.finalState.units[i];
 
               if (unit1.ammo !== unit2.ammo) {
-                console.error(
-                  `Unit ${unit1.instanceId} has different ammo: ${unit1.ammo} vs ${unit2.ammo}`,
-                );
                 expect(unit1.ammo).toBe(unit2.ammo);
                 return false;
               }

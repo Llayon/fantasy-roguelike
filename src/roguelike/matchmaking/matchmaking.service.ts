@@ -125,12 +125,12 @@ export class MatchmakingService {
    * 2. If multiple snapshots available, select randomly
    * 3. Return undefined if no snapshots found at stage
    *
-   * @param stage - Run stage to search for
+   * @param _stage - Run stage to search for (currently unused, all snapshots considered)
    * @returns Snapshot opponent or undefined if not found
    *
    * @internal
    */
-  private findSnapshotAtStage(stage: number): SnapshotOpponent | undefined {
+  private findSnapshotAtStage(_stage: number): SnapshotOpponent | undefined {
     // Get all snapshots (in production, would filter by stage in database query)
     const allSnapshots = Array.from(this.snapshots.values());
 
@@ -258,7 +258,7 @@ export class MatchmakingService {
     }
 
     // Generate positions in enemy deployment zone (rows 8-9)
-    const positions = units.map((_, index) => ({
+    const positions = units.map(() => ({
       x: Math.floor(rng.next() * 8), // Random x (0-7)
       y: 8 + Math.floor(rng.next() * 2), // Random y (8-9)
     }));

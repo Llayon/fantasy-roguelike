@@ -14,7 +14,6 @@ import {
   recalculatePhalanxOnDeath,
   RESOLVE_DAMAGE_ADJACENT,
   RESOLVE_DAMAGE_NEARBY,
-  PHALANX_MIN_ALLIES,
 } from '../death';
 import { BattleState } from '../../core/types/battle-state';
 import { BattleUnit } from '../../core/types/battle-unit';

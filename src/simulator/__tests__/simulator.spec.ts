@@ -12,6 +12,7 @@
  * @see {@link initializeBattle} for initialization logic
  * @see {@link checkBattleEnd} for end detection logic
  */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { simulateBattle, initializeBattle, checkBattleEnd } from '../simulator';
 import { TeamSetup } from '../../core/types/battle-state';

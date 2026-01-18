@@ -388,10 +388,10 @@ export function advanceToNextTurn(state: BattleState): BattleState {
  * const state = createTestBattleState();
  * const attackPhase = advanceToPhase(state, 'attack');
  */
-export function advanceToPhase(state: BattleState, phase: string): BattleState {
+export function advanceToPhase(state: BattleState, phase: Phase): BattleState {
   return {
     ...state,
-    currentPhase: phase as Phase,
+    currentPhase: phase,
   };
 }
 

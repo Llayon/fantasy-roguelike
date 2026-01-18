@@ -17,7 +17,7 @@
  * @module core/mechanics/tier2/riposte
  */
 
-import type { BattleState, BattleEvent } from '../../../types';
+import type { BattleState } from '../../../types';
 import type { BattleUnit } from '../../../types/battle-unit';
 import type { AttackArc } from '../../tier0/facing/facing.types';
 import type { RiposteConfig } from '../../config/mechanics.types';

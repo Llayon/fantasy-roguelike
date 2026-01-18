@@ -1,0 +1,2 @@
+# E2E tests (not included in tsconfig.json)
+test/

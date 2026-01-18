@@ -265,11 +265,15 @@ export class ErrorBoundary {
     while (attempt <= maxRetries) {
       try {
         const value = operation();
+        // If we succeeded on first try, there's no error to report
+        // Create a placeholder error for the interface requirement
+        const placeholderError =
+          lastError ?? new BattleError('Operation succeeded', BattleErrorCode.UNKNOWN);
         return {
           success: true,
           strategy: attempt > 0 ? 'retry' : 'skip',
           value,
-          originalError: lastError!,
+          originalError: placeholderError,
         };
       } catch (error) {
         lastError = this.wrapError(error);
@@ -297,12 +301,17 @@ export class ErrorBoundary {
     }
 
     // All retries exhausted, try fallback
+    // At this point lastError must be defined because we've been through the catch block
+    if (lastError === undefined) {
+      lastError = new BattleError('Unknown error occurred', BattleErrorCode.UNKNOWN);
+    }
+
     if (fallback !== undefined) {
       return {
         success: true,
         strategy: 'fallback',
         value: fallback,
-        originalError: lastError!,
+        originalError: lastError,
       };
     }
 
@@ -310,7 +319,7 @@ export class ErrorBoundary {
     return {
       success: false,
       strategy: 'abort',
-      originalError: lastError!,
+      originalError: lastError,
     };
   }
 
@@ -333,11 +342,15 @@ export class ErrorBoundary {
     while (attempt <= maxRetries) {
       try {
         const value = await operation();
+        // If we succeeded on first try, there's no error to report
+        // Create a placeholder error for the interface requirement
+        const placeholderError =
+          lastError ?? new BattleError('Operation succeeded', BattleErrorCode.UNKNOWN);
         return {
           success: true,
           strategy: attempt > 0 ? 'retry' : 'skip',
           value,
-          originalError: lastError!,
+          originalError: placeholderError,
         };
       } catch (error) {
         lastError = this.wrapError(error);
@@ -363,19 +376,24 @@ export class ErrorBoundary {
       }
     }
 
+    // At this point lastError must be defined because we've been through the catch block
+    if (lastError === undefined) {
+      lastError = new BattleError('Unknown error occurred', BattleErrorCode.UNKNOWN);
+    }
+
     if (fallback !== undefined) {
       return {
         success: true,
         strategy: 'fallback',
         value: fallback,
-        originalError: lastError!,
+        originalError: lastError,
       };
     }
 
     return {
       success: false,
       strategy: 'abort',
-      originalError: lastError!,
+      originalError: lastError,
     };
   }
 

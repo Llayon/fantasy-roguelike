@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
 import { generateId } from '../../roguelike/types';
-import { Run, RunConfig, RunStatus, RunPhase } from '../../roguelike/types';
+import { Run, RunConfig } from '../../roguelike/types';
 
 /**
  * Unit card in a run deck.

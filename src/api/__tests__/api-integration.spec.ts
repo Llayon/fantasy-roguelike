@@ -29,11 +29,8 @@ describe('API Integration Tests', () => {
   let runController: RunController;
   let runService: RunService;
   let battleController: BattleController;
-  let battleService: BattleService;
   let draftController: DraftController;
-  let draftService: DraftService;
   let upgradeController: UpgradeController;
-  let upgradeService: UpgradeService;
   let matchmakingService: MatchmakingService;
   let snapshotService: SnapshotService;
 
@@ -68,11 +65,8 @@ describe('API Integration Tests', () => {
     runController = module.get<RunController>(RunController);
     runService = module.get<RunService>(RunService);
     battleController = module.get<BattleController>(BattleController);
-    battleService = module.get<BattleService>(BattleService);
     draftController = module.get<DraftController>(DraftController);
-    draftService = module.get<DraftService>(DraftService);
     upgradeController = module.get<UpgradeController>(UpgradeController);
-    upgradeService = module.get<UpgradeService>(UpgradeService);
     matchmakingService = module.get<MatchmakingService>(MatchmakingService);
     snapshotService = module.get<SnapshotService>(SnapshotService);
   });
@@ -221,7 +215,7 @@ describe('API Integration Tests', () => {
 
       // Force 9 wins
       for (let i = 0; i < 9; i++) {
-        (runService as any).recordWin(runId);
+        (runService as unknown as { recordWin(runId: string): void }).recordWin(runId);
       }
 
       const runState = runController.getRun(runId);
@@ -239,7 +233,7 @@ describe('API Integration Tests', () => {
 
       // Force 4 losses
       for (let i = 0; i < 4; i++) {
-        (runService as any).recordLoss(runId);
+        (runService as unknown as { recordLoss(runId: string): void }).recordLoss(runId);
       }
 
       const runState = runController.getRun(runId);
@@ -345,19 +339,12 @@ describe('API Integration Tests', () => {
       });
 
       // Check for Core 2.0 mechanic event types
-      const eventTypes = new Set(simulateResponse.events.map((e) => e.type));
-
       // Core 2.0 mechanic events that should appear in battles:
       // - facing_rotated (units rotate to face targets)
       // - flanking_applied (flanking calculations)
       // - resolve_changed (resolve regeneration/damage)
       // - riposte_triggered (if conditions met)
       // - ammo_consumed (for ranged units)
-
-      // At minimum, we should see facing and flanking events
-      const hasFacingEvents = Array.from(eventTypes).some(
-        (type) => type === 'facing_rotated' || type === 'flanking_applied',
-      );
 
       // Note: Not all mechanic events will appear in every battle
       // (e.g., riposte requires specific conditions)
@@ -427,16 +414,13 @@ describe('API Integration Tests', () => {
         },
       });
 
-      // Store the seed
-      const seed = battle1.seed;
-
       // Simulate first battle
       const result1 = await battleController.simulateBattle(battle1.battleId, {
         playerId: 'test_player',
       });
 
       // Start second battle with same setup (will get different seed)
-      const battle2 = battleController.startBattle({
+      battleController.startBattle({
         runId: startRunResponse.runId,
         playerTeam: {
           units: [{ unitId: 'knight', tier: 1 }],
@@ -513,7 +497,7 @@ describe('API Integration Tests', () => {
         },
       });
 
-      (snapshotService as any).snapshotRepository = {
+      (snapshotService as unknown as { snapshotRepository: unknown }).snapshotRepository = {
         createSnapshot: mockCreateSnapshot,
       };
 
@@ -656,7 +640,7 @@ describe('API Integration Tests', () => {
         },
       });
 
-      (snapshotService as any).snapshotRepository = {
+      (snapshotService as unknown as { snapshotRepository: unknown }).snapshotRepository = {
         createSnapshot: mockCreateSnapshot,
       };
 
@@ -697,7 +681,7 @@ describe('API Integration Tests', () => {
   describe('41.4 Matchmaking with Bot Fallback', () => {
     it('should generate bot opponent when no snapshots available', () => {
       // Clear any existing snapshots
-      (matchmakingService as any).snapshots.clear();
+      (matchmakingService as unknown as { snapshots: Map<string, unknown> }).snapshots.clear();
 
       // Find opponent at stage 1 (no snapshots available)
       const opponent = matchmakingService.findOpponent(1, 0, 12345);
@@ -719,7 +703,7 @@ describe('API Integration Tests', () => {
 
     it('should scale bot difficulty based on player wins', () => {
       // Clear snapshots
-      (matchmakingService as any).snapshots.clear();
+      (matchmakingService as unknown as { snapshots: Map<string, unknown> }).snapshots.clear();
 
       // Test difficulty scaling
       const opponent0Wins = matchmakingService.findOpponent(1, 0, 12345);
@@ -743,7 +727,7 @@ describe('API Integration Tests', () => {
 
     it('should generate deterministic bot teams with same seed', () => {
       // Clear snapshots
-      (matchmakingService as any).snapshots.clear();
+      (matchmakingService as unknown as { snapshots: Map<string, unknown> }).snapshots.clear();
 
       const seed = 99999;
 
@@ -766,7 +750,7 @@ describe('API Integration Tests', () => {
 
     it('should generate valid bot team compositions', () => {
       // Clear snapshots
-      (matchmakingService as any).snapshots.clear();
+      (matchmakingService as unknown as { snapshots: Map<string, unknown> }).snapshots.clear();
 
       // Generate bot opponent
       const opponent = matchmakingService.findOpponent(3, 2, 54321);
@@ -801,7 +785,7 @@ describe('API Integration Tests', () => {
 
     it('should respect budget constraints for bot teams', () => {
       // Clear snapshots
-      (matchmakingService as any).snapshots.clear();
+      (matchmakingService as unknown as { snapshots: Map<string, unknown> }).snapshots.clear();
 
       // Generate multiple bot opponents at different stages
       for (let stage = 1; stage <= 9; stage++) {
@@ -846,7 +830,7 @@ describe('API Integration Tests', () => {
 
     it('should integrate bot generation with battle flow', async () => {
       // Clear snapshots to force bot generation
-      (matchmakingService as any).snapshots.clear();
+      (matchmakingService as unknown as { snapshots: Map<string, unknown> }).snapshots.clear();
 
       // Start run
       const startRunResponse = runController.startRun({
@@ -880,7 +864,7 @@ describe('API Integration Tests', () => {
 
     it('should handle edge cases in bot difficulty calculation', () => {
       // Clear snapshots
-      (matchmakingService as any).snapshots.clear();
+      (matchmakingService as unknown as { snapshots: Map<string, unknown> }).snapshots.clear();
 
       // Test edge cases
       const opponent0 = matchmakingService.findOpponent(1, 0, 11111);

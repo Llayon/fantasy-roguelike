@@ -141,7 +141,15 @@ export function arbitraryTags(): fc.Arbitrary<string[]> {
  *   })
  * );
  */
-export function arbitraryBattleUnitStats(): fc.Arbitrary<any> {
+export function arbitraryBattleUnitStats(): fc.Arbitrary<{
+  hp: number;
+  atk: number;
+  atkCount: number;
+  armor: number;
+  speed: number;
+  initiative: number;
+  dodge: number;
+}> {
   return fc.record({
     hp: fc.integer({ min: 30, max: 200 }),
     atk: fc.integer({ min: 5, max: 30 }),
@@ -425,7 +433,7 @@ export function arbitraryBattleUnit(): fc.Arbitrary<BattleUnit> {
  * const routingUnit = arbitraryBattleUnitWith({ isRouting: fc.constant(true) });
  */
 export function arbitraryBattleUnitWith(
-  constraints: Partial<Record<keyof BattleUnit, fc.Arbitrary<any>>>,
+  constraints: Partial<Record<keyof BattleUnit, fc.Arbitrary<unknown>>>,
 ): fc.Arbitrary<BattleUnit> {
   return arbitraryBattleUnit().map((unit) => {
     const result: BattleUnit = { ...unit };
@@ -433,7 +441,8 @@ export function arbitraryBattleUnitWith(
     // Apply constraints
     for (const [key, arbitrary] of Object.entries(constraints)) {
       if (arbitrary) {
-        (result as any)[key] = fc.sample(arbitrary, 1)[0];
+        // Type assertion is safe here as we're dynamically setting properties in tests
+        (result as unknown as Record<string, unknown>)[key] = fc.sample(arbitrary, 1)[0];
       }
     }
 

@@ -23,7 +23,6 @@ import type {
   ContagionEffectType,
   StatusEffect,
   SpreadEligibility,
-  SpreadBlockReason,
   SpreadAttemptResult,
   ContagionSpreadResult,
   AdjacentTarget,
@@ -393,7 +392,6 @@ export function createContagionProcessor(config: ContagionConfig): ContagionProc
       state: BattleState,
     ): BattleState {
       const baseTarget = target as BattleUnit;
-      const targetId = getUnitId(baseTarget);
       const props = getContagionProps(baseTarget);
       const existingEffects = props.statusEffects ?? [];
 

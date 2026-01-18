@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
 import { SnapshotService, CreateSnapshotRequest } from '../snapshot.service';
 import { SnapshotRepository } from '../../../repositories/snapshot.repository';
-import { Snapshot, TeamSnapshot } from '../../../entities/snapshot.entity';
+import { Snapshot } from '../../../entities/snapshot.entity';
 
 describe('SnapshotService', () => {
   let service: SnapshotService;

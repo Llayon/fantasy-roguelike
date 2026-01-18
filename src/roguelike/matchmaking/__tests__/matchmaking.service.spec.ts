@@ -1,5 +1,6 @@
 import { MatchmakingService, BotOpponent, SnapshotOpponent } from '../matchmaking.service';
 import { TeamSetup } from '../../../core/types';
+import { UNIT_TEMPLATES } from '../../../game/units/unit.data';
 
 describe('MatchmakingService', () => {
   let service: MatchmakingService;
@@ -97,11 +98,8 @@ describe('MatchmakingService', () => {
     it('should respect budget constraints', () => {
       const opponent = service.findOpponent(1, 0, 12345) as BotOpponent;
 
-      // Calculate total cost
-      const totalCost = 0;
+      // Verify units exist
       for (const unit of opponent.team.units) {
-        // Get unit template cost (all units have cost property)
-        // For now, just verify units exist
         expect(unit.unitId).toBeDefined();
       }
 
@@ -235,7 +233,7 @@ describe('MatchmakingService', () => {
         let totalCost = 0;
         for (const unit of opponent.team.units) {
           // Get unit template
-          const unitTemplate = require('../../../game/units/unit.data').UNIT_TEMPLATES[unit.unitId];
+          const unitTemplate = UNIT_TEMPLATES[unit.unitId];
           if (unitTemplate) {
             totalCost += unitTemplate.cost;
           }

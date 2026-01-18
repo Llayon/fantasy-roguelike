@@ -72,22 +72,10 @@ describe('BotTeamGenerator - Property-Based Tests', () => {
 
             // Property: Total cost must not exceed budget
             if (totalCost > expectedBudget) {
-              // Log failure details for debugging
-              console.error('Budget constraint violated:', {
-                difficulty,
-                stage,
-                seed,
-                expectedBudget,
-                totalCost,
-                units: team.units.map((u) => {
-                  const template = UNIT_TEMPLATES[u.unitId as keyof typeof UNIT_TEMPLATES];
-                  return {
-                    unitId: u.unitId,
-                    tier: u.tier,
-                    cost: template?.cost || 0,
-                  };
-                }),
-              });
+              // Budget constraint violated
+              throw new Error(
+                `Budget constraint violated: difficulty=${difficulty}, stage=${stage}, seed=${seed}, expectedBudget=${expectedBudget}, actualCost=${totalCost}`,
+              );
             }
 
             return totalCost <= expectedBudget;
@@ -260,7 +248,7 @@ describe('BotTeamGenerator - Property-Based Tests', () => {
           fc.integer({ min: 0, max: 999999 }), // seed
           (difficulty, stage, seed) => {
             // Generate bot team
-            const team = generator.generateTeam({
+            generator.generateTeam({
               difficulty,
               stage,
               seed,

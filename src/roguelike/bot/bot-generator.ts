@@ -16,7 +16,7 @@ import { Logger } from '@nestjs/common';
 import { SeededRandom } from '../../core/utils/random';
 import { TeamSetup, TeamSetupUnit, Position } from '../../core/types';
 import { UNIT_TEMPLATES } from '../../game/units/unit.data';
-import { UNIT_ROLES, UnitRole, TEAM_LIMITS } from '../../game/constants/game.constants';
+import { UNIT_ROLES, UnitRole } from '../../game/constants/game.constants';
 
 /**
  * Configuration for bot team generation.

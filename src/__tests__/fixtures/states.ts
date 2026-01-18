@@ -27,10 +27,7 @@
 import { BattleState, Phase } from '../../core/types/battle-state';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { BattleEvent } from '../../core/types/events';
-import {
-  createPlayerKnight,
-  createEnemyKnight,
-} from './units';
+import { createPlayerKnight, createEnemyKnight } from './units';
 import {
   createPlayerTeam,
   createEnemyTeam,

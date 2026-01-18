@@ -22,10 +22,9 @@ import {
   BattleEvent,
   createContagionSpreadEvent,
   createShredDecayedEvent,
-  createCooldownTickedEvent,
 } from '../../core/types';
 import { BattleUnit } from '../../core/types/battle-unit';
-import { findUnit, updateUnit, getTeamUnits } from '../../core/utils/state-helpers';
+import { findUnit, getTeamUnits } from '../../core/utils/state-helpers';
 import { SeededRandom } from '../../core/utils/random';
 import {
   createContagionProcessor,
@@ -35,7 +34,6 @@ import {
 } from '../../core/mechanics/tier4/contagion';
 import {
   createArmorShredProcessor,
-  UnitWithArmorShred,
   DEFAULT_DECAY_PER_TURN,
 } from '../../core/mechanics/tier4/armor-shred';
 import {
@@ -332,7 +330,7 @@ function handleArmorShredDecay(
   }
 
   // Use processor to handle decay
-  const unitWithShred = unit as BattleUnit & UnitWithArmorShred;
+  // const _unitWithShred = unit as BattleUnit & UnitWithArmorShred;
   const decayResult = armorShredProcessor.processDecay(state, unitId);
 
   // If decay was skipped or no decay occurred, return unchanged
@@ -356,12 +354,6 @@ function handleArmorShredDecay(
 // =============================================================================
 
 /**
- * Ability cooldown tracking for a unit.
- * Maps ability ID to remaining cooldown turns.
- */
-type AbilityCooldowns = Record<string, number>;
-
-/**
  * Handle ability cooldown ticks at turn end.
  *
  * Cooldown Rules:
@@ -379,7 +371,7 @@ type AbilityCooldowns = Record<string, number>;
 function handleCooldownTicks(
   state: BattleState,
   unitId: string,
-  eventContext: { round: number; turn: number; phase: Phase },
+  _eventContext: { round: number; turn: number; phase: Phase },
 ): PhaseResult {
   const events: BattleEvent[] = [];
   const currentState = state;

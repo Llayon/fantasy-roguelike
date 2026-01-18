@@ -17,7 +17,6 @@
  */
 
 import type { BattleState, BattleUnit, Position } from '../../../types';
-import type { ContagionConfig } from '../../config/mechanics.types';
 
 // ═══════════════════════════════════════════════════════════════
 // CONTAGION CONSTANTS

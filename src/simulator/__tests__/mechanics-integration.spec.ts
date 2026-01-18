@@ -14,29 +14,22 @@
  * @module simulator/__tests__/mechanics-integration.spec
  * @see Requirements 1.2, 1.3 for mechanics integration
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { simulateBattle, createBattleUnit } from '../simulator';
-import { TeamSetup, BattleState, BattleEvent, Phase } from '../../core/types';
+import { simulateBattle } from '../simulator';
+import { TeamSetup, BattleState, Phase } from '../../core/types';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { SeededRandom } from '../../core/utils/random';
-import { executeTurn } from '../turn';
 import { handleTurnStart } from '../phases/turn-start';
 import { handleAttack } from '../phases/attack';
 import { handleTurnEnd } from '../phases/turn-end';
-import { findUnit, updateUnit, getTeamUnits } from '../../core/utils/state-helpers';
+import { findUnit } from '../../core/utils/state-helpers';
 import {
-  createChargeProcessor,
-  createRiposteProcessor,
-  createPhalanxProcessor,
   createContagionProcessor,
   createResolveProcessor,
-  createInterceptProcessor,
-  DEFAULT_CHARGE_CONFIG,
-  DEFAULT_RIPOSTE_CONFIG,
-  DEFAULT_PHALANX_CONFIG,
   DEFAULT_CONTAGION_CONFIG,
   DEFAULT_RESOLVE_CONFIG,
-  DEFAULT_INTERCEPT_CONFIG,
 } from '../../core/mechanics';
 
 // =============================================================================
@@ -169,7 +162,7 @@ describe('Mechanics Integration Tests', () => {
       };
 
       const seed = 42;
-      const result = simulateBattle(playerTeam, enemyTeam, seed);
+      // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
       // Battle should complete
       expect(result.result).toMatch(/^(win|loss|draw)$/);
@@ -212,7 +205,7 @@ describe('Mechanics Integration Tests', () => {
       };
 
       const seed = 123;
-      const result = simulateBattle(playerTeam, enemyTeam, seed);
+      // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
       // Battle should complete without errors
       expect(result.result).toMatch(/^(win|loss|draw)$/);
@@ -243,13 +236,13 @@ describe('Mechanics Integration Tests', () => {
       };
 
       const seed = 456;
-      const result = simulateBattle(playerTeam, enemyTeam, seed);
+      // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
       // Battle should complete
       expect(result.result).toMatch(/^(win|loss|draw)$/);
 
       // Check that ammo consumption events were generated
-      const ammoEvents = result.events.filter((e) => e.type === 'ammo_consumed');
+      // const ammoEvents = result.events.filter((e) => e.type === 'ammo_consumed');
       // Ranged units should consume ammo when attacking
       // Note: May not have ammo events if units didn't attack
     });
@@ -278,7 +271,7 @@ describe('Mechanics Integration Tests', () => {
       };
 
       const seed = 789;
-      const result = simulateBattle(playerTeam, enemyTeam, seed);
+      // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
       // Battle should complete
       expect(result.result).toMatch(/^(win|loss|draw)$/);
@@ -308,7 +301,7 @@ describe('Mechanics Integration Tests', () => {
       };
 
       const seed = 999;
-      const result = simulateBattle(playerTeam, enemyTeam, seed);
+      // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
       // Check final state invariants
       for (const unit of result.finalState.units) {
@@ -366,7 +359,7 @@ describe('24.2 Charge → Intercept → Riposte Sequence', () => {
     );
 
     const rng = new SeededRandom(12345);
-    const result = handleAttack(state, 'player_berserker_0', 'enemy_knight_0', rng);
+    // const result = handleAttack(state, 'player_berserker_0', 'enemy_knight_0', rng);
 
     // Attack should have been processed
     expect(result.events.length).toBeGreaterThan(0);
@@ -403,7 +396,7 @@ describe('24.2 Charge → Intercept → Riposte Sequence', () => {
     );
 
     const rng = new SeededRandom(54321);
-    const result = handleAttack(state, 'player_cavalry_0', 'enemy_spearman_0', rng);
+    // const result = handleAttack(state, 'player_cavalry_0', 'enemy_spearman_0', rng);
 
     // The attack should have been processed
     expect(result.events.length).toBeGreaterThan(0);
@@ -442,13 +435,13 @@ describe('24.2 Charge → Intercept → Riposte Sequence', () => {
 
     // Use a seed that should allow riposte to trigger
     const rng = new SeededRandom(11111);
-    const result = handleAttack(state, 'player_rogue_0', 'enemy_duelist_0', rng);
+    // const result = handleAttack(state, 'player_rogue_0', 'enemy_duelist_0', rng);
 
     // Attack should have been processed
     expect(result.events.length).toBeGreaterThan(0);
 
     // Check for riposte event (may or may not trigger based on RNG)
-    const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
+    // const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
     // Riposte may or may not trigger depending on the roll
   });
 
@@ -477,7 +470,7 @@ describe('24.2 Charge → Intercept → Riposte Sequence', () => {
     );
 
     const rng = new SeededRandom(22222);
-    const result = handleAttack(state, 'player_rogue_0', 'enemy_duelist_0', rng);
+    // const result = handleAttack(state, 'player_rogue_0', 'enemy_duelist_0', rng);
 
     // Attack should have been processed
     expect(result.events.length).toBeGreaterThan(0);
@@ -487,7 +480,7 @@ describe('24.2 Charge → Intercept → Riposte Sequence', () => {
     expect(flankingEvents.length).toBeGreaterThan(0);
 
     // Riposte should NOT trigger from flank
-    const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
+    // const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
     expect(riposteEvents.length).toBe(0);
   });
 
@@ -515,7 +508,7 @@ describe('24.2 Charge → Intercept → Riposte Sequence', () => {
     );
 
     const rng = new SeededRandom(33333);
-    const result = handleAttack(state, 'player_assassin_0', 'enemy_archer_0', rng);
+    // const result = handleAttack(state, 'player_assassin_0', 'enemy_archer_0', rng);
 
     // Check for flanking event with rear modifier
     const flankingEvents = result.events.filter((e) => e.type === 'flanking_applied');
@@ -568,10 +561,10 @@ describe('24.3 Phalanx + Contagion Interaction', () => {
     );
 
     // Run turn start to check phalanx detection
-    const result = handleTurnStart(state, 'player_knight_0');
+    // const result = handleTurnStart(state, 'player_knight_0');
 
     // The knight should be detected as in phalanx
-    const knight = findUnit(result.state, 'player_knight_0');
+    // const knight = findUnit(result.state, 'player_knight_0');
     expect(knight?.inPhalanx).toBe(true);
   });
 
@@ -609,14 +602,14 @@ describe('24.3 Phalanx + Contagion Interaction', () => {
       ],
     );
 
-    const result = handleTurnStart(state, 'player_knight_0');
+    // const result = handleTurnStart(state, 'player_knight_0');
 
     // Check for resolve regeneration event
     const resolveEvents = result.events.filter((e) => e.type === 'resolve_changed');
     expect(resolveEvents.length).toBeGreaterThan(0);
 
     // Resolve should have increased (base 5 + phalanx bonus 3 = 8)
-    const knight = findUnit(result.state, 'player_knight_0');
+    // const knight = findUnit(result.state, 'player_knight_0');
     expect(knight?.resolve).toBeGreaterThan(50);
   });
 
@@ -652,10 +645,10 @@ describe('24.3 Phalanx + Contagion Interaction', () => {
     }
 
     const rng = new SeededRandom(44444);
-    const result = handleTurnEnd(state, 'player_knight_0', rng);
+    // const result = handleTurnEnd(state, 'player_knight_0', rng);
 
     // Check for contagion spread event (may or may not trigger based on RNG)
-    const contagionEvents = result.events.filter((e) => e.type === 'contagion_spread');
+    // const contagionEvents = result.events.filter((e) => e.type === 'contagion_spread');
     // Contagion spread is probabilistic
   });
 
@@ -737,7 +730,7 @@ describe('24.3 Phalanx + Contagion Interaction', () => {
 
     // Attack the guardian to kill it
     const rng = new SeededRandom(55555);
-    const result = handleAttack(state, 'enemy_rogue_0', 'player_guardian_0', rng);
+    // const result = handleAttack(state, 'enemy_rogue_0', 'player_guardian_0', rng);
 
     // Guardian should be dead
     const guardian = findUnit(result.state, 'player_guardian_0');
@@ -791,10 +784,10 @@ describe('24.4 Routing + Rally Cycle', () => {
     // Note: In handleTurnStart, resolve regenerates BEFORE routing check
     // So a unit at 0 resolve will regenerate to 5, then NOT route
     // This is correct behavior - routing only happens if resolve stays at 0
-    const result = handleTurnStart(state, 'player_knight_0');
+    // const result = handleTurnStart(state, 'player_knight_0');
 
     // After regeneration, resolve should be 5, so no routing
-    const knight = findUnit(result.state, 'player_knight_0');
+    // const knight = findUnit(result.state, 'player_knight_0');
     expect(knight?.resolve).toBe(5); // Regenerated from 0 to 5
     expect(knight?.isRouting).toBe(false); // Not routing because resolve > 0
   });
@@ -822,14 +815,14 @@ describe('24.4 Routing + Rally Cycle', () => {
       ],
     );
 
-    const result = handleTurnStart(state, 'player_knight_0');
+    // const result = handleTurnStart(state, 'player_knight_0');
 
     // Check for rally event
     const rallyEvents = result.events.filter((e) => e.type === 'unit_rallied');
     expect(rallyEvents.length).toBeGreaterThan(0);
 
     // Unit should no longer be routing
-    const knight = findUnit(result.state, 'player_knight_0');
+    // const knight = findUnit(result.state, 'player_knight_0');
     expect(knight?.isRouting).toBe(false);
   });
 
@@ -863,14 +856,14 @@ describe('24.4 Routing + Rally Cycle', () => {
 
     // Kill the guardian
     const rng = new SeededRandom(66666);
-    const result = handleAttack(state, 'enemy_rogue_0', 'player_guardian_0', rng);
+    // const result = handleAttack(state, 'enemy_rogue_0', 'player_guardian_0', rng);
 
     // Guardian should be dead
     const guardian = findUnit(result.state, 'player_guardian_0');
     expect(guardian?.alive).toBe(false);
 
     // Knight should have lost resolve (adjacent ally death = -15)
-    const knight = findUnit(result.state, 'player_knight_0');
+    // const knight = findUnit(result.state, 'player_knight_0');
     // Note: Resolve damage from ally death is applied in death handling
   });
 
@@ -897,10 +890,10 @@ describe('24.4 Routing + Rally Cycle', () => {
       ],
     );
 
-    const result = handleTurnStart(state, 'player_skeleton_0');
+    // const result = handleTurnStart(state, 'player_skeleton_0');
 
     // Undead should crumble (die) instead of routing
-    const skeleton = findUnit(result.state, 'player_skeleton_0');
+    // const skeleton = findUnit(result.state, 'player_skeleton_0');
     // Note: Crumbling is handled by resolve processor
     // The unit should either be dead or have crumbled status
   });
@@ -927,14 +920,14 @@ describe('24.4 Routing + Rally Cycle', () => {
       ],
     );
 
-    const result = handleTurnStart(state, 'player_knight_0');
+    // const result = handleTurnStart(state, 'player_knight_0');
 
     // Check for resolve regeneration event
     const resolveEvents = result.events.filter((e) => e.type === 'resolve_changed');
     expect(resolveEvents.length).toBeGreaterThan(0);
 
     // Resolve should have increased by base amount (5)
-    const knight = findUnit(result.state, 'player_knight_0');
+    // const knight = findUnit(result.state, 'player_knight_0');
     expect(knight?.resolve).toBe(55); // 50 + 5 base regen
   });
 
@@ -960,10 +953,10 @@ describe('24.4 Routing + Rally Cycle', () => {
       ],
     );
 
-    const result = handleTurnStart(state, 'player_knight_0');
+    // const result = handleTurnStart(state, 'player_knight_0');
 
     // Routing units should not regenerate resolve
-    const knight = findUnit(result.state, 'player_knight_0');
+    // const knight = findUnit(result.state, 'player_knight_0');
     // Resolve should remain at 10 (no regeneration while routing)
     // Note: The unit might rally if resolve >= 25 after other effects
   });
@@ -986,7 +979,7 @@ describe('24.5 Event Sequence Verification', () => {
     };
 
     const seed = 77777;
-    const result = simulateBattle(playerTeam, enemyTeam, seed);
+    // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
     // Filter events for a single turn
     const turnEvents = result.events.filter(
@@ -1026,7 +1019,7 @@ describe('24.5 Event Sequence Verification', () => {
     };
 
     const seed = 88888;
-    const result = simulateBattle(playerTeam, enemyTeam, seed);
+    // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
     // Should have turn_start events
     const turnStartEvents = result.events.filter((e) => e.type === 'turn_start');
@@ -1045,7 +1038,7 @@ describe('24.5 Event Sequence Verification', () => {
     };
 
     const seed = 99999;
-    const result = simulateBattle(playerTeam, enemyTeam, seed);
+    // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
     // Should have turn_end events
     const turnEndEvents = result.events.filter((e) => e.type === 'turn_end');
@@ -1064,7 +1057,7 @@ describe('24.5 Event Sequence Verification', () => {
     };
 
     const seed = 11111;
-    const result = simulateBattle(playerTeam, enemyTeam, seed);
+    // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
     // Should have round events
     const roundStartEvents = result.events.filter((e) => e.type === 'round_start');
@@ -1089,7 +1082,7 @@ describe('24.5 Event Sequence Verification', () => {
     };
 
     const seed = 22222;
-    const result = simulateBattle(playerTeam, enemyTeam, seed);
+    // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
     // Should have exactly one battle_start and one battle_end
     const battleStartEvents = result.events.filter((e) => e.type === 'battle_start');
@@ -1127,7 +1120,7 @@ describe('24.5 Event Sequence Verification', () => {
     );
 
     const rng = new SeededRandom(33333);
-    const result = handleAttack(state, 'player_knight_0', 'enemy_duelist_0', rng);
+    // const result = handleAttack(state, 'player_knight_0', 'enemy_duelist_0', rng);
 
     // Verify event order: flanking should come before attack/damage
     const eventTypes = result.events.map((e) => e.type);
@@ -1170,7 +1163,7 @@ describe('24.5 Event Sequence Verification', () => {
     );
 
     const rng = new SeededRandom(44444);
-    const result = handleAttack(state, 'player_assassin_0', 'enemy_mage_0', rng);
+    // const result = handleAttack(state, 'player_assassin_0', 'enemy_mage_0', rng);
 
     // Should have unit_died event
     const deathEvents = result.events.filter((e) => e.type === 'unit_died');
@@ -1208,7 +1201,7 @@ describe('24.5 Event Sequence Verification', () => {
     };
 
     const seed = 55555;
-    const result = simulateBattle(playerTeam, enemyTeam, seed);
+    // const result = simulateBattle(playerTeam, enemyTeam, seed);
 
     // Verify timestamps are monotonically increasing
     let lastTimestamp = -1;

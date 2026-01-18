@@ -15,7 +15,6 @@
  */
 
 import type { BattleState, BattleUnit } from '../../../types';
-import type { ShredConfig } from '../../config/mechanics.types';
 
 // ═══════════════════════════════════════════════════════════════
 // ARMOR SHRED CONSTANTS

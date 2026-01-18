@@ -98,7 +98,7 @@ function getMaxIntercepts(unit: BattleUnit & UnitWithIntercept): number {
 /**
  * Creates an intercept processor instance.
  *
- * @param config - Intercept configuration
+ * @param _config - Intercept configuration (unused, kept for API consistency)
  * @returns InterceptProcessor instance
  *
  * @example
@@ -108,7 +108,7 @@ function getMaxIntercepts(unit: BattleUnit & UnitWithIntercept): number {
  *   disengageCost: 2,
  * });
  */
-export function createInterceptProcessor(config: InterceptConfig): InterceptProcessor {
+export function createInterceptProcessor(_config: InterceptConfig): InterceptProcessor {
   return {
     /**
      * Checks if a unit can perform hard intercept (stop cavalry).

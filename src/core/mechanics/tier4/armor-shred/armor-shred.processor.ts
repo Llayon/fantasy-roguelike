@@ -72,8 +72,9 @@ function getUnitId(unit: BattleUnit): string {
  */
 function getBaseArmor(unit: BattleUnit & UnitWithArmorShred): number {
   // Check for baseArmor property first, then fall back to stats.armor
-  if (typeof (unit as UnitWithArmorShred).baseArmor === 'number') {
-    return (unit as UnitWithArmorShred).baseArmor!;
+  const unitWithShred = unit as UnitWithArmorShred;
+  if (typeof unitWithShred.baseArmor === 'number') {
+    return unitWithShred.baseArmor;
   }
   return unit.stats?.armor ?? 0;
 }

@@ -64,7 +64,7 @@ function getUnitAtk(unit: BattleUnit & UnitWithCharge): number {
 /**
  * Creates a charge processor instance.
  *
- * @param config - Charge configuration with momentum and shock settings
+ * @param _config - Charge configuration (unused, kept for API consistency)
  * @returns ChargeProcessor instance
  *
  * @example
@@ -75,7 +75,7 @@ function getUnitAtk(unit: BattleUnit & UnitWithCharge): number {
  *   minChargeDistance: 3,
  * });
  */
-export function createChargeProcessor(config: ChargeConfig): ChargeProcessor {
+export function createChargeProcessor(_config: ChargeConfig): ChargeProcessor {
   return {
     /**
      * Calculates momentum based on distance moved.
@@ -200,13 +200,13 @@ export function createChargeProcessor(config: ChargeConfig): ChargeProcessor {
      * @returns Updated unit with reset charge state
      */
     resetCharge(unit: BattleUnit & UnitWithCharge): BattleUnit & UnitWithCharge {
-      const { chargeStartPosition: _chargeStartPosition, ...rest } = unit;
       return {
-        ...rest,
+        ...unit,
         momentum: 0,
         isCharging: false,
         chargeDistance: 0,
         chargeCountered: false,
+        chargeStartPosition: undefined,
       } as BattleUnit & UnitWithCharge;
     },
 

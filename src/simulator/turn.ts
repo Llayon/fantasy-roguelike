@@ -22,7 +22,6 @@ import {
   PhaseResult,
   BattleAction,
   Phase,
-  PHASE_ORDER,
   createTurnStartEvent,
   createTurnEndEvent,
   createUnitDiedEvent,

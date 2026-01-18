@@ -1,5 +1,5 @@
-import { Injectable, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
-import { RunService, UnitCard, GetRunResponse } from '../run/run.service';
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import { RunService, UnitCard } from '../run/run.service';
 
 /**
  * Upgradeable unit information.

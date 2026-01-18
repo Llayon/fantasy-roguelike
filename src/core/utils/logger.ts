@@ -421,6 +421,6 @@ export function createSilentLogger(baseContext: BattleContext = {}): BattleLogge
   return new BattleLogger(baseContext, {
     minLevel: LogLevel.ERROR + 1, // Higher than any level
     jsonFormat: true,
-    output: () => {}, // No-op output
+    output: (): void => {}, // No-op output
   });
 }

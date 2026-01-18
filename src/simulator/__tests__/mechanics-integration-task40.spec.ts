@@ -15,8 +15,7 @@
 import { handleAttack } from '../phases/attack';
 import { handleTurnStart } from '../phases/turn-start';
 import { handleMovement } from '../phases/movement';
-import { SeededRandom } from '../../core/utils/random';
-import { createTestBattleState, createTestUnit, assertUnitDead } from '../../__tests__/fixtures';
+import { createTestBattleState, createTestUnit } from '../../__tests__/fixtures';
 import { findUnit } from '../../core/utils/state-helpers';
 
 describe('Task 40: Mechanics Integration Tests', () => {
@@ -46,7 +45,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(12345);
+      // const rng = new SeededRandom(12345);
       const result = handleAttack(state, 'player_attacker', 'enemy_target', rng);
 
       // Should have flanking event
@@ -79,7 +78,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(54321);
+      // const rng = new SeededRandom(54321);
       const result = handleAttack(state, 'player_attacker', 'enemy_target', rng);
 
       const flankingEvents = result.events.filter((e) => e.type === 'flanking_applied');
@@ -113,7 +112,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(11111);
+      // const rng = new SeededRandom(11111);
       const result = handleAttack(state, 'player_attacker', 'enemy_target', rng);
 
       const flankingEvents = result.events.filter((e) => e.type === 'flanking_applied');
@@ -149,7 +148,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(10000);
+      // const rng = new SeededRandom(10000);
       const result = handleAttack(state, 'player_attacker', 'enemy_defender', rng);
 
       const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
@@ -184,7 +183,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(20000);
+      // const rng = new SeededRandom(20000);
       const result = handleAttack(state, 'player_attacker', 'enemy_defender', rng);
 
       const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
@@ -216,7 +215,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(30000);
+      // const rng = new SeededRandom(30000);
       const result = handleAttack(state, 'player_attacker', 'enemy_defender', rng);
 
       const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
@@ -248,7 +247,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(40000);
+      // const rng = new SeededRandom(40000);
       const result = handleAttack(state, 'player_attacker', 'enemy_defender', rng);
 
       const riposteEvents = result.events.filter((e) => e.type === 'riposte_triggered');
@@ -287,7 +286,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(50000);
+      // const rng = new SeededRandom(50000);
       const result = handleAttack(state, 'player_archer', 'enemy_target', rng);
 
       const ammoEvents = result.events.filter((e) => e.type === 'ammo_consumed');
@@ -324,7 +323,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(60000);
+      // const rng = new SeededRandom(60000);
       const result = handleAttack(state, 'player_archer', 'enemy_target', rng);
 
       const attackEvents = result.events.filter((e) => e.type === 'attack');
@@ -361,7 +360,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(70000);
+      // const rng = new SeededRandom(70000);
       const result = handleAttack(state, 'player_archer', 'enemy_target', rng);
 
       const archer = findUnit(result.state, 'player_archer');
@@ -397,7 +396,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(80000);
+      // const rng = new SeededRandom(80000);
       const targetPosition = { x: 3, y: 5 };
       const result = handleMovement(state, 'player_cavalry', targetPosition);
 
@@ -432,7 +431,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(90000);
+      // const rng = new SeededRandom(90000);
       const result = handleAttack(state, 'player_cavalry', 'enemy_target', rng);
 
       const chargeEvents = result.events.filter((e) => e.type === 'charge_impact');
@@ -471,7 +470,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(100000);
+      // const rng = new SeededRandom(100000);
       const result = handleAttack(state, 'player_cavalry', 'enemy_spearman', rng);
 
       const counterEvents = result.events.filter(
@@ -512,7 +511,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(110000);
+      // const rng = new SeededRandom(110000);
       const targetPosition = { x: 3, y: 4 };
       const result = handleMovement(state, 'player_cavalry', targetPosition);
 
@@ -606,7 +605,7 @@ describe('Task 40: Mechanics Integration Tests', () => {
         ),
       ]);
 
-      const rng = new SeededRandom(120000);
+      // const rng = new SeededRandom(120000);
       const result = handleAttack(state, 'enemy_assassin', 'player_guardian', rng);
 
       const guardian = findUnit(result.state, 'player_guardian');

@@ -669,7 +669,8 @@ export function createLowAmmoUnit(
   team: 'player' | 'enemy' = 'player',
   index: number = 0,
 ): BattleUnit {
-  return createPlayerArcher(
+  const archerFactory = team === 'player' ? createPlayerArcher : createEnemyArcher;
+  return archerFactory(
     {
       ammo: ammoCount,
       ...overrides,

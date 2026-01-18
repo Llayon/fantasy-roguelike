@@ -15,7 +15,7 @@
  * @see {@link BattleAction} for action types
  */
 
-import { BattleState, BattleAction } from '../../core/types/battle-state';
+import { BattleState } from '../../core/types/battle-state';
 import { BattleUnit } from '../../core/types/battle-unit';
 import { Position } from '../../core/types/grid.types';
 import { SeededRandom } from '../../core/utils/random';
@@ -70,8 +70,6 @@ interface DecisionContext {
   enemies: readonly BattleUnit[];
   /** Enemies within attack range */
   enemiesInRange: readonly BattleUnit[];
-  /** Allies with HP below 50% */
-  woundedAllies: readonly BattleUnit[];
 }
 
 // =============================================================================
@@ -209,16 +207,15 @@ function buildDecisionContext(actor: BattleUnit, state: BattleState): DecisionCo
     (enemy) => manhattanDistance(actor.position, enemy.position) <= actor.range,
   );
 
-  const woundedAllies = allies.filter(
-    (ally) => ally.currentHp / ally.maxHp < HP_THRESHOLDS.WOUNDED,
-  );
+  // const _woundedAllies = allies.filter(
+  //   (ally) => ally.currentHp / ally.maxHp < HP_THRESHOLDS.WOUNDED,
+  // );
 
   return {
     actor,
     allies,
     enemies,
     enemiesInRange,
-    woundedAllies,
   };
 }
 
@@ -339,7 +336,7 @@ function decideRangedDpsAction(context: DecisionContext, _rng: SeededRandom): AI
  * Priority: heal wounded > buff allies > attack
  */
 function decideSupportAction(context: DecisionContext, _rng: SeededRandom): AIDecisionOutput {
-  const { actor, enemies, enemiesInRange, woundedAllies } = context;
+  const { actor, enemies, enemiesInRange } = context;
 
   // Priority 1: Heal critically wounded allies (would use ability)
   // For now, we don't have ability system integrated, so skip to attack

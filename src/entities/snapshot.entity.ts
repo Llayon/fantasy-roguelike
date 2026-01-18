@@ -16,6 +16,8 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
+import { Run } from './run.entity';
+import { Battle } from './battle.entity';
 
 /**
  * Team snapshot interface for storing team data.
@@ -65,7 +67,7 @@ export class Snapshot {
     eager: false,
   })
   @JoinColumn({ name: 'runId' })
-  run!: any;
+  run!: Run;
 
   /**
    * Stage at which this snapshot was created (1-9).
@@ -98,7 +100,7 @@ export class Snapshot {
   @OneToMany('Battle', 'enemySnapshot', {
     cascade: false,
   })
-  battles!: any[];
+  battles!: Battle[];
 
   /**
    * Snapshot creation timestamp.

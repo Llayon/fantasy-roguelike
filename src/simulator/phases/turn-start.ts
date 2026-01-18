@@ -53,7 +53,7 @@ const RALLY_THRESHOLD = 25;
 const PHALANX_MIN_ALLIES = 2;
 
 /** Resolve processor instance using default config */
-const resolveProcessor = createResolveProcessor(DEFAULT_RESOLVE_CONFIG);
+// const _resolveProcessor = createResolveProcessor(DEFAULT_RESOLVE_CONFIG);
 
 // =============================================================================
 // MAIN PHASE HANDLER

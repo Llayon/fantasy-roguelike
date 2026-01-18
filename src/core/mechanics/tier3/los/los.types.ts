@@ -15,7 +15,6 @@
  */
 
 import type { BattleState, BattleUnit } from '../../../types';
-import type { LoSConfig } from '../../config/mechanics.types';
 import type { Position } from '../../../types/grid.types';
 
 // ═══════════════════════════════════════════════════════════════

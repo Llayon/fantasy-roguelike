@@ -90,7 +90,7 @@ describe('DraftService', () => {
       const runResponse = runService.startRun('human', 'knight');
       const runId = runResponse.runId;
 
-      const originalOptions = service.getDraftOptions(runId);
+      service.getDraftOptions(runId);
       const rerolledOptions = service.rerollOptions(runId);
 
       // Options might be the same by chance, but rerolls should decrease

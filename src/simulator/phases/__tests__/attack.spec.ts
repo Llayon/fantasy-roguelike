@@ -19,13 +19,11 @@ import {
   getFlankingModifier,
   canRiposte,
   calculateRiposteChance,
-  BASE_RIPOSTE_CHANCE,
-  MAX_RIPOSTE_CHANCE,
 } from '../attack';
 import { FLANKING_DAMAGE_MODIFIERS } from '../../../core/mechanics';
 import { BattleState } from '../../../core/types/battle-state';
 import { BattleUnit, FacingDirection } from '../../../core/types/battle-unit';
-import { SeededRandom } from '../../../core/utils/random';
+import { SeededRandom } from '../../core/utils/random';
 
 // Alias for backward compatibility in tests
 const FLANKING_FRONT_MODIFIER = FLANKING_DAMAGE_MODIFIERS.front;

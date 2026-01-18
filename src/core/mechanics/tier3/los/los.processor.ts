@@ -28,7 +28,6 @@ import type {
 } from './los.types';
 import {
   DEFAULT_ARC_FIRE_PENALTY,
-  PARTIAL_COVER_HIT_CHANCE,
   COVER_DODGE_BONUS,
   ARC_FIRE_TAG,
   SIEGE_TAG,
@@ -180,7 +179,6 @@ export function createLoSProcessor(
 ): LoSProcessor {
   const arcFirePenalty =
     options.arcFirePenalty ?? config.arcFirePenalty ?? DEFAULT_ARC_FIRE_PENALTY;
-  const partialCoverHitChance = options.partialCoverHitChance ?? PARTIAL_COVER_HIT_CHANCE;
   const coverDodgeBonus = options.coverDodgeBonus ?? COVER_DODGE_BONUS;
   const arcFireTags = options.arcFireTags ?? [ARC_FIRE_TAG, SIEGE_TAG];
   const ignoreLoSTags = options.ignoreLoSTags ?? [IGNORE_LOS_TAG];

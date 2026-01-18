@@ -9,6 +9,7 @@
  *
  * @module simulator/__tests__/death.property.spec
  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as fc from 'fast-check';
 import { simulateBattle } from '../simulator';
@@ -23,7 +24,6 @@ import { UnitId, getAllUnitIds } from '../../game/units/unit.data';
 
 /** Grid dimensions */
 const GRID_WIDTH = 8;
-const GRID_HEIGHT = 10;
 
 /** Player deployment rows (0-1) */
 const PLAYER_ROWS = [0, 1];
@@ -282,11 +282,7 @@ describe('Death Handling Property-Based Tests', () => {
 
             // Property holds if no violations found
             if (violations.length > 0) {
-              const firstViolation = violations[0];
-              console.error(
-                `Dead unit acted: Unit '${firstViolation.unitId}' died at timestamp ${firstViolation.deathTimestamp} ` +
-                  `but performed action '${firstViolation.event.type}' at timestamp ${firstViolation.event.timestamp}`,
-              );
+              // const _firstViolation = violations[0];
               expect(violations.length).toBe(0);
               return false;
             }
@@ -317,7 +313,6 @@ describe('Death Handling Property-Based Tests', () => {
             // Check that no dead unit is in the turn queue
             for (const deadId of deadUnitIds) {
               if (finalState.turnQueue.includes(deadId)) {
-                console.error(`Dead unit '${deadId}' found in turn queue at end of battle`);
                 expect(finalState.turnQueue).not.toContain(deadId);
                 return false;
               }
@@ -354,10 +349,6 @@ describe('Death Handling Property-Based Tests', () => {
               // Check if this unit died before this turn_start
               const deathTimestamp = deathTimestamps.get(actorId);
               if (deathTimestamp !== undefined && event.timestamp > deathTimestamp) {
-                console.error(
-                  `Dead unit '${actorId}' had turn_start at timestamp ${event.timestamp} ` +
-                    `but died at timestamp ${deathTimestamp}`,
-                );
                 expect(event.timestamp).toBeLessThanOrEqual(deathTimestamp);
                 return false;
               }
@@ -394,10 +385,6 @@ describe('Death Handling Property-Based Tests', () => {
               // Check if attacker died before this attack
               const deathTimestamp = deathTimestamps.get(attackerId);
               if (deathTimestamp !== undefined && event.timestamp > deathTimestamp) {
-                console.error(
-                  `Dead unit '${attackerId}' attacked at timestamp ${event.timestamp} ` +
-                    `but died at timestamp ${deathTimestamp}`,
-                );
                 expect(event.timestamp).toBeLessThanOrEqual(deathTimestamp);
                 return false;
               }
@@ -426,10 +413,6 @@ describe('Death Handling Property-Based Tests', () => {
               const shouldBeAlive = unit.currentHp > 0;
 
               if (unit.alive !== shouldBeAlive) {
-                console.error(
-                  `Unit '${unit.instanceId}' has inconsistent state: ` +
-                    `alive=${unit.alive} but currentHp=${unit.currentHp}`,
-                );
                 expect(unit.alive).toBe(shouldBeAlive);
                 return false;
               }
@@ -463,7 +446,6 @@ describe('Death Handling Property-Based Tests', () => {
               if ('targetId' in event) {
                 const targetId = event.targetId as string;
                 if (!allUnitIds.has(targetId)) {
-                  console.error(`unit_died event has invalid targetId: '${targetId}'`);
                   expect(allUnitIds.has(targetId)).toBe(true);
                   return false;
                 }
@@ -501,7 +483,6 @@ describe('Death Handling Property-Based Tests', () => {
             // Check no unit died more than once
             for (const [unitId, count] of deathCounts) {
               if (count > 1) {
-                console.error(`Unit '${unitId}' died ${count} times (should be at most 1)`);
                 expect(count).toBeLessThanOrEqual(1);
                 return false;
               }
@@ -535,16 +516,12 @@ describe('Death Handling Property-Based Tests', () => {
 
             // Death sequences should be identical
             if (deaths1.length !== deaths2.length) {
-              console.error(`Different death counts: ${deaths1.length} vs ${deaths2.length}`);
               expect(deaths1.length).toBe(deaths2.length);
               return false;
             }
 
             for (let i = 0; i < deaths1.length; i++) {
               if (deaths1[i] !== deaths2[i]) {
-                console.error(
-                  `Death sequence mismatch at index ${i}: '${deaths1[i]}' vs '${deaths2[i]}'`,
-                );
                 expect(deaths1[i]).toBe(deaths2[i]);
                 return false;
               }

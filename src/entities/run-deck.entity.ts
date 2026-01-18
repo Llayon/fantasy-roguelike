@@ -15,6 +15,7 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
+import { Run } from './run.entity';
 
 /**
  * RunDeck entity representing a unit card in a roguelike run.
@@ -45,7 +46,7 @@ export class RunDeck {
     eager: false,
   })
   @JoinColumn({ name: 'runId' })
-  run!: any;
+  run!: Run;
 
   /**
    * Unit template ID from game/units/unit.data.ts.
